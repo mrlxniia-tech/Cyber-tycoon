@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cyber Tycoon V3.9.9</title>
+    <title>Cyber Tycoon V4.0 - OMEGA</title>
     <style>
         :root { --neon: #00f2ff; --bg: #050508; }
         .theme-red { --neon: #ff4757; } .theme-yellow { --neon: #ffd700; }
@@ -12,45 +12,52 @@
         .theme-orange { --neon: #ff8c00; }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
-        body { background: #050508; color: white; font-family: 'Courier New', monospace; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        body { background: #050508; color: white; font-family: 'Courier New', monospace; height: 100vh; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+
+        #matrix { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.15; pointer-events: none; }
 
         #h { height: 90px; background: rgba(17,17,34,0.9); border-bottom: 2px solid var(--neon); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100; box-shadow: 0 0 15px var(--neon); }
         #m { font-size: 1.7rem; font-weight: bold; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
-        #income-bar { font-size: 0.7rem; color: #2ecc71; }
+        #income-bar { font-size: 0.7rem; color: #2ecc71; font-weight: bold; }
 
         #cz { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
-        #btn { width: 135px; height: 135px; border-radius: 50%; background: #222; border: none; color: var(--neon); font-size: 4rem; box-shadow: 0 8px 0 #111, 0 0 20px var(--neon); pointer-events: none; transition: 0.05s; }
-        #cz:active #btn { transform: scale(0.95) translateY(5px); }
+        #btn { width: 140px; height: 140px; border-radius: 50%; background: #222; border: none; color: var(--neon); font-size: 4rem; font-weight: bold; box-shadow: 0 8px 0 #111, 0 0 20px var(--neon); pointer-events: none; transition: 0.05s; }
+        #cz:active #btn { transform: scale(0.95) translateY(5px); box-shadow: 0 2px 0 #111, 0 0 30px var(--neon); }
 
-        #ui { height: 48vh; background: rgba(8,8,16,0.95); display: flex; flex-direction: column; border-top: 1px solid #333; }
-        #nav { display: flex; height: 50px; background: #000; overflow-x: auto; flex-shrink: 0; }
-        .t-btn { flex: 1; min-width: 70px; border: none; background: none; color: #555; font-weight: bold; font-size: 0.6rem; text-transform: uppercase; }
+        .float-money { position: absolute; color: var(--neon); font-weight: bold; pointer-events: none; animation: floatUp 0.5s linear forwards; z-index: 1000; font-size: 1.2rem; }
+        @keyframes floatUp { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-80px); } }
+
+        #ui { height: 48vh; background: rgba(8, 8, 16, 0.95); display: flex; flex-direction: column; border-top: 1px solid #333; z-index: 100; }
+        #nav { display: flex; height: 50px; background: #000; flex-shrink: 0; overflow-x: auto; }
+        .t-btn { flex: 1; min-width: 80px; border: none; background: none; color: #444; font-weight: bold; font-size: 0.6rem; text-transform: uppercase; }
         .t-btn.active { color: var(--neon); border-bottom: 3px solid var(--neon); }
 
-        .p { flex: 1; overflow-y: auto; padding: 15px 15px 100px 15px; display: none; }
+        .p { flex: 1; overflow-y: auto; padding: 15px 15px 100px 15px; display: none; -webkit-overflow-scrolling: touch; }
         .p.active { display: block; }
 
-        .card { background: rgba(25,25,40,0.8); padding: 12px; border-radius: 12px; margin-bottom: 12px; border: 1px solid #333; }
+        .card { background: rgba(17, 17, 34, 0.8); padding: 12px; border-radius: 12px; margin-bottom: 12px; border: 1px solid #222; }
         .buy-row { display: flex; gap: 5px; margin-top: 10px; }
-        .b-btn { flex: 1; background: #000; color: var(--neon); border: 1px solid var(--neon); padding: 8px 0; border-radius: 6px; font-weight: bold; font-size: 0.55rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; }
-        .b-btn:disabled { opacity: 0.4; color: #555; border-color: #333; } /* Visibilité augmentée */
+        .b-btn { flex: 1; background: #000; color: var(--neon); border: 1px solid var(--neon); padding: 8px 0; border-radius: 6px; font-weight: bold; font-size: 0.5rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; }
+        .b-btn:disabled { opacity: 0.4; color: #555; border-color: #333; }
+        .b-btn span { font-size: 0.45rem; opacity: 0.8; }
 
+        .rank-line { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #222; font-size: 0.75rem; color: #aaa; }
+        .me { color: var(--neon); border-left: 3px solid var(--neon); background: rgba(0, 242, 255, 0.1); }
+        
         .color-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 10px; }
-        .c-box { height: 30px; border-radius: 5px; border: 1px solid #333; }
+        .c-box { height: 35px; border-radius: 6px; cursor: pointer; border: 1px solid #333; }
 
-        .float-money { position: absolute; color: var(--neon); font-weight: bold; pointer-events: none; animation: floatUp 0.5s linear forwards; }
-        @keyframes floatUp { 0% { opacity:1; transform:translateY(0); } 100% { opacity:0; transform:translateY(-80px); } }
-
-        /* MODAL GAIN HORS LIGNE */
-        #away-msg { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #112; border: 2px solid var(--neon); padding: 20px; border-radius: 10px; z-index: 500; text-align: center; display: none; box-shadow: 0 0 50px #000; }
+        #away-msg { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #112; border: 2px solid var(--neon); padding: 25px; border-radius: 15px; z-index: 2000; text-align: center; display: none; box-shadow: 0 0 50px #000; }
     </style>
 </head>
 <body id="b">
 
+    <canvas id="matrix"></canvas>
+
     <div id="away-msg">
         <h2 style="color:var(--neon)">BON RETOUR !</h2>
         <p id="away-val" style="margin:15px 0; font-size:1.2rem;"></p>
-        <button class="b-btn" style="width:100%; height:40px;" onclick="document.getElementById('away-msg').style.display='none'">RÉCUPÉRER</button>
+        <button class="b-btn" style="width:100%; height:45px;" onclick="document.getElementById('away-msg').style.display='none'">RÉCUPÉRER</button>
     </div>
 
     <div id="h">
@@ -72,20 +79,11 @@
         </div>
 
         <div id="s" class="p active"></div>
-        
-        <div id="q" class="p">
-            <h3 style="color:var(--neon); margin-bottom:15px;">OBJECTIFS DE HACK</h3>
-            <div id="quest-list"></div>
-        </div>
-
-        <div id="t" class="p">
-            <h3 style="color:var(--neon); margin-bottom:10px;">CLASSEMENT</h3>
-            <div id="leaderboard" class="card" style="padding:0;"></div>
-        </div>
-
+        <div id="q" class="p"><h3 style="color:var(--neon); margin-bottom:15px;">OBJECTIFS</h3><div id="quest-list"></div></div>
+        <div id="t" class="p"><h3 style="color:var(--neon); margin-bottom:10px;">CLASSEMENT MONDIAUX</h3><div id="leaderboard" class="card" style="padding:0;"></div></div>
         <div id="c" class="p">
-            <h3>PERSONNALISATION</h3>
-            <button class="toggle-btn" style="width:100%; padding:10px; background:#112; color:var(--neon); border:1px solid var(--neon); margin-bottom:15px;" onclick="g.sOn = !g.sOn; this.innerText='SON : '+(g.sOn?'ON':'OFF')">SON : ON</button>
+            <h3>PARAMÈTRES</h3>
+            <button id="sTog" class="b-btn" style="width:100%; height:40px; margin-bottom:15px;" onclick="toggleS()">SON : ON</button>
             <input type="text" id="ni" maxlength="12" placeholder="Pseudo" onchange="g.n=this.value; draw();" style="width:100%; padding:12px; margin-bottom:15px; background:#000; color:#fff; border:1px solid #333; border-radius:5px;">
             <div class="color-grid">
                 <div class="c-box" style="background:#00f2ff" onclick="st('default')"></div>
@@ -97,7 +95,7 @@
                 <div class="c-box" style="background:#1b4d3e" onclick="st('darkgreen')"></div>
                 <div class="c-box" style="background:#ff8c00" onclick="st('orange')"></div>
             </div>
-            <a href="mailto:Mrlxniia@gmail.com" class="b-btn" style="text-decoration:none; margin-top:20px; color:#aaa;">📧 SUPPORT : Mrlxniia@gmail.com</a>
+            <a href="mailto:Mrlxniia@gmail.com" class="b-btn" style="text-decoration:none; margin-top:20px; color:#aaa; border-color:#333;">📧 SUPPORT : Mrlxniia@gmail.com</a>
         </div>
     </div>
 
@@ -114,51 +112,68 @@
             {n:"Hackeur Pro", target:500, reward:5000, done:false},
             {n:"Maître du Réseau", target:2000, reward:50000, done:false}
         ];
+        let rivals = [{n:"Anonymous", m:10000000}, {n:"Satoshi", m:5000000}, {n:"AcidBurn", m:1500000}, {n:"ZeroCool", m:800000}, {n:"CerealKiller", m:400000}, {n:"LordNikon", m:150000}];
 
+        // MATRIX
+        const canvas = document.getElementById('matrix'); const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        const letters = "0101010101010101"; const fontSize = 10; const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(0,0,0,0.05)"; ctx.fillRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle = "#0F0"; ctx.font = fontSize + "px arial";
+            drops.forEach((y, i) => {
+                const text = letters[Math.floor(Math.random() * letters.length)];
+                ctx.fillText(text, i * fontSize, y * fontSize);
+                if (y * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0; drops[i]++;
+            });
+        }
+        setInterval(drawMatrix, 50);
+
+        // AUDIO
         let audioCtx = null;
         function playBeep() {
             if(!g.sOn) return;
             try {
                 if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                if(audioCtx.state === 'suspended') audioCtx.resume();
                 let o = audioCtx.createOscillator(); let gn = audioCtx.createGain();
-                o.type = 'sine'; o.frequency.setValueAtTime(250, audioCtx.currentTime);
+                o.type = 'sine'; o.frequency.setValueAtTime(220, audioCtx.currentTime);
                 gn.gain.setValueAtTime(0.02, audioCtx.currentTime);
                 o.connect(gn); gn.connect(audioCtx.destination);
-                o.start(); o.stop(audioCtx.currentTime + 0.1);
+                o.start(); o.stop(audioCtx.currentTime + 0.05);
             } catch(e) {}
         }
+        function toggleS() { g.sOn = !g.sOn; document.getElementById('sTog').innerText = "SON : " + (g.sOn ? "ON" : "OFF"); }
 
         function tap(e) {
             if(e.type === 'touchstart') e.preventDefault();
             let gain = 1; it.forEach(i => { if(i.type==="click") gain += (i.q * i.p); });
             let total = gain * g.mult; g.m += total; g.tc++;
-            
-            let f = document.createElement('div'); f.className='float-money'; f.innerText='+'+Math.floor(total);
+            let f = document.createElement('div'); f.className = 'float-money'; f.innerText = '+' + Math.floor(total);
             let x = e.clientX || (e.touches ? e.touches[0].clientX : window.innerWidth/2);
             let y = e.clientY || (e.touches ? e.touches[0].clientY : window.innerHeight/2);
-            f.style.left=x+'px'; f.style.top=y+'px'; document.body.appendChild(f);
-            setTimeout(()=>f.remove(), 500); playBeep(); draw();
+            f.style.left = x + 'px'; f.style.top = y + 'px'; document.body.appendChild(f);
+            setTimeout(() => f.remove(), 500); playBeep(); draw();
+        }
+
+        function getCost(base, amt) {
+            let t = 0; let cur = base; for(let i=0; i<amt; i++){ t += cur; cur = Math.floor(cur * 1.5); } return t;
         }
 
         function buy(idx, amt) {
-            let cost = 0; let curP = it[idx].c;
-            for(let i=0; i<amt; i++){ cost += curP; curP = Math.floor(curP * 1.5); }
-            if(g.m >= cost) { g.m -= cost; it[idx].q += amt; it[idx].c = curP; draw(); }
+            let cost = getCost(it[idx].c, amt);
+            if(g.m >= cost) { g.m -= cost; it[idx].q += amt; it[idx].c = Math.floor(it[idx].c * Math.pow(1.5, amt)); draw(); }
         }
 
         function draw() {
-            let autoInc = 0; it.forEach(i => { if(i.type==="auto") autoInc += (i.q * i.p); });
+            let inc = 0; it.forEach(i => { if(i.type==="auto") inc += (i.q * i.p); });
             document.getElementById('m').innerText = Math.floor(g.m).toLocaleString() + " €";
-            document.getElementById('income-bar').innerText = "+" + Math.floor(autoInc * g.mult).toLocaleString() + " € /s";
-            document.getElementById('h-name').innerText = g.n;
-            document.getElementById('h-mult').innerText = g.mult.toFixed(1);
+            document.getElementById('income-bar').innerText = "+" + Math.floor(inc * g.mult).toLocaleString() + " € /s";
+            document.getElementById('h-name').innerText = g.n; document.getElementById('h-mult').innerText = g.mult.toFixed(1);
 
             let sH = "";
             it.forEach((item, i) => {
-                let c1 = item.c; let c5 = 0; let c10 = 0;
-                let t5 = item.c; for(let j=0;j<5;j++){ c5+=t5; t5=Math.floor(t5*1.5); }
-                let t10 = item.c; for(let k=0;k<10;k++){ c10+=t10; t10=Math.floor(t10*1.5); }
+                let c1 = item.c; let c5 = getCost(item.c, 5); let c10 = getCost(item.c, 10);
                 sH += `<div class="card"><b>${item.n}</b> (x${item.q})<br>
                     <div class="buy-row">
                         <button class="b-btn" ${g.m<c1?'disabled':''} onclick="buy(${i},1)">x1<span>${c1}€</span></button>
@@ -172,16 +187,17 @@
             qs.forEach((q, i) => {
                 let prog = Math.min((g.tc / q.target) * 100, 100);
                 qH += `<div class="card"><b>${q.n}</b><br><small>Clics: ${g.tc}/${q.target}</small>
-                    <div style="width:100%; background:#000; height:10px; border-radius:5px; margin:5px 0;">
-                        <div style="width:${prog}%; background:var(--neon); height:100%; border-radius:5px;"></div>
-                    </div>
-                    <button class="b-btn" ${g.tc >= q.target && !q.done ? '' : 'disabled'} onclick="claimQ(${i})">${q.done?'RÉCOMPENSÉ':'RÉCUPÉRER '+q.reward+'€'}</button>
-                </div>`;
+                    <div style="width:100%; background:#000; height:8px; border-radius:4px; margin:5px 0;"><div style="width:${prog}%; background:var(--neon); height:100%; border-radius:4px;"></div></div>
+                    <button class="b-btn" ${g.tc >= q.target && !q.done ? '' : 'disabled'} onclick="claimQ(${i})">${q.done?'RÉCOMPENSÉ':'RÉCUPÉRER '+q.reward+'€'}</button></div>`;
             });
             document.getElementById('quest-list').innerHTML = qH;
 
-            g.lastS = Date.now();
-            localStorage.setItem('CyberSave_V399', JSON.stringify({g, it, qs}));
+            let fullL = [...rivals, {n:g.n + " (Toi)", m:g.m}].sort((a,b) => b.m - a.m);
+            let rH = ""; fullL.forEach((r, idx) => {
+                rH += `<div class="rank-line ${r.n.includes('(Toi)') ? 'me' : ''}"><span>#${idx+1} ${r.n}</span><span>${Math.floor(r.m).toLocaleString()} €</span></div>`;
+            });
+            document.getElementById('leaderboard').innerHTML = rH;
+            g.lastS = Date.now(); localStorage.setItem('CyberOMEGA', JSON.stringify({g, it, qs}));
         }
 
         function claimQ(i) { g.m += qs[i].reward; qs[i].done = true; draw(); }
@@ -193,24 +209,21 @@
         }
 
         window.onload = () => {
-            let saved = localStorage.getItem('CyberSave_V399');
+            let saved = localStorage.getItem('CyberOMEGA');
             if(saved) {
                 let d = JSON.parse(saved); g = d.g; it = d.it; qs = d.qs || qs;
-                st(g.t);
-                let offlineTime = (Date.now() - g.lastS) / 1000;
+                st(g.t); document.getElementById('ni').value = g.n;
+                let offT = (Date.now() - g.lastS) / 1000;
                 let auto = 0; it.forEach(i => { if(i.type==="auto") auto += (i.q * i.p); });
-                let gain = Math.floor(auto * g.mult * offlineTime);
-                if(gain > 0) {
-                    g.m += gain;
-                    document.getElementById('away-val').innerText = gain.toLocaleString() + " €";
-                    document.getElementById('away-msg').style.display = 'block';
-                }
+                let gain = Math.floor(auto * g.mult * offT);
+                if(gain > 5) { g.m += gain; document.getElementById('away-val').innerText = gain.toLocaleString() + " €"; document.getElementById('away-msg').style.display = 'block'; }
             }
             draw();
             setInterval(() => {
                 let auto = 0; it.forEach(i => { if(i.type==="auto") auto += (i.q * i.p); });
                 g.m += (auto * g.mult) / 10;
                 document.getElementById('m').innerText = Math.floor(g.m).toLocaleString() + " €";
+                rivals.forEach(r => r.m += Math.random() * 20);
             }, 100);
         };
     </script>
