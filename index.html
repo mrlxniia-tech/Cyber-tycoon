@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cyber Tycoon V2.7 - Ultimate</title>
+    <title>Cyber Tycoon V2.8</title>
     <style>
         :root { --neon: #00f2ff; --bg: #050508; }
         .theme-red { --neon: #ff4757; }
@@ -17,40 +17,36 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
         body { background: #050508; color: white; font-family: sans-serif; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-        /* HEADER */
         #h { height: 70px; background: #112; border-bottom: 2px solid var(--neon); display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--neon); }
         #m { font-size: 1.6rem; font-weight: bold; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
-        #stats-bar { font-size: 0.6rem; color: #aaa; text-transform: uppercase; letter-spacing: 1px; }
+        #stats-bar { font-size: 0.6rem; color: #aaa; text-transform: uppercase; }
 
-        /* JEU */
-        #cz { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #000; gap: 20px; }
-        
+        #cz { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #000; gap: 15px; }
         #goal-container { width: 80%; background: #112; height: 18px; border-radius: 10px; border: 1px solid #333; overflow: hidden; position: relative; }
         #goal-bar { height: 100%; background: var(--neon); width: 0%; transition: 0.3s; box-shadow: 0 0 10px var(--neon); }
         #goal-text { position: absolute; width: 100%; text-align: center; font-size: 0.65rem; font-weight: bold; line-height: 18px; color: #fff; }
 
         #btn { 
-            width: 130px; height: 130px; border-radius: 50%; background: #222; border: none;
-            color: var(--neon); font-size: 4rem; font-weight: bold; cursor: pointer;
+            width: 120px; height: 120px; border-radius: 50%; background: #222; border: none;
+            color: var(--neon); font-size: 3.5rem; font-weight: bold; cursor: pointer;
             box-shadow: 0 8px 0 #111, 0 15px 20px rgba(0,0,0,0.5), 0 0 15px var(--neon);
             transition: 0.1s; transform: rotateX(10deg);
         }
         #btn:active { transform: translateY(6px) rotateX(10deg); box-shadow: 0 2px 0 #111, 0 0 20px var(--neon); }
 
-        /* INTERFACE BAS */
         #ui { height: 42vh; background: #080810; display: flex; flex-direction: column; border-top: 1px solid #333; }
-        #nav { display: flex; height: 50px; background: #000; overflow-x: auto; }
-        .t-btn { flex: 1; min-width: 80px; border: none; background: none; color: #555; font-weight: bold; font-size: 0.6rem; }
+        #nav { display: flex; height: 50px; background: #000; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .t-btn { flex: 1; min-width: 85px; border: none; background: none; color: #555; font-weight: bold; font-size: 0.6rem; }
         .t-btn.active { color: var(--neon); border-bottom: 2px solid var(--neon); }
 
         .p { flex: 1; overflow-y: scroll; padding: 15px 15px 70px 15px; display: none; }
         .p.active { display: block; }
 
-        .card { background: #112; padding: 10px; border-radius: 10px; margin-bottom: 8px; border: 1px solid #222; }
-        .b-btn { background: #000; color: var(--neon); border: 1px solid var(--neon); padding: 8px; border-radius: 5px; font-weight: bold; font-size: 0.65rem; width: 100%; cursor: pointer; margin-top: 5px; }
-        .b-btn:disabled { opacity: 0.1; }
+        .card { background: #112; padding: 12px; border-radius: 10px; margin-bottom: 10px; border: 1px solid #222; }
+        .buy-row { display: flex; gap: 5px; margin-top: 10px; }
+        .b-btn { flex: 1; background: #000; color: var(--neon); border: 1px solid var(--neon); padding: 6px 2px; border-radius: 4px; font-weight: bold; font-size: 0.6rem; cursor: pointer; }
+        .b-btn:disabled { opacity: 0.1; color: #333; border-color: #333; }
 
-        /* GRILLE COULEURS */
         .color-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 10px 0; }
         .c-box { height: 35px; border-radius: 5px; border: 1px solid #333; cursor: pointer; }
     </style>
@@ -84,30 +80,26 @@
         <div id="r" class="p">
             <h3 style="color:gold">PRESTIGE</h3>
             <div class="card" style="border-color:gold; margin-top:10px;">
-                <p>Objectif Rebirth : <b id="rb-goal-val">50,000 €</b></p>
-                <p>Bonus permanent : <b style="color:var(--neon)">+x1.0 Multiplicateur</b></p>
+                <p>Besoin de : <b id="rb-goal-val">50,000 €</b></p>
+                <p>Bonus permanent : <b style="color:var(--neon)">+x1.0 Mult</b></p>
             </div>
-            <button id="rb-btn" class="b-btn" style="height:50px; color:gold; border-color:gold;" onclick="doRebirth()">LOCKED</button>
+            <button id="rb-btn" class="b-btn" style="height:50px; color:gold; border-color:gold; font-size:0.8rem;" onclick="doRebirth()">LOCKED</button>
         </div>
 
         <div id="t" class="p">
-            <h3 style="color:var(--neon)">CLASSEMENT GLOBAL</h3>
-            <div class="card"><span>#1 MasterHacker</span><span style="float:right">999.9M €</span></div>
-            <div class="card"><span>#2 CryptoKing</span><span style="float:right">50.0M €</span></div>
+            <h3 style="color:var(--neon)">GLOBAL TOP</h3>
+            <div class="card"><span>#1 MasterHacker</span><span style="float:right">1.5B €</span></div>
             <div class="card" style="border-color:var(--neon)"><span id="disp-name">Toi</span><span style="float:right" id="disp-money">0 €</span></div>
         </div>
 
         <div id="g" class="p">
-            <h3 style="color:gold">RÉCOMPENSES</h3>
-            <button class="b-btn" style="height:60px; background:gold; color:black; font-size:1rem;" onclick="claimGift()">🎁 RÉCUPÉRER MON CADEAU</button>
-            <p style="font-size:0.7rem; margin-top:10px; text-align:center; color:#666;">Disponible toutes les 24h</p>
+            <h3 style="color:gold">CADEAU</h3>
+            <button class="b-btn" style="height:60px; background:gold; color:black; font-size:0.9rem;" onclick="claimGift()">🎁 RÉCUPÉRER (24H)</button>
         </div>
 
         <div id="c" class="p">
-            <h3>PERSONNALISATION</h3>
+            <h3>RÉGLAGES</h3>
             <input type="text" id="ni" maxlength="12" placeholder="Pseudo" style="width:100%; padding:10px; margin:10px 0; background:#000; color:#fff; border:1px solid #333;" onchange="g.n=this.value; draw();">
-            
-            <p style="font-size:0.7rem; color:#888;">COULEUR NÉON :</p>
             <div class="color-grid">
                 <div class="c-box" style="background:#00f2ff" onclick="st('default')"></div>
                 <div class="c-box" style="background:#ff4757" onclick="st('red')"></div>
@@ -118,7 +110,7 @@
                 <div class="c-box" style="background:#9b59b6" onclick="st('violet')"></div>
                 <div class="c-box" style="background:#ff69b4" onclick="st('pink')"></div>
             </div>
-            <button class="b-btn" style="background:gold; color:black;" onclick="window.location.href='mailto:Mrlxniia@gmail.com'">SUPPORT</button>
+            <button class="b-btn" style="background:gold; color:black; margin-top:10px;" onclick="window.location.href='mailto:Mrlxniia@gmail.com'">SUPPORT</button>
         </div>
     </div>
 
@@ -128,7 +120,8 @@
             {n:"Clavier Néon", c:15, p:1, q:0, type:"click"},
             {n:"Bot Discord", c:150, p:3, q:0, type:"auto"},
             {n:"Script Python", c:800, p:12, q:0, type:"auto"},
-            {n:"Proxy Master", c:4500, p:45, q:0, type:"auto"}
+            {n:"Proxy Master", c:4500, p:45, q:0, type:"auto"},
+            {n:"Serveur Cloud", c:15000, p:110, q:0, type:"auto"}
         ];
 
         function tap() {
@@ -136,25 +129,35 @@
             g.m += p * g.mult; draw();
         }
 
-        function buy(i) {
-            if(g.m >= it[i].c) { g.m -= it[i].c; it[i].q++; it[i].c = Math.floor(it[i].c * 1.6); draw(); }
+        function getPrice(base, q, amt) {
+            let total = 0; let cur = base;
+            for(let i=0; i<amt; i++) { total += cur; cur = Math.floor(cur * 1.5); }
+            return total;
+        }
+
+        function buy(i, amt) {
+            let p = getPrice(it[i].c, it[i].q, amt);
+            if(g.m >= p) {
+                g.m -= p; it[i].q += amt;
+                for(let j=0; j<amt; j++) it[i].c = Math.floor(it[i].c * 1.5);
+                draw();
+            }
         }
 
         function doRebirth() {
             let goal = 50000 * Math.pow(5, g.rb);
             if(g.m >= goal) {
                 g.rb++; g.mult += 1.0; g.m = 0;
-                it.forEach(i => { i.q = 0; });
-                it[0].c=15; it[1].c=150; it[2].c=800; it[3].c=4500;
+                it.forEach(i => i.q = 0);
+                it[0].c=15; it[1].c=150; it[2].c=800; it[3].c=4500; it[4].c=15000;
                 tab(null, 's'); draw();
             }
         }
 
         function claimGift() {
             let now = Date.now();
-            if(now - g.lastG > 86400000) {
-                g.m += 5000 * g.mult; g.lastG = now; alert("Cadeau reçu !"); draw();
-            } else { alert("Reviens demain !"); }
+            if(now - g.lastG > 86400000) { g.m += 5000 * g.mult; g.lastG = now; alert("Cadeau reçu !"); draw(); }
+            else { alert("Pas encore !"); }
         }
 
         function draw() {
@@ -171,18 +174,25 @@
             document.getElementById('goal-bar').style.width = per + "%";
 
             let rbB = document.getElementById('rb-btn');
-            if(g.m >= goal) { rbB.disabled = false; rbB.innerText = "REBIRTH DISPONIBLE !"; rbB.style.background = "gold"; rbB.style.color="black"; }
-            else { rbB.disabled = true; rbB.innerText = "LOCKED"; rbB.style.background = "none"; }
+            if(g.m >= goal) { rbB.disabled = false; rbB.innerText = "LANCER REBIRTH"; rbB.style.background="gold"; }
+            else { rbB.disabled = true; rbB.innerText = "LOCKED"; rbB.style.background="none"; }
 
             let h = "";
             it.forEach((item, i) => {
+                let p1 = getPrice(item.c, item.q, 1);
+                let p5 = getPrice(item.c, item.q, 5);
+                let p10 = getPrice(item.c, item.q, 10);
                 h += `<div class="card">
                     <div><b>${item.n}</b> (x${item.q})<br><small>+${Math.floor(item.p*g.mult)}${item.type=='click'?'/clic':'/s'}</small></div>
-                    <button class="b-btn" ${g.m<item.c?'disabled':''} onclick="buy(${i})">ACHETER : ${item.c.toLocaleString()} €</button>
+                    <div class="buy-row">
+                        <button class="b-btn" ${g.m<p1?'disabled':''} onclick="buy(${i},1)">x1<br>${p1.toLocaleString()}</button>
+                        <button class="b-btn" ${g.m<p5?'disabled':''} onclick="buy(${i},5)">x5<br>${p5.toLocaleString()}</button>
+                        <button class="b-btn" ${g.m<p10?'disabled':''} onclick="buy(${i},10)">x10<br>${p10.toLocaleString()}</button>
+                    </div>
                 </div>`;
             });
             document.getElementById('s').innerHTML = h;
-            localStorage.setItem('CT_V27_FINAL', JSON.stringify({g, it}));
+            localStorage.setItem('CT_V28_BUY', JSON.stringify({g, it}));
         }
 
         function tab(e, id) {
@@ -195,7 +205,7 @@
         function st(t) { g.t=t; document.getElementById('b').className="theme-"+t; }
 
         window.onload = () => {
-            let s = localStorage.getItem('CT_V27_FINAL');
+            let s = localStorage.getItem('CT_V28_BUY');
             if(s) { let d = JSON.parse(s); g = d.g; it = d.it; st(g.t); document.getElementById('ni').value = g.n; }
             draw();
             setInterval(() => {
