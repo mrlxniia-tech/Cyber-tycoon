@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cyber Tycoon V3.9.5</title>
+    <title>Cyber Tycoon V3.9.7</title>
     <style>
         :root { --neon: #00f2ff; --bg: #050508; }
         .theme-red { --neon: #ff4757; }
         .theme-yellow { --neon: #ffd700; }
         .theme-green { --neon: #2ecc71; }
         .theme-flame { --neon: #ff6a00; }
-        .theme-rose-violet { --neon: #ff00ff; }
         .theme-violet { --neon: #9b59b6; }
-        .theme-pink { --neon: #ff69b4; }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
         body { background: #050508; color: white; font-family: 'Courier New', monospace; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
@@ -25,23 +23,24 @@
         #btn { width: 130px; height: 130px; border-radius: 50%; background: #222; border: none; color: var(--neon); font-size: 4rem; font-weight: bold; cursor: pointer; box-shadow: 0 8px 0 #111, 0 0 20px var(--neon); transition: 0.1s; }
         #btn:active { transform: translateY(6px); box-shadow: 0 2px 0 #111, 0 0 30px var(--neon); }
 
-        .float-money { position: absolute; color: var(--neon); font-weight: bold; pointer-events: none; animation: floatUp 0.7s forwards; }
+        .float-money { position: absolute; color: var(--neon); font-weight: bold; pointer-events: none; animation: floatUp 0.7s forwards; z-index: 1000; }
         @keyframes floatUp { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-100px); } }
 
-        #ui { height: 42vh; background: #080810; display: flex; flex-direction: column; border-top: 1px solid #333; }
+        #ui { height: 45vh; background: #080810; display: flex; flex-direction: column; border-top: 1px solid #333; }
         #nav { display: flex; height: 50px; background: #000; overflow-x: auto; flex-shrink: 0; }
-        .t-btn { flex: 1; min-width: 70px; border: none; background: none; color: #444; font-weight: bold; font-size: 0.6rem; text-transform: uppercase; }
+        .t-btn { flex: 1; min-width: 80px; border: none; background: none; color: #444; font-weight: bold; font-size: 0.6rem; text-transform: uppercase; }
         .t-btn.active { color: var(--neon); border-bottom: 3px solid var(--neon); }
 
-        .p { flex: 1; overflow-y: auto; padding: 15px; display: none; }
+        .p { flex: 1; overflow-y: auto; padding: 15px 15px 50px 15px; display: none; }
         .p.active { display: block; }
 
         .card { background: #112; padding: 10px; border-radius: 10px; margin-bottom: 10px; border: 1px solid #222; }
         .buy-row { display: flex; gap: 4px; margin-top: 8px; }
-        .b-btn { flex: 1; background: #000; color: var(--neon); border: 1px solid var(--neon); padding: 6px 0; border-radius: 4px; font-weight: bold; font-size: 0.55rem; cursor: pointer; }
+        .b-btn { flex: 1; background: #000; color: var(--neon); border: 1px solid var(--neon); padding: 7px 0; border-radius: 4px; font-weight: bold; font-size: 0.55rem; cursor: pointer; }
         .b-btn:disabled { opacity: 0.1; color: #333; border-color: #333; }
 
-        .rank-line { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #222; font-size: 0.8rem; }
+        .rank-line { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #222; font-size: 0.75rem; color: #aaa; }
+        .me { color: var(--neon); border-left: 3px solid var(--neon); background: rgba(0, 242, 255, 0.05); }
     </style>
 </head>
 <body id="b">
@@ -49,7 +48,7 @@
     <div id="h">
         <div id="m">0 €</div>
         <div id="income-bar">+0 € /s</div>
-        <div style="font-size:0.5rem; color:#666; margin-top:3px;">SYSTEM: <span id="h-name">Hacker</span> | MULT: x<span id="h-mult">1.0</span></div>
+        <div style="font-size:0.5rem; color:#666; margin-top:3px;">USER: <span id="h-name">Hacker</span> | MULT: x<span id="h-mult">1.0</span></div>
     </div>
 
     <div id="cz">
@@ -59,45 +58,41 @@
     <div id="ui">
         <div id="nav">
             <button class="t-btn active" onclick="tab(event, 's')">SHOP</button>
-            <button class="t-btn" onclick="tab(event, 't')">TOP</button>
-            <button class="t-btn" onclick="tab(event, 'r')">REBIRTH</button>
-            <button class="t-btn" onclick="tab(event, 'c')">SET</button>
+            <button class="t-btn" onclick="tab(event, 't')">CLASSEMENT</button>
+            <button class="t-btn" onclick="tab(event, 'r')">PRESTIGE</button>
+            <button class="t-btn" onclick="tab(event, 'c')">SYSTEME</button>
         </div>
 
         <div id="s" class="p active"></div>
         
         <div id="t" class="p">
-            <h3 style="color:var(--neon); margin-bottom:10px;">CLASSEMENT MONDIAL</h3>
-            <div class="card">
-                <div class="rank-line" style="color:gold"><span>#1 Anonymous</span><span>999.9B €</span></div>
-                <div class="rank-line" style="color:silver"><span>#2 Satoshi</span><span>500.0M €</span></div>
-                <div class="rank-line" style="border-color:var(--neon); color:var(--neon)">
-                    <span>#3 <span id="r-name">Hacker</span> (Toi)</span>
-                    <span id="r-money">0 €</span>
-                </div>
-            </div>
+            <h3 style="color:var(--neon); margin-bottom:10px;">HACKERS MONDIAUX</h3>
+            <div id="leaderboard" class="card" style="padding:0;"></div>
         </div>
 
         <div id="r" class="p">
             <h3>REBIRTH</h3>
             <div class="card" style="border-color:gold; text-align:center;">
-                <p>Requis : <b id="rb-val">50,000 €</b></p>
-                <button id="rb-btn" class="b-btn" style="width:100%; height:40px; margin-top:10px; color:gold; border-color:gold;" onclick="doRebirth()">LOCKED</button>
+                <p>Niveau requis : <b id="rb-val">50,000 €</b></p>
+                <button id="rb-btn" class="b-btn" style="width:100%; height:45px; margin-top:10px; color:gold; border-color:gold;" onclick="doRebirth()">LOCKED</button>
             </div>
         </div>
 
         <div id="c" class="p">
             <h3>RÉGLAGES</h3>
-            <label style="font-size:0.7rem;">PSEUDO :</label>
-            <input type="text" id="ni" maxlength="12" placeholder="Ton pseudo" onchange="updateName(this.value)" style="width:100%; padding:10px; margin:10px 0; background:#000; color:#fff; border:1px solid #333; border-radius:5px;">
-            <label style="font-size:0.7rem;">THÈMES :</label>
+            <input type="text" id="ni" maxlength="12" placeholder="Nom de code" onchange="updateName(this.value)" style="width:100%; padding:10px; margin:10px 0; background:#000; color:#fff; border:1px solid #333; border-radius:5px;">
+            
+            <button class="b-btn" style="width:100%; margin:5px 0;" onclick="playBeep()">TESTER LE SON (BIP)</button>
+            
             <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:8px; margin-top:10px;">
                 <div style="height:30px; background:#00f2ff; border-radius:4px;" onclick="st('default')"></div>
                 <div style="height:30px; background:#ff4757; border-radius:4px;" onclick="st('red')"></div>
                 <div style="height:30px; background:#ffd700; border-radius:4px;" onclick="st('yellow')"></div>
                 <div style="height:30px; background:#2ecc71; border-radius:4px;" onclick="st('green')"></div>
             </div>
-            <button class="b-btn" style="width:100%; margin-top:30px; border-color:red; color:red;" onclick="if(confirm('Reset ?')) { localStorage.clear(); location.reload(); }">RESET DATA</button>
+
+            <a href="mailto:support@cybertycoon.io" class="b-btn" style="display:block; text-align:center; text-decoration:none; margin-top:20px; color:#666; border-color:#333;">CONTACTER LE SUPPORT</a>
+            <button class="b-btn" style="width:100%; margin-top:10px; border-color:red; color:red;" onclick="if(confirm('Tout effacer ?')) { localStorage.clear(); location.reload(); }">WIPE ALL DATA</button>
         </div>
     </div>
 
@@ -109,6 +104,22 @@
             {n:"Script Python", c:800, p:12, q:0, type:"auto"},
             {n:"Proxy Master", c:4500, p:45, q:0, type:"auto"}
         ];
+        let ranks = [
+            {n:"Anonymous", m:1000000000}, {n:"Satoshi", m:500000000}, {n:"AcidBurn", m:1000000}, 
+            {n:"ZeroCool", m:750000}, {n:"CerealKiller", m:500000}, {n:"LordNikon", m:250000}
+        ];
+
+        let audioCtx = null;
+        function playBeep() {
+            try {
+                if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                let o = audioCtx.createOscillator(); let gn = audioCtx.createGain();
+                o.type = 'square'; o.frequency.setValueAtTime(600, audioCtx.currentTime);
+                gn.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                o.connect(gn); gn.connect(audioCtx.destination);
+                o.start(); o.stop(audioCtx.currentTime + 0.05);
+            } catch(e) {}
+        }
 
         function tap(e) {
             let gain = 1; it.forEach(i => { if(i.type==="click") gain += (i.q * i.p); });
@@ -116,7 +127,7 @@
             let f = document.createElement('div'); f.className = 'float-money'; f.innerText = '+' + Math.floor(total) + '€';
             f.style.left = (e.clientX || window.innerWidth/2) + 'px'; f.style.top = (e.clientY || window.innerHeight/2) + 'px';
             document.getElementById('cz').appendChild(f); setTimeout(() => f.remove(), 700);
-            draw();
+            playBeep(); draw();
         }
 
         function getCost(base, amt) {
@@ -135,37 +146,46 @@
             if(g.m >= goal) { g.rb++; g.mult += 1.0; g.m = 0; it.forEach(i => i.q = 0); it[0].c=15; it[1].c=150; it[2].c=800; it[3].c=4500; draw(); }
         }
 
+        function updateName(v) { g.n = v || "Hacker"; draw(); }
+        function st(t) { g.t = t; document.getElementById('b').className = "theme-" + t; }
+
         function draw() {
             let goal = 50000 * Math.pow(5, g.rb);
             let inc = 0; it.forEach(i => { if(i.type==="auto") inc += (i.q * i.p); });
+            
             document.getElementById('m').innerText = Math.floor(g.m).toLocaleString() + " €";
             document.getElementById('income-bar').innerText = "+" + Math.floor(inc * g.mult).toLocaleString() + " € /s";
             document.getElementById('h-name').innerText = g.n;
-            document.getElementById('r-name').innerText = g.n;
-            document.getElementById('r-money').innerText = Math.floor(g.m).toLocaleString() + " €";
             document.getElementById('h-mult').innerText = g.mult.toFixed(1);
             document.getElementById('rb-val').innerText = goal.toLocaleString() + " €";
             document.getElementById('rb-btn').disabled = g.m < goal;
-            document.getElementById('rb-btn').innerText = g.m >= goal ? "PRÊT !" : "LOCKED";
 
+            // Shop
             let h = "";
             it.forEach((item, i) => {
                 let c1 = item.c; let c5 = getCost(item.c, 5); let c10 = getCost(item.c, 10);
-                h += `<div class="card ${g.m >= c1 ? 'can-buy' : ''}">
-                    <b>${item.n}</b> (x${item.q})<br><small>+${Math.floor(item.p*g.mult)}/s</small>
+                h += `<div class="card"><b>${item.n}</b> (x${item.q})<br><small>+${Math.floor(item.p*g.mult)}/s</small>
                     <div class="buy-row">
                         <button class="b-btn" ${g.m < c1 ? 'disabled' : ''} onclick="buy(${i},1)">x1:${c1}</button>
                         <button class="b-btn" ${g.m < c5 ? 'disabled' : ''} onclick="buy(${i},5)">x5</button>
                         <button class="b-btn" ${g.m < c10 ? 'disabled' : ''} onclick="buy(${i},10)">x10</button>
-                    </div>
-                </div>`;
+                    </div></div>`;
             });
             document.getElementById('s').innerHTML = h;
-            localStorage.setItem('CyberSave_V395', JSON.stringify({g, it}));
+
+            // Classement dynamique
+            let fullRanks = [...ranks, {n:g.n, m:g.m}].sort((a,b) => b.m - a.m);
+            let rH = "";
+            fullRanks.forEach((r, idx) => {
+                rH += `<div class="rank-line ${r.n === g.n ? 'me' : ''}">
+                    <span>#${idx+1} ${r.n}</span><span>${Math.floor(r.m).toLocaleString()} €</span>
+                </div>`;
+            });
+            document.getElementById('leaderboard').innerHTML = rH;
+
+            localStorage.setItem('CyberSave_V397', JSON.stringify({g, it}));
         }
 
-        function updateName(v) { g.n = v || "Hacker"; draw(); }
-        function st(t) { g.t = t; document.getElementById('b').className = "theme-" + t; }
         function tab(e, id) {
             document.querySelectorAll('.p').forEach(p=>p.classList.remove('active'));
             document.querySelectorAll('.t-btn').forEach(b=>b.classList.remove('active'));
@@ -173,13 +193,15 @@
         }
 
         window.onload = () => {
-            let saved = localStorage.getItem('CyberSave_V395');
+            let saved = localStorage.getItem('CyberSave_V397');
             if(saved) { let d=JSON.parse(saved); g=d.g; it=d.it; st(g.t); document.getElementById('ni').value=g.n; }
             draw();
             setInterval(() => {
                 let auto = 0; it.forEach(i => { if(i.type==="auto") auto += (i.q * i.p); });
                 g.m += (auto * g.mult) / 10;
                 document.getElementById('m').innerText = Math.floor(g.m).toLocaleString() + " €";
+                // Simulation légère des autres hackers
+                ranks.forEach(r => r.m += Math.random() * 50);
             }, 100);
         };
     </script>
