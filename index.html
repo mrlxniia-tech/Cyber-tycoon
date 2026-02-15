@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cyber Tycoon V3.3</title>
+    <title>Cyber Tycoon V3.5 - Fix</title>
     <style>
         :root { --neon: #00f2ff; --bg: #050508; }
         .theme-red { --neon: #ff4757; }
@@ -30,15 +30,9 @@
         }
         #btn:active { transform: translateY(6px) rotateX(10deg); box-shadow: 0 2px 0 #111, 0 0 20px var(--neon); }
 
-        /* EFFET ARGENT FLOTTANT */
         .float-money {
-            position: absolute;
-            color: var(--neon);
-            font-weight: bold;
-            font-size: 1.2rem;
-            pointer-events: none;
-            z-index: 1000;
-            animation: floatUp 0.8s ease-out forwards;
+            position: absolute; color: var(--neon); font-weight: bold; font-size: 1.2rem;
+            pointer-events: none; z-index: 1000; animation: floatUp 0.8s ease-out forwards;
         }
         @keyframes floatUp {
             0% { opacity: 1; transform: translateY(0); }
@@ -50,16 +44,16 @@
         #goal-text { position: absolute; width: 100%; text-align: center; font-size: 0.6rem; line-height: 16px; color: #fff; font-weight: bold; }
 
         #ui { height: 42vh; background: #080810; display: flex; flex-direction: column; border-top: 1px solid #333; }
-        #nav { display: flex; height: 50px; background: #000; overflow-x: auto; }
-        .t-btn { flex: 1; min-width: 80px; border: none; background: none; color: #444; font-weight: bold; font-size: 0.6rem; }
+        #nav { display: flex; height: 50px; background: #000; }
+        .t-btn { flex: 1; border: none; background: none; color: #444; font-weight: bold; font-size: 0.6rem; }
         .t-btn.active { color: var(--neon); border-bottom: 2px solid var(--neon); }
 
-        .p { flex: 1; overflow-y: scroll; padding: 15px; display: none; }
+        .p { flex: 1; overflow-y: auto; padding: 15px; display: none; }
         .p.active { display: block; }
 
         .card { background: #112; padding: 12px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #222; }
         .buy-row { display: flex; gap: 5px; margin-top: 10px; }
-        .b-btn { flex: 1; background: #000; color: var(--neon); border: 1px solid var(--neon); padding: 7px 2px; border-radius: 4px; font-weight: bold; font-size: 0.6rem; cursor: pointer; }
+        .b-btn { flex: 1; background: #000; color: var(--neon); border: 1px solid var(--neon); padding: 7px 2px; border-radius: 4px; font-weight: bold; font-size: 0.55rem; cursor: pointer; }
         .b-btn:disabled { opacity: 0.1; color: #333; border-color: #333; }
     </style>
 </head>
@@ -71,7 +65,7 @@
     </div>
 
     <div id="cz">
-        <div id="goal-container"><div id="goal-bar"></div><div id="goal-text">NEXT REBIRTH</div></div>
+        <div id="goal-container"><div id="goal-bar"></div><div id="goal-text">CHARGEMENT...</div></div>
         <button id="btn" onclick="tap(event)">$</button>
     </div>
 
@@ -84,35 +78,17 @@
         </div>
 
         <div id="s" class="p active"></div>
-
-        <div id="t" class="p">
-            <h3 style="color:var(--neon)">CLASSEMENT</h3>
-            <div class="card"><span>#1 Anonymous</span><span style="float:right">999.9B €</span></div>
-            <div class="card" style="border-color:var(--neon)"><span id="rank-name">Toi</span><span style="float:right" id="rank-money">0 €</span></div>
-        </div>
-        
-        <div id="r" class="p">
-            <h3>REBIRTH</h3>
-            <div class="card" style="border-color:gold">
-                <p>Besoin : <b id="rb-goal-val">50,000 €</b></p>
-                <button id="rb-btn" class="b-btn" style="width:100%; height:45px; margin-top:10px; color:gold; border-color:gold;" onclick="doRebirth()">LOCKED</button>
-            </div>
-        </div>
-
+        <div id="t" class="p"><h3>TOP HACKERS</h3><div class="card" id="rank-card"></div></div>
+        <div id="r" class="p"><h3>REBIRTH</h3><div id="rb-zone"></div></div>
         <div id="c" class="p">
             <h3>REGLAGES</h3>
-            <input type="text" id="ni" maxlength="12" placeholder="Ton Pseudo" onchange="updateName(this.value)" style="width:100%; padding:10px; margin:10px 0; background:#000; color:#fff; border:1px solid #333;">
-            <div style="display:grid; grid-template-columns: repeat(4,1fr); gap:8px;">
-                <div style="height:35px; background:#00f2ff; border-radius:4px;" onclick="st('default')"></div>
-                <div style="height:35px; background:#ff4757; border-radius:4px;" onclick="st('red')"></div>
-                <div style="height:35px; background:#ffd700; border-radius:4px;" onclick="st('yellow')"></div>
-                <div style="height:35px; background:#ff6a00; border-radius:4px;" onclick="st('flame')"></div>
-            </div>
-            <button class="b-btn" style="width:100%; margin-top:20px; background:gold; color:black; height:40px;" onclick="localStorage.clear(); location.reload();">RESET TOTAL</button>
+            <input type="text" id="ni" maxlength="12" onchange="updateName(this.value)" placeholder="Pseudo" style="width:100%; padding:10px; background:#000; color:#fff; border:1px solid #333; margin-bottom:10px;">
+            <button class="b-btn" style="width:100%; background:red; color:white;" onclick="localStorage.clear(); location.reload();">RESET TOTAL</button>
         </div>
     </div>
 
     <script>
+        // Variables globales robustes
         let g = { m: 0, n: "Hacker", mult: 1.0, rb: 0, t: "default" };
         let it = [
             {n:"Clavier Néon", c:15, p:1, q:0, type:"click"},
@@ -121,45 +97,44 @@
             {n:"Proxy Master", c:4500, p:45, q:0, type:"auto"}
         ];
 
+        // Système de son isolé pour ne pas bloquer le reste
         let audioCtx = null;
-        function playBeep(freq) {
+        function playBeep(f) {
             try {
-                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-                let osc = audioCtx.createOscillator();
-                let gain = audioCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-                osc.connect(gain); gain.connect(audioCtx.destination);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+                if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                let o = audioCtx.createOscillator();
+                let gCtx = audioCtx.createGain();
+                o.type = 'sine'; o.frequency.setValueAtTime(f, audioCtx.currentTime);
+                gCtx.gain.setValueAtTime(0.02, audioCtx.currentTime);
+                o.connect(gCtx); gCtx.connect(audioCtx.destination);
+                o.start(); o.stop(audioCtx.currentTime + 0.1);
             } catch(e) {}
         }
 
         function tap(e) {
-            let p = 1; it.forEach(i => { if(i.type=="click") p += i.q * i.p; });
-            let gain = p * g.mult;
-            g.m += gain;
+            let pPerClick = 1;
+            it.forEach(i => { if(i.type === "click") pPerClick += (i.q * i.p); });
+            
+            let val = pPerClick * g.mult;
+            g.m += val;
+            
+            // On lance le son et l'effet visuel SANS attendre leur fin
             playBeep(400);
-            createFloatMoney(e, gain);
+            createFloat(e, val);
             draw();
         }
 
-        function createFloatMoney(e, val) {
-            let float = document.createElement('div');
-            float.className = 'float-money';
-            float.innerText = '+' + Math.floor(val) + '€';
-            // Positionner au niveau du clic ou au centre si e est absent
+        function createFloat(e, val) {
+            let f = document.createElement('div');
+            f.className = 'float-money';
+            f.innerText = '+' + Math.floor(val) + '€';
             let x = e ? e.clientX : window.innerWidth / 2;
             let y = e ? e.clientY : window.innerHeight / 2;
-            float.style.left = (x - 20) + 'px';
-            float.style.top = (y - 20) + 'px';
-            document.getElementById('cz').appendChild(float);
-            setTimeout(() => float.remove(), 800);
+            f.style.left = (x - 20) + 'px';
+            f.style.top = (y - 20) + 'px';
+            document.getElementById('cz').appendChild(f);
+            setTimeout(() => f.remove(), 800);
         }
-
-        function updateName(val) { g.n = val || "Hacker"; draw(); }
 
         function getPrice(base, amt) {
             let total = 0; let cur = base;
@@ -167,23 +142,14 @@
             return total;
         }
 
-        function buy(i, amt) {
-            let p = getPrice(it[i].c, amt);
-            if(g.m >= p) {
-                g.m -= p; it[i].q += amt;
-                for(let j=0; j<amt; j++) it[i].c = Math.floor(it[i].c * 1.5);
+        function buy(idx, amt) {
+            let cost = getPrice(it[idx].c, amt);
+            if(g.m >= cost) {
+                g.m -= cost;
+                it[idx].q += amt;
+                for(let j=0; j<amt; j++) it[idx].c = Math.floor(it[idx].c * 1.5);
                 playBeep(600);
                 draw();
-            }
-        }
-
-        function doRebirth() {
-            let goal = 50000 * Math.pow(5, g.rb);
-            if(g.m >= goal) {
-                g.rb++; g.mult += 1.0; g.m = 0;
-                it.forEach(i => i.q = 0);
-                it[0].c=15; it[1].c=150; it[2].c=800; it[3].c=4500;
-                playBeep(800); draw();
             }
         }
 
@@ -191,16 +157,14 @@
             let goal = 50000 * Math.pow(5, g.rb);
             document.getElementById('m').innerText = Math.floor(g.m).toLocaleString() + " €";
             document.getElementById('header-name').innerText = g.n;
-            document.getElementById('rank-name').innerText = g.n;
-            document.getElementById('rank-money').innerText = Math.floor(g.m).toLocaleString() + " €";
             document.getElementById('mv').innerText = g.mult.toFixed(1);
-            document.getElementById('rb-goal-val').innerText = goal.toLocaleString() + " €";
             
+            // Update Bar
             let per = Math.min((g.m/goal)*100, 100);
             document.getElementById('goal-bar').style.width = per + "%";
             document.getElementById('goal-text').innerText = "OBJECTIF: " + goal.toLocaleString() + " €";
-            document.getElementById('rb-btn').disabled = g.m < goal;
 
+            // Update Shop
             let h = "";
             it.forEach((item, i) => {
                 let p1 = getPrice(item.c, 1);
@@ -209,6 +173,37 @@
                 h += `<div class="card">
                     <b>${item.n}</b> (x${item.q})<br><small>+${Math.floor(item.p*g.mult)}/s</small>
                     <div class="buy-row">
-                        <button class="b-btn" ${g.m<p1?'disabled':''} onclick="buy(${i},1)">x1:${p1.toLocaleString()}</button>
-                        <button class="b-btn" ${g.m<p5?'disabled':''} onclick="buy(${i},5)">x5:${p5.toLocaleString()}</button>
-                        <button class="b-btn" ${g.m<p10?'disabled':''} onclick="buy(${i},10)">
+                        <button class="b-btn" ${g.m<p1?'disabled':''} onclick="buy(${i},1)">x1:${p1}</button>
+                        <button class="b-btn" ${g.m<p5?'disabled':''} onclick="buy(${i},5)">x5:${p5}</button>
+                        <button class="b-btn" ${g.m<p10?'disabled':''} onclick="buy(${i},10)">x10:${p10}</button>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('s').innerHTML = h;
+            
+            // Save
+            localStorage.setItem('CT_SAVE_V35', JSON.stringify({g, it}));
+        }
+
+        function updateName(v) { g.n = v || "Hacker"; draw(); }
+        function tab(e, id) {
+            document.querySelectorAll('.p').forEach(p=>p.classList.remove('active'));
+            document.querySelectorAll('.t-btn').forEach(b=>b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            e.target.classList.add('active');
+        }
+
+        window.onload = () => {
+            let saved = localStorage.getItem('CT_SAVE_V35');
+            if(saved) { let d=JSON.parse(saved); g=d.g; it=d.it; }
+            draw();
+            setInterval(() => {
+                let auto = 0; it.forEach(i => { if(i.type==="auto") auto += i.q * i.p; });
+                g.m += (auto * g.mult) / 10;
+                document.getElementById('m').innerText = Math.floor(g.m).toLocaleString() + " €";
+            }, 100);
+        };
+    </script>
+</body>
+</html>
+
