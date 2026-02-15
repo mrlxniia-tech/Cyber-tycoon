@@ -3,77 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cyber Tycoon V1.7</title>
+    <title>Cyber Tycoon V1.8</title>
     <style>
-        :root { --neon: #00f2ff; --gold: #ffd700; --bg: #050508; --panel: #111122; }
-        .theme-red { --neon: #ff4757; }
-        .theme-yellow { --neon: #ffd700; }
-        .theme-matrix { --neon: #2ecc71; }
-        .theme-flame { --neon: #ff6a00; }
+        :root { --neon: #00f2ff; --gold: #ffd700; --bg: #050508; --panel: #111122; --btn-grad: linear-gradient(135deg, #00f2ff, #0066ff); }
+        .theme-red { --neon: #ff4757; --btn-grad: linear-gradient(135deg, #ff4757, #ff6b81); }
+        .theme-yellow { --neon: #ffd700; --btn-grad: linear-gradient(135deg, #ffd700, #ffa502); }
+        .theme-matrix { --neon: #2ecc71; --btn-grad: linear-gradient(135deg, #000, #2ecc71); }
+        .theme-flame { --neon: #ff6a00; --btn-grad: linear-gradient(135deg, #ff6a00, #ee0979); }
 
-        body { margin: 0; background: var(--bg); color: white; font-family: sans-serif; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+        body { margin: 0; background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; overflow: hidden; height: 100vh; display: flex; flex-direction: column; transition: 0.3s; }
         
-        #header { padding: 15px; background: var(--panel); border-bottom: 2px solid var(--neon); text-align: center; position: relative; }
-        #money { font-size: 2.2rem; font-weight: bold; color: var(--neon); }
-        #settings-btn { position: absolute; right: 15px; top: 15px; font-size: 1.5rem; cursor: pointer; padding: 5px; }
+        /* HEADER */
+        #header { padding: 15px; background: var(--panel); border-bottom: 2px solid var(--neon); text-align: center; position: relative; z-index: 10; }
+        #money { font-size: 2.2rem; font-weight: bold; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
+        #settings-icon { position: absolute; right: 20px; top: 20px; font-size: 1.5rem; cursor: pointer; }
 
-        /* ZONE DE CLIC PRIORITAIRE */
-        #click-area { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; z-index: 5; }
+        /* ZONE CLIC */
+        #click-zone { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; z-index: 5; }
         #main-btn { 
-            width: 160px; height: 160px; border-radius: 50%; border: 5px solid white;
-            background: linear-gradient(135deg, var(--neon), #0066ff);
-            color: white; font-size: 4rem; font-weight: bold; cursor: pointer;
-            box-shadow: 0 0 30px var(--neon); transition: 0.05s;
-            display: flex; align-items: center; justify-content: center;
+            width: 150px; height: 150px; border-radius: 50%; border: 6px solid rgba(255,255,255,0.2);
+            background: var(--btn-grad); color: white; font-size: 4rem; font-weight: bold; cursor: pointer;
+            box-shadow: 0 0 40px var(--neon); transition: transform 0.05s; display: flex; align-items: center; justify-content: center;
         }
         #main-btn:active { transform: scale(0.9); }
 
-        #tabs { display: flex; background: #0d0d1a; border-top: 1px solid #333; height: 60px; }
-        .tab-btn { flex: 1; border: none; background: none; color: #666; font-weight: bold; font-size: 0.7rem; text-transform: uppercase; cursor: pointer; }
-        .tab-btn.active { color: var(--neon); border-bottom: 3px solid var(--neon); }
+        /* NAVIGATION */
+        #navbar { display: flex; background: #0d0d1a; border-top: 1px solid #333; height: 65px; z-index: 10; }
+        .tab-link { flex: 1; border: none; background: none; color: #555; font-weight: bold; font-size: 0.7rem; text-transform: uppercase; cursor: pointer; }
+        .tab-link.active { color: var(--neon); border-bottom: 3px solid var(--neon); background: rgba(0,242,255,0.05); }
 
-        .panel-container { height: 35vh; overflow-y: auto; background: #080810; padding: 15px; border-top: 1px solid #222; }
-        .panel { display: none; }
-        .panel.active { display: block; }
+        /* CONTENU */
+        #content-area { height: 40vh; overflow-y: auto; background: #080810; padding: 15px; border-top: 1px solid #222; }
+        .page { display: none; flex-direction: column; gap: 10px; }
+        .page.active { display: flex; }
 
-        .card { background: #16162d; padding: 12px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #222; }
-        .buy-btn { background: none; border: 2px solid var(--neon); color: var(--neon); padding: 8px 12px; border-radius: 5px; font-weight: bold; }
-        .buy-btn:disabled { opacity: 0.3; }
+        .card { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; }
+        .buy-btn { background: var(--panel); border: 2px solid var(--neon); color: var(--neon); padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .buy-btn:disabled { opacity: 0.3; cursor: default; }
 
-        .color-box { height: 40px; border-radius: 5px; cursor: pointer; border: 1px solid #fff; }
-        input, textarea { width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        input, textarea { width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 12px; margin: 10px 0; border-radius: 8px; font-family: inherit; }
+        .color-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 10px 0; }
+        .color-opt { height: 40px; border-radius: 8px; cursor: pointer; border: 2px solid #222; }
     </style>
 </head>
 <body id="game-body">
 
     <div id="header">
-        <div id="settings-btn" onclick="openSettings()">⚙️</div>
+        <div id="settings-icon" onclick="openSettings()">⚙️</div>
         <div id="money">0 €</div>
-        <div style="font-size: 0.8rem; color: var(--gold);" id="display-name">Hacker</div>
+        <div style="font-size: 0.7rem; color: var(--gold); margin-top: 5px;">HACKER: <span id="user-display">Hacker</span></div>
     </div>
 
-    <div id="click-area">
-        <button id="main-btn" onclick="handleMainClick()">$</button>
+    <div id="click-zone">
+        <div id="progress-wrap" style="width: 80%; height: 10px; background: #1a1a35; border-radius: 5px; overflow: hidden; border: 1px solid #333;">
+            <div id="progress-bar" style="width: 0%; height: 100%; background: var(--btn-grad); transition: 0.3s;"></div>
+        </div>
+        <button id="main-btn" onclick="doClick()">$</button>
     </div>
 
-    <div id="tabs">
-        <button class="tab-btn active" onclick="switchTab(event, 'upgrades')">Shop</button>
-        <button class="tab-btn" onclick="switchTab(event, 'leaderboard')">Top</button>
-        <button class="tab-btn" onclick="switchTab(event, 'prestige')">Reset</button>
+    <div id="navbar">
+        <button class="tab-link active" onclick="showPage(event, 'shop')">Shop</button>
+        <button class="tab-link" onclick="showPage(event, 'top')">Top</button>
+        <button class="tab-link" onclick="showPage(event, 'reset')">Reset</button>
     </div>
 
-    <div class="panel-container">
-        <div id="upgrades" class="panel active"></div>
-        
-        <div id="leaderboard" class="panel">
-            <h3 style="color:var(--gold)">CLASSEMENT</h3>
-            <div class="card"><span>1. Anonymous_99</span><span>1.2M €</span></div>
-            <div class="card"><span>2. Ghost_User</span><span>850k €</span></div>
+    <div id="content-area">
+        <div id="shop" class="page active"></div>
+
+        <div id="top" class="page">
+            <h3 style="color:var(--gold)">TOP PLAYERS</h3>
+            <div class="card"><span>1. Anonymous_99</span> <span>1.2M €</span></div>
+            <div class="card"><span>2. Ghost_User</span> <span>850k €</span></div>
             <div class="card" style="border-color: var(--neon)">
-                <span id="rank-name">Toi</span>
-                <span id="rank-money">0 €</span>
+                <span id="rank-name">Toi</span> <span id="rank-money">0 €</span>
             </div>
         </div>
 
-        <div id="config" class="panel">
-            <h3 style="color:var(--neon)">PARAM
+        <div id="settings" class="page">
+            <h3 style="color:var(--neon)">PARAMÈTRES</h3>
+            <label style="font-size: 0.8rem;">PSEUDO :</label>
+            <input type="text" id="name-in" maxlength="12" onchange="changeName(this.value)">
+            
+            <div class="card">
+                <span>SONS ZEN</span>
+                <button class="buy-btn" id="snd-btn" onclick="toggleSnd()">ON</button>
+            </div>
+
+            <label style="font-size: 0.8rem; margin-top: 10px; display: block;">THÈMES :</label>
+            <div class="color-grid">
+                <div class="color-opt" style="background:#00f2ff" onclick="applyTheme('default')"></div>
+                <div class="color-opt" style="background:#ff4757" onclick="applyTheme('red')"></div>
+                <div class="color-opt" style="background:#ffd700" onclick="applyTheme('yellow')"></div>
+                <div class="color-opt" style="background:linear-gradient(135deg, #ff6a00, #ee0979)" onclick="applyTheme('flame')"></div>
+                <div class="color-opt" style="background:#2ecc71" onclick="applyTheme('matrix')"></div>
+            </div>
+
+            <label style="font-size: 0.8rem; margin-top: 15px; display: block;">SUPPORT :</label>
+            <textarea id="sup-msg" placeholder="Un bug ou une idée ?"></textarea>
+            <button class="buy-btn" style="width:100%; border-color: var(--gold); color: var(--gold);" onclick="mailSupport()">ENVOYER MAIL</button>
+        </div>
+
+        <div id="reset" class="page">
+            <h3 style="color:var(--gold)">REBIRTH</h3>
+            <div class="card" style="flex-direction: column; gap: 10px; text-align: center;">
+                <p id="rebirth-desc">Atteignez 10 000 € pour reset</p>
+                <button id="rebirth-btn" class="buy-btn" style="width:100%" onclick="doRebirth()">BLOQUÉ</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    let audio = null;
+    let game = { money: 0, mult: 1.0, name: 'Hacker', theme: 'default', sound: true };
+    const items = [
+        { name: 'Clavier Zen', cost: 20, base: 20, power: 1, count: 0 },
+        { name: 'Bot Hack', cost: 300, base: 300, power: 2, count: 0 },
+        { name: 'Proxy Master', cost: 2000, base: 2000, power: 15, count: 0 }
+    ];
+
+    function doClick() {
+        game.money += (1 + (items[0].count * items[0].power)) * game.mult;
+        playTone(440);
+        refresh();
+    }
+
+    function buyItem(i) {
+        if(game.money >= items[i].cost) {
+            game.money -= items[i].cost;
+            items[i].count++;
+            items[i].cost = Math.floor(items[i].base * Math.pow(1.5, items[i].count));
+            playTone(523);
+            refresh();
+        }
+    }
+
+    function playTone(f) {
+        if(!game.sound) return;
+        try {
+            if(!audio) audio = new (window.AudioContext || window.webkitAudioContext)();
+            if(audio.state === 'suspended') audio.resume();
+            const o = audio.createOscillator(); const g = audio.createGain();
+            o.type = 'sine'; o.frequency.setValueAtTime(f, audio.currentTime);
+            g.gain.setValueAtTime(0.05, audio.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.001, audio.currentTime + 0.3);
+            o.connect(g).connect(audio.destination);
+            o.start(); o.stop(audio.currentTime + 0.3);
+        } catch(e) {}
+    }
+
+    function refresh() {
+        document.getElementById('money').innerText = Math.floor(game.money).toLocaleString() + " €";
+        document.getElementById('user-display').innerText = game.name;
