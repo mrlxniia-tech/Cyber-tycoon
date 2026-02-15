@@ -3,207 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cyber Tycoon V3.5 - Fix</title>
+    <title>Cyber Tycoon V3.6 - REBOOT</title>
     <style>
         :root { --neon: #00f2ff; --bg: #050508; }
-        .theme-red { --neon: #ff4757; }
-        .theme-yellow { --neon: #ffd700; }
-        .theme-green { --neon: #2ecc71; }
-        .theme-flame { --neon: #ff6a00; }
-        .theme-rose-violet { --neon: #ff00ff; }
-        .theme-violet { --neon: #9b59b6; }
-        .theme-pink { --neon: #ff69b4; }
-
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
         body { background: #050508; color: white; font-family: 'Courier New', monospace; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
-
-        #h { height: 75px; background: #112; border-bottom: 2px solid var(--neon); display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--neon); z-index: 100; }
-        #m { font-size: 1.6rem; font-weight: bold; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
-
-        #cz { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #000; gap: 15px; position: relative; perspective: 1000px; }
-        
-        #btn { 
-            width: 130px; height: 130px; border-radius: 50%; background: #222; border: none;
-            color: var(--neon); font-size: 4rem; font-weight: bold; cursor: pointer;
-            box-shadow: 0 8px 0 #111, 0 15px 20px rgba(0,0,0,0.5), 0 0 15px var(--neon);
-            transition: 0.1s; transform: rotateX(10deg); z-index: 10;
-        }
-        #btn:active { transform: translateY(6px) rotateX(10deg); box-shadow: 0 2px 0 #111, 0 0 20px var(--neon); }
-
-        .float-money {
-            position: absolute; color: var(--neon); font-weight: bold; font-size: 1.2rem;
-            pointer-events: none; z-index: 1000; animation: floatUp 0.8s ease-out forwards;
-        }
-        @keyframes floatUp {
-            0% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(-120px); }
-        }
-
-        #goal-container { width: 85%; background: #112; height: 16px; border-radius: 8px; border: 1px solid #333; overflow: hidden; position: relative; }
-        #goal-bar { height: 100%; background: var(--neon); width: 0%; transition: 0.3s; }
-        #goal-text { position: absolute; width: 100%; text-align: center; font-size: 0.6rem; line-height: 16px; color: #fff; font-weight: bold; }
-
-        #ui { height: 42vh; background: #080810; display: flex; flex-direction: column; border-top: 1px solid #333; }
+        #h { height: 70px; background: #112; border-bottom: 2px solid var(--neon); display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--neon); }
+        #m { font-size: 1.8rem; font-weight: bold; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
+        #cz { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; background: radial-gradient(circle, #111 0%, #000 100%); }
+        #btn { width: 140px; height: 140px; border-radius: 50%; background: #222; border: none; color: var(--neon); font-size: 4rem; font-weight: bold; cursor: pointer; box-shadow: 0 8px 0 #111, 0 0 20px var(--neon); transition: 0.1s; }
+        #btn:active { transform: translateY(6px); box-shadow: 0 2px 0 #111, 0 0 30px var(--neon); }
+        .float-money { position: absolute; color: var(--neon); font-weight: bold; pointer-events: none; animation: floatUp 0.7s forwards; z-index: 1000; }
+        @keyframes floatUp { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-100px); } }
+        #ui { height: 40vh; background: #080810; display: flex; flex-direction: column; border-top: 1px solid #333; }
         #nav { display: flex; height: 50px; background: #000; }
-        .t-btn { flex: 1; border: none; background: none; color: #444; font-weight: bold; font-size: 0.6rem; }
+        .t-btn { flex: 1; border: none; background: none; color: #444; font-weight: bold; cursor: pointer; font-size: 0.7rem; }
         .t-btn.active { color: var(--neon); border-bottom: 2px solid var(--neon); }
-
         .p { flex: 1; overflow-y: auto; padding: 15px; display: none; }
         .p.active { display: block; }
-
-        .card { background: #112; padding: 12px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #222; }
-        .buy-row { display: flex; gap: 5px; margin-top: 10px; }
-        .b-btn { flex: 1; background: #000; color: var(--neon); border: 1px solid var(--neon); padding: 7px 2px; border-radius: 4px; font-weight: bold; font-size: 0.55rem; cursor: pointer; }
-        .b-btn:disabled { opacity: 0.1; color: #333; border-color: #333; }
+        .card { background: #112; padding: 10px; border-radius: 10px; margin-bottom: 8px; border: 1px solid #222; }
+        .buy-row { display: flex; gap: 5px; margin-top: 5px; }
+        .b-btn { flex: 1; background: #000; color: var(--neon); border: 1px solid var(--neon); padding: 8px 2px; border-radius: 4px; font-size: 0.6rem; font-weight: bold; cursor: pointer; }
+        .b-btn:disabled { opacity: 0.1; }
     </style>
 </head>
-<body id="b">
+<body>
 
-    <div id="h">
-        <div id="m">0 €</div>
-        <div style="font-size:0.6rem; color:#aaa"><span id="header-name">Hacker</span> | MULT: x<span id="mv">1.0</span></div>
+<div id="h">
+    <div id="m">0 €</div>
+    <div style="font-size:0.6rem; color:#666">SYSTEM: <span id="sys-name">Hacker</span> | MULT: x<span id="sys-mult">1.0</span></div>
+</div>
+
+<div id="cz">
+    <button id="btn" onclick="tap(event)">$</button>
+</div>
+
+<div id="ui">
+    <div id="nav">
+        <button class="t-btn active" onclick="tab(event, 's')">SHOP</button>
+        <button class="t-btn" onclick="tab(event, 'c')">PSEUDO</button>
     </div>
-
-    <div id="cz">
-        <div id="goal-container"><div id="goal-bar"></div><div id="goal-text">CHARGEMENT...</div></div>
-        <button id="btn" onclick="tap(event)">$</button>
+    <div id="s" class="p active"></div>
+    <div id="c" class="p">
+        <input type="text" id="nameInput" placeholder="Ton Pseudo" style="width:100%; padding:10px; background:#000; color:#fff; border:1px solid #333;">
+        <button class="b-btn" style="width:100%; margin-top:10px;" onclick="saveName()">VALIDER NOM</button>
+        <button class="b-btn" style="width:100%; margin-top:40px; border-color:red; color:red;" onclick="localStorage.clear(); location.reload();">RESET TOTAL</button>
     </div>
+</div>
 
-    <div id="ui">
-        <div id="nav">
-            <button class="t-btn active" onclick="tab(event, 's')">SHOP</button>
-            <button class="t-btn" onclick="tab(event, 't')">TOP</button>
-            <button class="t-btn" onclick="tab(event, 'r')">PRESTIGE</button>
-            <button class="t-btn" onclick="tab(event, 'c')">SET</button>
-        </div>
+<script>
+    // 1. Initialisation des données
+    let g = { m: 0, n: "Hacker", mult: 1.0 };
+    let it = [
+        {n:"Clavier Néon", c:15, p:1, q:0, type:"click"},
+        {n:"Bot Discord", c:150, p:3, q:0, type:"auto"},
+        {n:"Serveur Proxy", c:800, p:12, q:0, type:"auto"}
+    ];
 
-        <div id="s" class="p active"></div>
-        <div id="t" class="p"><h3>TOP HACKERS</h3><div class="card" id="rank-card"></div></div>
-        <div id="r" class="p"><h3>REBIRTH</h3><div id="rb-zone"></div></div>
-        <div id="c" class="p">
-            <h3>REGLAGES</h3>
-            <input type="text" id="ni" maxlength="12" onchange="updateName(this.value)" placeholder="Pseudo" style="width:100%; padding:10px; background:#000; color:#fff; border:1px solid #333; margin-bottom:10px;">
-            <button class="b-btn" style="width:100%; background:red; color:white;" onclick="localStorage.clear(); location.reload();">RESET TOTAL</button>
-        </div>
-    </div>
+    // 2. Moteur de Son (Isolé)
+    function playBeep() {
+        try {
+            let ctx = new (window.AudioContext || window.webkitAudioContext)();
+            let o = ctx.createOscillator();
+            let gNode = ctx.createGain();
+            o.type = 'sine'; o.frequency.setValueAtTime(440, ctx.currentTime);
+            gNode.gain.setValueAtTime(0.03, ctx.currentTime);
+            o.connect(gNode); gNode.connect(ctx.destination);
+            o.start(); o.stop(ctx.currentTime + 0.1);
+        } catch(e) {}
+    }
 
-    <script>
-        // Variables globales robustes
-        let g = { m: 0, n: "Hacker", mult: 1.0, rb: 0, t: "default" };
-        let it = [
-            {n:"Clavier Néon", c:15, p:1, q:0, type:"click"},
-            {n:"Bot Discord", c:150, p:3, q:0, type:"auto"},
-            {n:"Script Python", c:800, p:12, q:0, type:"auto"},
-            {n:"Proxy Master", c:4500, p:45, q:0, type:"auto"}
-        ];
+    // 3. Moteur de Clic (Argent + Visuel)
+    function tap(e) {
+        let gain = 1;
+        it.forEach(i => { if(i.type === "click") gain += (i.q * i.p); });
+        let totalGain = gain * g.mult;
+        
+        g.m += totalGain;
+        
+        // Effet flottant
+        let f = document.createElement('div');
+        f.className = 'float-money';
+        f.innerText = '+' + Math.floor(totalGain) + '€';
+        f.style.left = (e.clientX || window.innerWidth/2) + 'px';
+        f.style.top = (e.clientY || window.innerHeight/2) + 'px';
+        document.getElementById('cz').appendChild(f);
+        setTimeout(() => f.remove(), 700);
 
-        // Système de son isolé pour ne pas bloquer le reste
-        let audioCtx = null;
-        function playBeep(f) {
-            try {
-                if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                let o = audioCtx.createOscillator();
-                let gCtx = audioCtx.createGain();
-                o.type = 'sine'; o.frequency.setValueAtTime(f, audioCtx.currentTime);
-                gCtx.gain.setValueAtTime(0.02, audioCtx.currentTime);
-                o.connect(gCtx); gCtx.connect(audioCtx.destination);
-                o.start(); o.stop(audioCtx.currentTime + 0.1);
-            } catch(e) {}
+        playBeep();
+        updateUI();
+    }
+
+    // 4. Moteur d'Achat
+    function buy(idx, amt) {
+        let cost = 0;
+        let tempPrice = it[idx].c;
+        for(let i=0; i<amt; i++) {
+            cost += tempPrice;
+            tempPrice = Math.floor(tempPrice * 1.5);
         }
 
-        function tap(e) {
-            let pPerClick = 1;
-            it.forEach(i => { if(i.type === "click") pPerClick += (i.q * i.p); });
-            
-            let val = pPerClick * g.mult;
-            g.m += val;
-            
-            // On lance le son et l'effet visuel SANS attendre leur fin
-            playBeep(400);
-            createFloat(e, val);
-            draw();
+        if(g.m >= cost) {
+            g.m -= cost;
+            it[idx].q += amt;
+            it[idx].c = tempPrice;
+            updateUI();
         }
+    }
 
-        function createFloat(e, val) {
-            let f = document.createElement('div');
-            f.className = 'float-money';
-            f.innerText = '+' + Math.floor(val) + '€';
-            let x = e ? e.clientX : window.innerWidth / 2;
-            let y = e ? e.clientY : window.innerHeight / 2;
-            f.style.left = (x - 20) + 'px';
-            f.style.top = (y - 20) + 'px';
-            document.getElementById('cz').appendChild(f);
-            setTimeout(() => f.remove(), 800);
+    // 5. Mise à jour de l'interface
+    function updateUI() {
+        document.getElementById('m').innerText = Math.floor(g.m).toLocaleString() + " €";
+        document.getElementById('sys-name').innerText = g.n;
+        document.getElementById('sys-mult').innerText = g.mult.toFixed(1);
+
+        let html = "";
+        it.forEach((item, i) => {
+            let p1 = item.c;
+            html += `<div class="card">
+                <b>${item.n}</b> (x${item.q})<br><small>+${item.p * g.mult}/s</small>
+                <div class="buy-row">
+                    <button class="b-btn" ${g.m < p1 ? 'disabled' : ''} onclick="buy(${i}, 1)">ACHETER x1 (${p1}€)</button>
+                </div>
+            </div>`;
+        });
+        document.getElementById('s').innerHTML = html;
+        localStorage.setItem('CyberSave_V36', JSON.stringify({g, it}));
+    }
+
+    function saveName() {
+        let val = document.getElementById('nameInput').value;
+        if(val) { g.n = val; updateUI(); }
+    }
+
+    function tab(e, id) {
+        document.querySelectorAll('.p').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.t-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        e.target.classList.add('active');
+    }
+
+    // 6. Démarrage
+    window.onload = () => {
+        let saved = localStorage.getItem('CyberSave_V36');
+        if(saved) {
+            let d = JSON.parse(saved);
+            g = d.g; it = d.it;
         }
-
-        function getPrice(base, amt) {
-            let total = 0; let cur = base;
-            for(let i=0; i<amt; i++) { total += cur; cur = Math.floor(cur * 1.5); }
-            return total;
-        }
-
-        function buy(idx, amt) {
-            let cost = getPrice(it[idx].c, amt);
-            if(g.m >= cost) {
-                g.m -= cost;
-                it[idx].q += amt;
-                for(let j=0; j<amt; j++) it[idx].c = Math.floor(it[idx].c * 1.5);
-                playBeep(600);
-                draw();
-            }
-        }
-
-        function draw() {
-            let goal = 50000 * Math.pow(5, g.rb);
+        updateUI();
+        // Revenu passif
+        setInterval(() => {
+            let auto = 0;
+            it.forEach(i => { if(i.type === "auto") auto += (i.q * i.p); });
+            g.m += (auto * g.mult) / 10;
             document.getElementById('m').innerText = Math.floor(g.m).toLocaleString() + " €";
-            document.getElementById('header-name').innerText = g.n;
-            document.getElementById('mv').innerText = g.mult.toFixed(1);
-            
-            // Update Bar
-            let per = Math.min((g.m/goal)*100, 100);
-            document.getElementById('goal-bar').style.width = per + "%";
-            document.getElementById('goal-text').innerText = "OBJECTIF: " + goal.toLocaleString() + " €";
-
-            // Update Shop
-            let h = "";
-            it.forEach((item, i) => {
-                let p1 = getPrice(item.c, 1);
-                let p5 = getPrice(item.c, 5);
-                let p10 = getPrice(item.c, 10);
-                h += `<div class="card">
-                    <b>${item.n}</b> (x${item.q})<br><small>+${Math.floor(item.p*g.mult)}/s</small>
-                    <div class="buy-row">
-                        <button class="b-btn" ${g.m<p1?'disabled':''} onclick="buy(${i},1)">x1:${p1}</button>
-                        <button class="b-btn" ${g.m<p5?'disabled':''} onclick="buy(${i},5)">x5:${p5}</button>
-                        <button class="b-btn" ${g.m<p10?'disabled':''} onclick="buy(${i},10)">x10:${p10}</button>
-                    </div>
-                </div>`;
-            });
-            document.getElementById('s').innerHTML = h;
-            
-            // Save
-            localStorage.setItem('CT_SAVE_V35', JSON.stringify({g, it}));
-        }
-
-        function updateName(v) { g.n = v || "Hacker"; draw(); }
-        function tab(e, id) {
-            document.querySelectorAll('.p').forEach(p=>p.classList.remove('active'));
-            document.querySelectorAll('.t-btn').forEach(b=>b.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            e.target.classList.add('active');
-        }
-
-        window.onload = () => {
-            let saved = localStorage.getItem('CT_SAVE_V35');
-            if(saved) { let d=JSON.parse(saved); g=d.g; it=d.it; }
-            draw();
-            setInterval(() => {
-                let auto = 0; it.forEach(i => { if(i.type==="auto") auto += i.q * i.p; });
-                g.m += (auto * g.mult) / 10;
-                document.getElementById('m').innerText = Math.floor(g.m).toLocaleString() + " €";
-            }, 100);
-        };
-    </script>
+        }, 100);
+    };
+</script>
 </body>
 </html>
 
