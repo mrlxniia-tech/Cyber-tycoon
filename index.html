@@ -3,160 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Cyber Tycoon Absolute</title>
+    <title>Cyber Tycoon Quest Pro</title>
     <style>
-        :root { --neon: #00f2ff; --gold: #ffd700; --bg: #050508; --panel: #0d0d1a; --event: #ff4757; }
-        .theme-green { --neon: #2ecc71; --gold: #f1c40f; }
-        .theme-pink { --neon: #ff00ff; --gold: #00f2ff; }
-
+        :root { --neon: #00f2ff; --gold: #ffd700; --bg: #050508; --panel: #111122; --btn-grad: linear-gradient(135deg, #00f2ff, #0066ff); }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-        body { margin: 0; background: var(--bg); color: white; font-family: -apple-system, sans-serif; user-select: none; touch-action: none; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
+        body { margin: 0; background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; user-select: none; touch-action: none; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
         
-        #header { text-align: center; padding: env(safe-area-inset-top) 15px 15px; background: var(--panel); border-bottom: 2px solid var(--neon); z-index: 10; }
+        #header { text-align: center; padding: 15px; background: var(--panel); border-bottom: 2px solid var(--neon); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         #money { font-size: 2.2rem; font-weight: bold; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
         
-        #click-area { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle, #101025 0%, #050508 100%); gap: 15px; position: relative; }
-        #prestige-container { width: 70%; height: 12px; background: #1a1a35; border-radius: 20px; overflow: hidden; border: 1px solid #333; position: relative; }
-        #prestige-bar { width: 0%; height: 100%; background: linear-gradient(90deg, var(--neon), var(--gold)); transition: width 0.3s linear; }
+        #click-area { height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle, #101025 0%, #050508 100%); gap: 15px; position: relative; }
+        #prestige-container { width: 75%; height: 12px; background: #1a1a35; border-radius: 10px; overflow: hidden; border: 1px solid #333; }
+        #prestige-bar { width: 0%; height: 100%; background: var(--btn-grad); transition: 0.3s; box-shadow: 0 0 10px var(--neon); }
 
-        #main-btn { width: 130px; height: 130px; background: radial-gradient(circle, var(--neon), #0066ff); border-radius: 50%; border: 5px solid rgba(255,255,255,0.2); box-shadow: 0 0 40px var(--neon); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 4rem; font-weight: bold; color: white; transition: transform 0.05s; }
-        #main-btn:active { transform: scale(0.9); }
+        #main-btn { width: 115px; height: 115px; background: var(--btn-grad); border-radius: 50%; border: 5px solid rgba(255,255,255,0.2); box-shadow: 0 0 35px var(--neon); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: white; transition: transform 0.05s; z-index: 10; }
+        #main-btn:active { transform: scale(0.85); }
 
-        #tabs { display: flex; background: #0d0d1a; border-top: 1px solid #222; padding-bottom: env(safe-area-inset-bottom); }
-        .tab-btn { flex: 1; padding: 18px; border: none; color: #555; background: none; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
-        .tab-btn.active { color: var(--neon); border-top: 3px solid var(--neon); background: rgba(0,242,255,0.05); }
+        #tabs { display: flex; background: #0d0d1a; border-top: 1px solid #222; }
+        .tab-btn { flex: 1; padding: 18px; border: none; color: #555; background: none; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        .tab-btn.active { color: var(--neon); border-bottom: 3px solid var(--neon); background: rgba(0, 242, 255, 0.05); }
 
-        .panel-container { flex: 2; overflow-y: auto; padding: 15px; }
-        .panel { display: none; flex-direction: column; gap: 10px; padding-bottom: 50px; }
+        .panel-container { flex: 1; overflow-y: auto; padding: 15px; background: #080810; }
+        .panel { display: none; flex-direction: column; gap: 12px; padding-bottom: 50px; }
         .panel.active { display: flex; }
         
-        .card { background: rgba(255, 255, 255, 0.03); padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); }
-        .buy-btn { background: var(--panel); border: 2px solid var(--neon); color: var(--neon); padding: 10px 15px; border-radius: 8px; font-weight: bold; min-width: 90px; }
-        .buy-btn:disabled { opacity: 0.2; filter: grayscale(1); }
+        .card { background: rgba(255, 255, 255, 0.04); padding: 15px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.08); }
+        .quest-card { border-left: 5px solid var(--gold); background: rgba(255, 215, 0, 0.05); }
+        .impossible { border-left: 5px solid #ff4757; background: rgba(255, 71, 87, 0.1); animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(255, 71, 87, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); } }
 
-        .floating-text { position: absolute; font-weight: bold; pointer-events: none; animation: floatUp 0.6s ease-out forwards; z-index: 100; font-size: 1.8rem; text-shadow: 0 0 5px black; }
-        @keyframes floatUp { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-100px); opacity: 0; } }
+        .buy-btn { background: var(--panel); border: 2px solid var(--neon); color: var(--neon); padding: 10px 16px; border-radius: 8px; font-weight: bold; font-size: 0.8rem; }
+        .buy-btn:disabled { opacity: 0.2; border-color: #444; color: #444; }
+        .reward-btn { border-color: var(--gold); color: var(--gold); }
     </style>
 </head>
-<body oncontextmenu="return false;">
+<body id="game-body">
 
     <div id="header">
         <div id="money">0 €</div>
-        <div style="font-size: 0.8rem; margin-top: 5px; opacity: 0.9;">
-            <span id="mps" style="color: var(--gold);">0 €/s</span> | Mult: <b id="mult-display">x1.00</b>
-        </div>
+        <div style="font-size: 0.8rem; margin-top: 5px; color: var(--gold);">SÉCURITÉ : <span id="mps">0.0</span> bits/s</div>
     </div>
 
     <div id="click-area">
-        <div style="font-size: 0.7rem; color: var(--gold); font-weight: bold; letter-spacing: 1px;">OBJECTIF REBIRTH : <span id="r-goal">5 000</span> €</div>
+        <div style="font-size: 0.65rem; color: #888; font-weight: bold;">OBJECTIF SYSTÈME : <span id="goal-text">10 000</span> €</div>
         <div id="prestige-container"><div id="prestige-bar"></div></div>
         <button id="main-btn" onclick="handleMainClick(event)">$</button>
     </div>
 
     <div id="tabs">
         <button class="tab-btn active" onclick="showTab(event, 'upgrades')">Shop</button>
-        <button class="tab-btn" onclick="showTab(event, 'prestige')">Reset</button>
-        <button class="tab-btn" onclick="showTab(event, 'config')">Style</button>
+        <button class="tab-btn" onclick="showTab(event, 'quests')">Missions</button>
+        <button class="tab-btn" onclick="showTab(event, 'prestige')">Rebirth</button>
     </div>
 
     <div class="panel-container">
         <div id="upgrades" class="panel active"></div>
-        
-        <div id="prestige" class="panel">
-            <div style="text-align: center; padding: 25px; border: 2px solid var(--gold); border-radius: 20px; background: rgba(255,215,0,0.02);">
-                <h2 style="color: var(--gold); margin: 0;">PRESTIGE #<span id="p-count">0</span></h2>
-                <p>Gain au Reset : <br><b id="p-bonus" style="color: var(--neon); font-size: 2.2rem;">+0.00</b></p>
-                <button id="rebirth-btn" class="buy-btn" style="width: 100%; padding: 18px; font-size: 1rem;" onclick="doRebirth()">LOCKED</button>
-            </div>
+        <div id="quests" class="panel">
+            <h3 style="color: var(--gold); margin: 0 0 15px 0;">MISSIONS EN COURS</h3>
+            <div id="quest-list"></div>
         </div>
-
-        <div id="config" class="panel">
-            <p style="font-size: 0.8rem; color: var(--gold);">SUPPORT TECHNIQUE : Mrlxniia@gmail.com</p>
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-                <button onclick="setTheme('default')" style="height:40px; background:#00f2ff; border-radius:8px"></button>
-                <button onclick="setTheme('green')" style="height:40px; background:#2ecc71; border-radius:8px"></button>
-                <button onclick="setTheme('pink')" style="height:40px; background:#ff00ff; border-radius:8px"></button>
+        <div id="prestige" class="panel">
+            <div style="text-align: center; padding: 25px; border: 2px solid var(--gold); border-radius: 20px; background: rgba(255,215,0,0.03);">
+                <h2 style="color: var(--gold);">SÉCURITÉ RÉSEAU</h2>
+                <p>Boost Multiplicateur : <b style="color:var(--neon)">x<span id="mult-val">1.00</span></b></p>
+                <button id="rebirth-btn" class="buy-btn" style="width: 100%; padding: 18px;" onclick="doRebirth()">LOCKED</button>
             </div>
         </div>
     </div>
 
 <script>
-    let state = { money: 0, multiplier: 1.0, rebirths: 0, goal: 5000, theme: 'default' };
-    const items = [
-        { name: 'Clavier Pro', cost: 15, base: 15, power: 1, type: 'click', count: 0 },
-        { name: 'Bot Discord', cost: 150, base: 150, power: 6, type: 'auto', count: 0 },
-        { name: 'Mineur GPU', cost: 1200, base: 1200, power: 35, type: 'auto', count: 0 },
-        { name: 'Serveur Cloud', cost: 8500, base: 8500, power: 180, type: 'auto', count: 0 },
-        { name: 'IA Quantique', cost: 50000, base: 50000, power: 950, type: 'auto', count: 0 }
+    let audioCtx = null;
+    let state = { money: 0, multiplier: 1.0, goal: 10000, totalClicks: 0, completedQuests: [] };
+    
+    const upgs = [
+        { name: 'Clavier Mécanique', cost: 20, base: 20, power: 1, type: 'click', count: 0 },
+        { name: 'Script d\'Auto-clic', cost: 300, base: 300, power: 2, type: 'auto', count: 0 },
+        { name: 'Exploit SQL', cost: 2000, base: 2000, power: 15, type: 'auto', count: 0 },
+        { name: 'Serveur Mainframe', cost: 12000, base: 12000, power: 65, type: 'auto', count: 0 }
     ];
 
+    const questData = [
+        { id: 0, desc: "Novice : 100 clics", goal: 100, reward: 800, type: 'clicks' },
+        { id: 1, desc: "Hack : 10 Scripts", goal: 10, reward: 3000, type: 'item', target: 1 },
+        { id: 2, desc: "IMPOSSIBLE : 1000 clics + 50k €", goal: 1000, moneyGoal: 50000, reward: 25000, type: 'impossible' }
+    ];
+
+    function playSound(freq, type, duration) {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+        osc.connect(gain).connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+    }
+
     function handleMainClick(e) {
-        let gain = (1 + (items[0].count * items[0].power)) * state.multiplier;
+        let gain = (1 + (upgs[0].count * upgs[0].power)) * state.multiplier;
         state.money += gain;
-        createFloatingText(e.clientX, e.clientY, `+${Math.floor(gain)}`);
+        state.totalClicks++;
+        playSound(200 + Math.random() * 100, 'square', 0.1);
         updateUI();
     }
 
     function tick() {
-        let autoGain = 0;
-        items.forEach(i => { if(i.type === 'auto') autoGain += (i.count * i.power); });
-        state.money += (autoGain * state.multiplier) / 10;
+        let auto = 0;
+        for(let i=1; i<upgs.length; i++) auto += upgs[i].count * upgs[i].power;
+        state.money += (auto * state.multiplier) / 10;
         updateUI();
     }
 
     function updateUI() {
         document.getElementById('money').innerText = Math.floor(state.money).toLocaleString() + " €";
-        document.getElementById('mult-display').innerText = "x" + state.multiplier.toFixed(2);
-        document.getElementById('r-goal').innerText = Math.floor(state.goal).toLocaleString();
-        document.getElementById('p-count').innerText = state.rebirths;
-        
-        let autoGain = 0;
-        items.forEach(i => { if(i.type === 'auto') autoGain += (i.count * i.power); });
-        document.getElementById('mps').innerText = `${(autoGain * state.multiplier).toFixed(1)} €/s`;
-        
-        const prog = Math.min((state.money / state.goal) * 100, 100);
-        document.getElementById('prestige-bar').style.width = prog + "%";
-        
-        const rb = document.getElementById('rebirth-btn');
-        rb.disabled = state.money < state.goal;
-        rb.innerText = state.money < state.goal ? "BLOQUÉ" : "REBIRTH MAINTENANT !";
-        document.getElementById('p-bonus').innerText = "+" + Math.sqrt(state.money / state.goal).toFixed(2);
-        
-        items.forEach((it, i) => {
-            const btn = document.getElementById('it-'+i);
-            if(btn) btn.disabled = state.money < it.cost;
-        });
+        document.getElementById('goal-text').innerText = state.goal.toLocaleString();
+        document.getElementById('mult-val').innerText = state.multiplier.toFixed(2);
+        let auto = 0;
+        for(let i=1; i<upgs.length; i++) auto += upgs[i].count * upgs[i].power;
+        document.getElementById('mps').innerText = (auto * state.multiplier).toFixed(1);
+        document.getElementById('prestige-bar').style.width = Math.min((state.money / state.goal) * 100, 100) + "%";
+        document.getElementById('rebirth-btn').disabled = state.money < state.goal;
+        upgs.forEach((u, i) => { const b = document.getElementById('u-'+i); if(b) b.disabled = state.money < u.cost; });
+        renderQuests();
     }
 
-    function buyItem(i) {
-        if(state.money >= items[i].cost) {
-            state.money -= items[i].cost;
-            items[i].count++;
-            items[i].cost = Math.floor(items[i].base * Math.pow(1.35, items[i].count));
-            renderShop();
-            save();
+    function buyUpg(i) {
+        if(state.money >= upgs[i].cost) {
+            state.money -= upgs[i].cost;
+            upgs[i].count++;
+            upgs[i].cost = Math.floor(upgs[i].base * Math.pow(1.6, upgs[i].count));
+            playSound(400 + (i * 100), 'triangle', 0.2);
+            renderShop(); save();
         }
     }
 
-    function doRebirth() {
-        if(state.money < state.goal) return;
-        state.multiplier += Math.sqrt(state.money / state.goal);
-        state.money = 0;
-        state.rebirths++;
-        state.goal *= 1.8; // Augmentation de la difficulté à chaque Rebirth
-        items.forEach(it => { it.count = 0; it.cost = it.base; });
-        renderShop();
-        save();
-        showTab(null, 'upgrades');
+    function renderQuests() {
+        const list = document.getElementById('quest-list');
+        list.innerHTML = questData.map(q => {
+            const isDone = state.completedQuests.includes(q.id);
+            let current = 0, progressTxt = "";
+            if(q.type === 'clicks') { current = state.totalClicks; progressTxt = `${current}/${q.goal}`; }
+            if(q.type === 'item') { current = upgs[q.target].count; progressTxt = `${current}/${q.goal}`; }
+            if(q.type === 'impossible') { 
+                progressTxt = `Clicks: ${state.totalClicks}/${q.goal} | Cash: ${Math.floor(state.money/1000)}k/${q.moneyGoal/1000}k`;
+                current = (state.totalClicks >= q.goal && state.money >= q.moneyGoal) ? q.goal : 0;
+            }
+            const canClaim = !isDone && (current >= q.goal || (q.type==='impossible' && state.totalClicks >= q.goal && state.money >= q.moneyGoal));
+            return `
+                <div class="card quest-card ${q.type==='impossible'?'impossible':''}" style="opacity: ${isDone ? 0.4 : 1}">
+                    <div style="flex:1">
+                        <b>${q.desc}</b><br><small style="color:var(--gold)">+${q.reward.toLocaleString()} €</small>
+                    </div>
+                    <button class="buy-btn reward-btn" ${!canClaim ? 'disabled' : ''} onclick="claimQuest(${q.id})">
+                        ${isDone ? 'COMPLÉTÉ' : (canClaim ? 'VALIDER' : progressTxt)}
+                    </button>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function claimQuest(id) {
+        state.money += questData[id].reward;
+        state.completedQuests.push(id);
+        playSound(800, 'sine', 0.5);
+        updateUI(); save();
     }
 
     function renderShop() {
-        document.getElementById('upgrades').innerHTML = items.map((it, i) => `
+        document.getElementById('upgrades').innerHTML = upgs.map((u, i) => `
             <div class="card">
-                <div><b>${it.name} (x${it.count})</b><br><small>${it.cost.toLocaleString()} €</small></div>
-                <button class="buy-btn" id="it-${i}" onclick="buyItem(${i})">ACHETER</button>
+                <div><b>${u.name} (x${u.count})</b><br><small>${u.cost.toLocaleString()} €</small></div>
+                <button class="buy-btn" id="u-${i}" onclick="buyUpg(${i})">BUY</button>
             </div>
         `).join('');
+    }
+
+    function doRebirth() {
+        state.multiplier += 1.2; state.money = 0; state.totalClicks = 0; state.completedQuests = [];
+        state.goal = Math.floor(state.goal * 3);
+        upgs.forEach(u => { u.count = 0; u.cost = u.base; });
+        playSound(100, 'sawtooth', 1);
+        renderShop(); save(); showTab(null, 'upgrades');
     }
 
     function showTab(e, id) {
@@ -164,30 +194,15 @@
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         if(e) e.target.classList.add('active');
+        playSound(600, 'sine', 0.05);
     }
 
-    function setTheme(t) {
-        state.theme = t;
-        document.body.className = t === 'default' ? '' : 'theme-' + t;
-        save();
-    }
-
-    function createFloatingText(x, y, txt) {
-        const el = document.createElement('div'); el.className = 'floating-text';
-        el.style.left = (x || window.innerWidth/2) + 'px'; el.style.top = (y || window.innerHeight/2) + 'px';
-        el.style.color = 'var(--neon)'; el.innerText = txt;
-        document.body.appendChild(el);
-        setTimeout(() => el.remove(), 600);
-    }
-
-    function save() { localStorage.setItem('CT_ABSOLUTE_SAVE', JSON.stringify({ state, items })); }
+    function save() { localStorage.setItem('cyberQuestSoundSave', JSON.stringify({ state, upgs })); }
     function load() {
-        const s = localStorage.getItem('CT_ABSOLUTE_SAVE');
+        const s = localStorage.getItem('cyberQuestSoundSave');
         if(s) {
-            const d = JSON.parse(s);
-            state = d.state;
-            d.items.forEach((it, i) => { if(items[i]) { items[i].count = it.count; items[i].cost = it.cost; } });
-            setTheme(state.theme);
+            const d = JSON.parse(s); state = d.state;
+            d.upgs.forEach((u, i) => { if(upgs[i]) { upgs[i].count = u.count; upgs[i].cost = u.cost; } });
         }
     }
 
