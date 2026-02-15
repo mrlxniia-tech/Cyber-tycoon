@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cyber Tycoon V2.8</title>
+    <title>Cyber Tycoon V3.0 - Final</title>
     <style>
         :root { --neon: #00f2ff; --bg: #050508; }
         .theme-red { --neon: #ff4757; }
@@ -15,202 +15,197 @@
         .theme-pink { --neon: #ff69b4; }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
-        body { background: #050508; color: white; font-family: sans-serif; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        body { background: #050508; color: white; font-family: 'Courier New', monospace; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-        #h { height: 70px; background: #112; border-bottom: 2px solid var(--neon); display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--neon); }
-        #m { font-size: 1.6rem; font-weight: bold; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
-        #stats-bar { font-size: 0.6rem; color: #aaa; text-transform: uppercase; }
+        #h { height: 80px; background: #112; border-bottom: 2px solid var(--neon); display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--neon); z-index: 100; }
+        #m { font-size: 1.8rem; font-weight: bold; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
 
-        #cz { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #000; gap: 15px; }
+        #cz { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #000; gap: 20px; position: relative; }
+        
+        /* BOUTON 3D AVEC SCAN */
+        #btn-wrap { position: relative; }
+        #btn { 
+            width: 140px; height: 140px; border-radius: 50%; background: #222; border: none;
+            color: var(--neon); font-size: 4.5rem; font-weight: bold; cursor: pointer;
+            box-shadow: 0 10px 0 #111, 0 15px 20px rgba(0,0,0,0.5), 0 0 15px var(--neon);
+            transition: 0.1s; transform: rotateX(10deg); overflow: hidden;
+        }
+        #btn:active { transform: translateY(8px) rotateX(10deg); box-shadow: 0 2px 0 #111, 0 0 20px var(--neon); }
+        
+        /* EFFET SCAN LINE */
+        #btn::after { content: ""; position: absolute; top: -100%; left: 0; width: 100%; height: 100%; background: linear-gradient(transparent, rgba(0,242,255,0.2), transparent); animation: scan 3s linear infinite; }
+        @keyframes scan { 0% { top: -100%; } 100% { top: 100%; } }
+
+        /* ALERT HACK */
+        #hack-alert { position: absolute; top: 20%; background: red; color: white; padding: 10px 20px; font-weight: bold; border-radius: 5px; cursor: pointer; display: none; animation: blink 0.5s infinite; z-index: 50; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.1; } }
+
         #goal-container { width: 80%; background: #112; height: 18px; border-radius: 10px; border: 1px solid #333; overflow: hidden; position: relative; }
-        #goal-bar { height: 100%; background: var(--neon); width: 0%; transition: 0.3s; box-shadow: 0 0 10px var(--neon); }
+        #goal-bar { height: 100%; background: var(--neon); width: 0%; transition: 0.3s; }
         #goal-text { position: absolute; width: 100%; text-align: center; font-size: 0.65rem; font-weight: bold; line-height: 18px; color: #fff; }
 
-        #btn { 
-            width: 120px; height: 120px; border-radius: 50%; background: #222; border: none;
-            color: var(--neon); font-size: 3.5rem; font-weight: bold; cursor: pointer;
-            box-shadow: 0 8px 0 #111, 0 15px 20px rgba(0,0,0,0.5), 0 0 15px var(--neon);
-            transition: 0.1s; transform: rotateX(10deg);
-        }
-        #btn:active { transform: translateY(6px) rotateX(10deg); box-shadow: 0 2px 0 #111, 0 0 20px var(--neon); }
-
-        #ui { height: 42vh; background: #080810; display: flex; flex-direction: column; border-top: 1px solid #333; }
-        #nav { display: flex; height: 50px; background: #000; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-        .t-btn { flex: 1; min-width: 85px; border: none; background: none; color: #555; font-weight: bold; font-size: 0.6rem; }
+        /* UI BAS */
+        #ui { height: 40vh; background: #080810; display: flex; flex-direction: column; border-top: 1px solid #333; }
+        #nav { display: flex; height: 50px; background: #000; overflow-x: auto; }
+        .t-btn { flex: 1; min-width: 80px; border: none; background: none; color: #444; font-weight: bold; font-size: 0.6rem; }
         .t-btn.active { color: var(--neon); border-bottom: 2px solid var(--neon); }
 
         .p { flex: 1; overflow-y: scroll; padding: 15px 15px 70px 15px; display: none; }
         .p.active { display: block; }
 
-        .card { background: #112; padding: 12px; border-radius: 10px; margin-bottom: 10px; border: 1px solid #222; }
-        .buy-row { display: flex; gap: 5px; margin-top: 10px; }
-        .b-btn { flex: 1; background: #000; color: var(--neon); border: 1px solid var(--neon); padding: 6px 2px; border-radius: 4px; font-weight: bold; font-size: 0.6rem; cursor: pointer; }
-        .b-btn:disabled { opacity: 0.1; color: #333; border-color: #333; }
+        .card { background: #112; padding: 12px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #222; }
+        .buy-group { display: flex; gap: 5px; margin-top: 8px; }
+        .b-btn { flex: 1; background: #000; color: var(--neon); border: 1px solid var(--neon); padding: 7px; border-radius: 6px; font-weight: bold; font-size: 0.6rem; cursor: pointer; }
+        .b-btn:disabled { opacity: 0.1; }
 
-        .color-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 10px 0; }
-        .c-box { height: 35px; border-radius: 5px; border: 1px solid #333; cursor: pointer; }
+        .floating { position: absolute; color: var(--neon); font-weight: bold; pointer-events: none; animation: float 0.7s ease-out forwards; }
+        @keyframes float { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-80px); } }
     </style>
 </head>
 <body id="b">
 
     <div id="h">
         <div id="m">0 €</div>
-        <div id="stats-bar">MULT: x<span id="mv">1.0</span> | REBIRTHS: <span id="rc">0</span></div>
+        <div style="font-size:0.6rem; color:#666">SYSTEM STATUS: ONLINE | MULT: x<span id="mv">1.0</span></div>
     </div>
 
     <div id="cz">
-        <div id="goal-container">
-            <div id="goal-bar"></div>
-            <div id="goal-text">OBJECTIF : 50 000 €</div>
-        </div>
-        <button id="btn" onclick="tap()">$</button>
+        <div id="hack-alert" onclick="triggerHack()">VULNÉRABILITÉ DÉTECTÉE ! CLIQUE ICI</div>
+        <div id="goal-container"><div id="goal-bar"></div><div id="goal-text">NEXT REBIRTH</div></div>
+        <div id="btn-wrap"><button id="btn" onclick="tap(event)">$</button></div>
     </div>
 
     <div id="ui">
         <div id="nav">
             <button class="t-btn active" onclick="tab(event, 's')">SHOP</button>
-            <button class="t-btn" onclick="tab(event, 'r')">REBIRTH</button>
-            <button class="t-btn" onclick="tab(event, 't')">TOP</button>
-            <button class="t-btn" onclick="tab(event, 'g')">CADEAU</button>
+            <button class="t-btn" onclick="tab(event, 'r')">PRESTIGE</button>
+            <button class="t-btn" onclick="tab(event, 'g')">JACKPOT</button>
             <button class="t-btn" onclick="tab(event, 'c')">SET</button>
         </div>
 
         <div id="s" class="p active"></div>
-        
         <div id="r" class="p">
-            <h3 style="color:gold">PRESTIGE</h3>
-            <div class="card" style="border-color:gold; margin-top:10px;">
+            <h3 style="color:gold">REBIRTH</h3>
+            <div class="card" style="border-color:gold">
                 <p>Besoin de : <b id="rb-goal-val">50,000 €</b></p>
-                <p>Bonus permanent : <b style="color:var(--neon)">+x1.0 Mult</b></p>
+                <button id="rb-btn" class="b-btn" style="width:100%; height:50px; color:gold; border-color:gold;" onclick="doRebirth()">LOCKED</button>
             </div>
-            <button id="rb-btn" class="b-btn" style="height:50px; color:gold; border-color:gold; font-size:0.8rem;" onclick="doRebirth()">LOCKED</button>
         </div>
-
-        <div id="t" class="p">
-            <h3 style="color:var(--neon)">GLOBAL TOP</h3>
-            <div class="card"><span>#1 MasterHacker</span><span style="float:right">1.5B €</span></div>
-            <div class="card" style="border-color:var(--neon)"><span id="disp-name">Toi</span><span style="float:right" id="disp-money">0 €</span></div>
-        </div>
-
         <div id="g" class="p">
-            <h3 style="color:gold">CADEAU</h3>
-            <button class="b-btn" style="height:60px; background:gold; color:black; font-size:0.9rem;" onclick="claimGift()">🎁 RÉCUPÉRER (24H)</button>
+            <h3 style="color:gold">CADEAU QUOTIDIEN</h3>
+            <button class="b-btn" style="height:60px; background:gold; color:black; font-size:1rem;" onclick="claimGift()">🎁 RÉCUPÉRER</button>
         </div>
-
         <div id="c" class="p">
-            <h3>RÉGLAGES</h3>
-            <input type="text" id="ni" maxlength="12" placeholder="Pseudo" style="width:100%; padding:10px; margin:10px 0; background:#000; color:#fff; border:1px solid #333;" onchange="g.n=this.value; draw();">
-            <div class="color-grid">
-                <div class="c-box" style="background:#00f2ff" onclick="st('default')"></div>
-                <div class="c-box" style="background:#ff4757" onclick="st('red')"></div>
-                <div class="c-box" style="background:#ffd700" onclick="st('yellow')"></div>
-                <div class="c-box" style="background:#2ecc71" onclick="st('green')"></div>
-                <div class="c-box" style="background:#ff6a00" onclick="st('flame')"></div>
-                <div class="c-box" style="background:#ff00ff" onclick="st('rose-violet')"></div>
-                <div class="c-box" style="background:#9b59b6" onclick="st('violet')"></div>
-                <div class="c-box" style="background:#ff69b4" onclick="st('pink')"></div>
+            <h3>THEMES</h3>
+            <div class="color-grid" style="display:grid; grid-template-columns: repeat(4,1fr); gap:10px; margin-top:10px;">
+                <div style="height:35px; background:#00f2ff; border-radius:5px;" onclick="st('default')"></div>
+                <div style="height:35px; background:#ff4757; border-radius:5px;" onclick="st('red')"></div>
+                <div style="height:35px; background:#ffd700; border-radius:5px;" onclick="st('yellow')"></div>
+                <div style="height:35px; background:#ff6a00; border-radius:5px;" onclick="st('flame')"></div>
+                <div style="height:35px; background:#ff00ff; border-radius:5px;" onclick="st('rose-violet')"></div>
+                <div style="height:35px; background:#9b59b6; border-radius:5px;" onclick="st('violet')"></div>
+                <div style="height:35px; background:#ff69b4; border-radius:5px;" onclick="st('pink')"></div>
+                <div style="height:35px; background:#2ecc71; border-radius:5px;" onclick="st('green')"></div>
             </div>
-            <button class="b-btn" style="background:gold; color:black; margin-top:10px;" onclick="window.location.href='mailto:Mrlxniia@gmail.com'">SUPPORT</button>
+            <button class="b-btn" style="width:100%; margin-top:20px; background:gold; color:black;" onclick="window.location.href='mailto:Mrlxniia@gmail.com'">SUPPORT</button>
         </div>
     </div>
 
     <script>
-        let g = { m: 0, n: "Hacker", t: "default", mult: 1.0, rb: 0, lastG: 0 };
+        let g = { m: 0, mult: 1.0, rb: 0, lastG: 0, t: "default" };
         let it = [
             {n:"Clavier Néon", c:15, p:1, q:0, type:"click"},
             {n:"Bot Discord", c:150, p:3, q:0, type:"auto"},
-            {n:"Script Python", c:800, p:12, q:0, type:"auto"},
-            {n:"Proxy Master", c:4500, p:45, q:0, type:"auto"},
-            {n:"Serveur Cloud", c:15000, p:110, q:0, type:"auto"}
+            {n:"Proxy Hacker", c:800, p:12, q:0, type:"auto"},
+            {n:"Super Serveur", c:5000, p:50, q:0, type:"auto"}
         ];
 
-        function tap() {
+        function tap(e) {
             let p = 1; it.forEach(i => { if(i.type=="click") p += i.q * i.p; });
-            g.m += p * g.mult; draw();
+            let gain = p * g.mult; g.m += gain;
+            createFloat(e, "+"+Math.floor(gain)+"€");
+            draw();
         }
 
-        function getPrice(base, q, amt) {
-            let total = 0; let cur = base;
-            for(let i=0; i<amt; i++) { total += cur; cur = Math.floor(cur * 1.5); }
-            return total;
+        function triggerHack() {
+            let win = Math.floor(g.m * 0.2) + 500;
+            g.m += win;
+            alert("HACK RÉUSSI ! +" + win.toLocaleString() + " €");
+            document.getElementById('hack-alert').style.display = 'none';
+            draw();
+        }
+
+        function createFloat(e, txt) {
+            let f = document.createElement('div'); f.className='floating'; f.innerText=txt;
+            f.style.left=e.clientX+"px"; f.style.top=e.clientY+"px";
+            document.getElementById('cz').appendChild(f);
+            setTimeout(()=>f.remove(), 700);
         }
 
         function buy(i, amt) {
-            let p = getPrice(it[i].c, it[i].q, amt);
-            if(g.m >= p) {
-                g.m -= p; it[i].q += amt;
-                for(let j=0; j<amt; j++) it[i].c = Math.floor(it[i].c * 1.5);
-                draw();
+            let total = 0; let tempC = it[i].c;
+            for(let j=0; j<amt; j++) { total += tempC; tempC = Math.floor(tempC * 1.5); }
+            if(g.m >= total) {
+                g.m -= total; it[i].q += amt; it[i].c = tempC; draw();
             }
         }
 
         function doRebirth() {
             let goal = 50000 * Math.pow(5, g.rb);
             if(g.m >= goal) {
-                g.rb++; g.mult += 1.0; g.m = 0;
-                it.forEach(i => i.q = 0);
-                it[0].c=15; it[1].c=150; it[2].c=800; it[3].c=4500; it[4].c=15000;
-                tab(null, 's'); draw();
+                g.rb++; g.mult += 1.0; g.m = 0; it.forEach(i=>i.q=0);
+                it[0].c=15; it[1].c=150; it[2].c=800; it[3].c=5000; draw();
             }
         }
 
         function claimGift() {
             let now = Date.now();
-            if(now - g.lastG > 86400000) { g.m += 5000 * g.mult; g.lastG = now; alert("Cadeau reçu !"); draw(); }
-            else { alert("Pas encore !"); }
+            if(now - g.lastG > 86400000) { g.m += 10000 * g.mult; g.lastG=now; draw(); alert("Cadeau reçu !"); }
+            else alert("Reviens demain !");
         }
 
         function draw() {
             let goal = 50000 * Math.pow(5, g.rb);
             document.getElementById('m').innerText = Math.floor(g.m).toLocaleString() + " €";
             document.getElementById('mv').innerText = g.mult.toFixed(1);
-            document.getElementById('rc').innerText = g.rb;
             document.getElementById('rb-goal-val').innerText = goal.toLocaleString() + " €";
-            document.getElementById('goal-text').innerText = "OBJECTIF : " + goal.toLocaleString() + " €";
-            document.getElementById('disp-money').innerText = Math.floor(g.m).toLocaleString() + " €";
-            document.getElementById('disp-name').innerText = g.n;
-
-            let per = Math.min((g.m/goal)*100, 100);
-            document.getElementById('goal-bar').style.width = per + "%";
-
+            document.getElementById('goal-bar').style.width = Math.min((g.m/goal)*100, 100) + "%";
+            
             let rbB = document.getElementById('rb-btn');
-            if(g.m >= goal) { rbB.disabled = false; rbB.innerText = "LANCER REBIRTH"; rbB.style.background="gold"; }
-            else { rbB.disabled = true; rbB.innerText = "LOCKED"; rbB.style.background="none"; }
+            rbB.disabled = g.m < goal;
+            rbB.innerText = g.m >= goal ? "LANCER REBIRTH" : "LOCKED";
 
             let h = "";
             it.forEach((item, i) => {
-                let p1 = getPrice(item.c, item.q, 1);
-                let p5 = getPrice(item.c, item.q, 5);
-                let p10 = getPrice(item.c, item.q, 10);
+                let p1 = item.c;
                 h += `<div class="card">
-                    <div><b>${item.n}</b> (x${item.q})<br><small>+${Math.floor(item.p*g.mult)}${item.type=='click'?'/clic':'/s'}</small></div>
-                    <div class="buy-row">
-                        <button class="b-btn" ${g.m<p1?'disabled':''} onclick="buy(${i},1)">x1<br>${p1.toLocaleString()}</button>
-                        <button class="b-btn" ${g.m<p5?'disabled':''} onclick="buy(${i},5)">x5<br>${p5.toLocaleString()}</button>
-                        <button class="b-btn" ${g.m<p10?'disabled':''} onclick="buy(${i},10)">x10<br>${p10.toLocaleString()}</button>
+                    <div><b>${item.n}</b> (x${item.q})<br><small>+${Math.floor(item.p*g.mult)}/s</small></div>
+                    <div class="buy-group">
+                        <button class="b-btn" ${g.m<p1?'disabled':''} onclick="buy(${i},1)">x1: ${p1}</button>
                     </div>
                 </div>`;
             });
             document.getElementById('s').innerHTML = h;
-            localStorage.setItem('CT_V28_BUY', JSON.stringify({g, it}));
+            localStorage.setItem('CT_V3_FINAL', JSON.stringify({g, it}));
         }
 
         function tab(e, id) {
-            document.querySelectorAll('.p').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.t-btn').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.p').forEach(p=>p.classList.remove('active'));
+            document.querySelectorAll('.t-btn').forEach(t=>t.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            if(e) e.target.classList.add('active');
+            e.target.classList.add('active');
         }
 
         function st(t) { g.t=t; document.getElementById('b').className="theme-"+t; }
 
         window.onload = () => {
-            let s = localStorage.getItem('CT_V28_BUY');
-            if(s) { let d = JSON.parse(s); g = d.g; it = d.it; st(g.t); document.getElementById('ni').value = g.n; }
+            let s = localStorage.getItem('CT_V3_FINAL');
+            if(s) { let d=JSON.parse(s); g=d.g; it=d.it; st(g.t); }
             draw();
             setInterval(() => {
                 let a = 0; it.forEach(i => { if(i.type=="auto") a += i.q * i.p; });
                 g.m += (a * g.mult)/10; draw();
+                if(Math.random() < 0.01) document.getElementById('hack-alert').style.display='block';
             }, 100);
         };
     </script>
