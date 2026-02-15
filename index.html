@@ -3,203 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cyber Tycoon V2.3</title>
+    <title>Cyber Tycoon V2.6</title>
     <style>
         :root { --neon: #00f2ff; --bg: #050508; }
         .theme-red { --neon: #ff4757; }
         .theme-yellow { --neon: #ffd700; }
-        .theme-green { --neon: #2ecc71; }
         .theme-flame { --neon: #ff6a00; }
         .theme-rose-violet { --neon: #ff00ff; }
-        .theme-violet { --neon: #9b59b6; }
-        .theme-pink { --neon: #ff69b4; }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
         body { background: #050508; color: white; font-family: 'Segoe UI', sans-serif; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-        /* EFFET NEON GLOBAL */
-        .neon-text { text-shadow: 0 0 5px var(--neon), 0 0 10px var(--neon); }
-        .neon-border { border: 2px solid var(--neon) !important; box-shadow: 0 0 10px var(--neon); }
-
-        #h { height: 60px; background: #112; border-bottom: 2px solid var(--neon); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--neon); }
-        #m { font-size: 2rem; font-weight: bold; color: var(--neon); }
-
-        #cz { flex: 1; display: flex; align-items: center; justify-content: center; background: #000; }
+        #h { height: 70px; background: #112; border-bottom: 2px solid var(--neon); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+        #m { font-size: 1.8rem; font-weight: bold; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
         
-        /* BOUTON NEON PULSANT */
+        #cz { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #000; gap: 15px; }
+        
+        /* BOUTON 3D */
         #btn { 
-            width: 150px; height: 150px; border-radius: 50%; background: #000; 
-            border: 4px solid var(--neon); color: var(--neon); font-size: 4rem; font-weight: bold;
-            cursor: pointer; position: relative;
-            box-shadow: 0 0 20px var(--neon), inset 0 0 15px var(--neon);
-            animation: pulse 2s infinite; transition: 0.1s;
+            width: 130px; height: 130px; border-radius: 50%; background: #222; border: none;
+            color: var(--neon); font-size: 4rem; font-weight: bold; cursor: pointer;
+            box-shadow: 0 8px 0 #111, 0 15px 20px rgba(0,0,0,0.5), 0 0 15px var(--neon);
+            transition: 0.1s; transform: rotateX(10deg);
         }
-        #btn:active { transform: scale(0.9); box-shadow: 0 0 40px var(--neon); }
-        @keyframes pulse { 0% { box-shadow: 0 0 10px var(--neon); } 50% { box-shadow: 0 0 25px var(--neon); } 100% { box-shadow: 0 0 10px var(--neon); } }
+        #btn:active { transform: translateY(6px) rotateX(10deg); box-shadow: 0 2px 0 #111, 0 5px 10px rgba(0,0,0,0.5), 0 0 25px var(--neon); }
 
-        #ui { height: 45vh; background: #080810; display: flex; flex-direction: column; border-top: 1px solid #333; }
-        #nav { display: flex; height: 55px; background: #000; border-bottom: 1px solid #222; }
-        .t-btn { flex: 1; border: none; background: none; color: #555; font-weight: bold; font-size: 0.8rem; letter-spacing: 1px; }
-        .t-btn.active { color: var(--neon); border-bottom: 3px solid var(--neon); text-shadow: 0 0 5px var(--neon); }
+        /* BARRE D'OBJECTIF */
+        #goal-container { width: 80%; background: #1a1a33; height: 20px; border-radius: 10px; border: 1px solid #333; overflow: hidden; position: relative; }
+        #goal-bar { height: 100%; background: linear-gradient(90deg, var(--neon), #0066ff); width: 0%; transition: 0.3s; }
+        #goal-text { position: absolute; width: 100%; text-align: center; font-size: 0.7rem; font-weight: bold; line-height: 20px; color: white; text-shadow: 1px 1px 2px black; }
 
-        /* ZONE SCROLLABLE AMELIOREE */
-        .p { flex: 1; overflow-y: scroll; padding: 15px 15px 80px 15px; display: none; -webkit-overflow-scrolling: touch; }
+        #ui { height: 42vh; background: #080810; display: flex; flex-direction: column; border-top: 1px solid #333; }
+        #nav { display: flex; height: 50px; background: #000; }
+        .t-btn { flex: 1; border: none; background: none; color: #444; font-weight: bold; font-size: 0.6rem; }
+        .t-btn.active { color: var(--neon); border-bottom: 2px solid var(--neon); }
+
+        .p { flex: 1; overflow-y: scroll; padding: 15px 15px 60px 15px; display: none; }
         .p.active { display: block; }
 
-        .card { background: #112; padding: 12px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #222; transition: 0.3s; }
-        .card:active { border-color: var(--neon); }
+        .card { background: #112; padding: 10px; border-radius: 10px; margin-bottom: 8px; border: 1px solid #222; }
+        .b-btn { background: #000; color: var(--neon); border: 1px solid var(--neon); padding: 7px; border-radius: 5px; font-weight: bold; font-size: 0.65rem; cursor: pointer; }
+        .b-btn:disabled { opacity: 0.1; }
         
-        .buy-group { display: flex; gap: 8px; margin-top: 10px; }
-        .b-btn { flex: 1; background: #000; color: var(--neon); border: 1px solid var(--neon); padding: 8px; border-radius: 6px; font-weight: bold; font-size: 0.7rem; }
-        .b-btn:disabled { opacity: 0.2; border-color: #333; color: #333; }
-
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #000; color: #fff; border: 1px solid #333; border-radius: 8px; }
-        .color-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 15px 0; }
-        .c-box { height: 40px; border-radius: 8px; cursor: pointer; border: 2px solid rgba(255,255,255,0.1); transition: 0.2s; }
-        .c-box:active { transform: scale(1.1); border-color: white; }
+        .gift-btn { width: 100%; padding: 15px; background: linear-gradient(135deg, gold, #b8860b); color: black; border: none; border-radius: 10px; font-weight: bold; font-size: 0.9rem; cursor: pointer; margin-bottom: 10px; animation: glow 2s infinite; }
+        @keyframes glow { 0%, 100% { box-shadow: 0 0 5px gold; } 50% { box-shadow: 0 0 20px gold; } }
     </style>
 </head>
 <body id="b">
 
-    <div id="h"><div id="m" class="neon-text">0 €</div></div>
+    <div id="h">
+        <div id="m">0 €</div>
+        <div style="font-size:0.6rem; color:#aaa">REBIRTHS: <span id="rb-count">0</span> | MULT: x<span id="mult-val">1.0</span></div>
+    </div>
 
-    <div id="cz"><button id="btn" onclick="tap()">$</button></div>
+    <div id="cz">
+        <div id="goal-container">
+            <div id="goal-bar"></div>
+            <div id="goal-text">OBJECTIF : 50 000 €</div>
+        </div>
+        <button id="btn" onclick="tap()">$</button>
+    </div>
 
     <div id="ui">
         <div id="nav">
             <button class="t-btn active" onclick="tab(event, 's')">SHOP</button>
-            <button class="t-btn" onclick="tab(event, 't')">CLASSEMENT</button>
-            <button class="t-btn" onclick="tab(event, 'c')">RÉGLAGES</button>
+            <button class="t-btn" onclick="tab(event, 'g')">CADEAUX</button>
+            <button class="t-btn" onclick="tab(event, 'r')">REBIRTH</button>
+            <button class="t-btn" onclick="tab(event, 'c')">SET</button>
         </div>
 
         <div id="s" class="p active"></div>
         
-        <div id="t" class="p">
-            <h3 class="neon-text" style="margin-bottom:15px">TOP HACKERS</h3>
-            <div class="card"><span>Anonymous_99</span> <span style="float:right" class="neon-text">1.5M €</span></div>
-            <div class="card neon-border"><span id="pn">Toi</span> <span id="pm" style="float:right" class="neon-text">0 €</span></div>
+        <div id="g" class="p">
+            <h3 style="color:gold; margin-bottom:15px">RÉCOMPENSES</h3>
+            <button id="weekly-btn" class="gift-btn" onclick="claimGift()">🎁 CADEAU HEBDOMADAIRE<br><span id="gift-timer">DISPONIBLE !</span></button>
+            <div class="card"><p style="font-size:0.8rem">Reviens chaque semaine pour un boost massif d'argent !</p></div>
+        </div>
+
+        <div id="r" class="p">
+            <h3 style="color:gold">REBIRTH PROGRESSIF</h3>
+            <p style="font-size:0.75rem; color:#888; margin: 10px 0;">Chaque Rebirth multiplie l'objectif suivant par 5.</p>
+            <div class="card" style="border-color:gold">
+                <p>Objectif actuel : <b id="rb-goal-text">50k €</b></p>
+                <p>Bonus permanent : <b style="color:var(--neon)">+100% / Rebirth</b></p>
+            </div>
+            <button id="reb-btn" class="gift-btn" style="background:none; color:gold; border:2px solid gold; animation:none;" onclick="doRebirth()">LOCKED</button>
         </div>
 
         <div id="c" class="p">
-            <h3 class="neon-text">PERSONNALISATION</h3>
-            <label style="font-size:0.8rem; color:#666">NOM DU HACKER :</label>
-            <input type="text" id="ni" maxlength="12" onchange="g.n=this.value; draw();">
-            
-            <label style="font-size:0.8rem; color:#666; margin-top:10px; display:block">THÈME NÉON :</label>
-            <div class="color-grid">
-                <div class="c-box" style="background:#00f2ff" onclick="st('default')"></div>
-                <div class="c-box" style="background:#ff4757" onclick="st('red')"></div>
-                <div class="c-box" style="background:#ffd700" onclick="st('yellow')"></div>
-                <div class="c-box" style="background:#2ecc71" onclick="st('green')"></div>
-                <div class="c-box" style="background:#ff6a00" onclick="st('flame')"></div>
-                <div class="c-box" style="background:linear-gradient(135deg, #ff00ff, #702283)" onclick="st('rose-violet')"></div>
-                <div class="c-box" style="background:#9b59b6" onclick="st('violet')"></div>
-                <div class="c-box" style="background:#ff69b4" onclick="st('pink')"></div>
-            </div>
-
-            <button class="b-btn" style="width:100%; margin: 15px 0; height:45px" id="s-btn" onclick="toggleS()">SON : ON</button>
-            <button class="b-btn" style="width:100%; background:gold; color:black; height:45px" onclick="window.location.href='mailto:Mrlxniia@gmail.com'">SUPPORT DIRECT</button>
-            <div style="height:50px"></div> </div>
+            <h3 style="color:var(--neon)">RÉGLAGES</h3>
+            <input type="text" id="ni" maxlength="12" placeholder="Ton pseudo" style="width:100%; padding:10px; margin:10px 0; background:#000; border:1px solid #333; color:white;" onchange="g.n=this.value; draw();">
+            <button class="b-btn" style="width:100%; background:gold; color:black; height:40px" onclick="window.location.href='mailto:Mrlxniia@gmail.com'">SUPPORT PAR MAIL</button>
+        </div>
     </div>
 
     <script>
-        let g = { m: 0, n: "Hacker", t: "default", s: true };
+        let g = { m: 0, n: "Hacker", s: true, mult: 1.0, rb: 0, lastGift: 0 };
         let it = [
             {n:"Clavier Néon", c:15, p:1, q:0, type:"click"},
             {n:"Bot Discord", c:150, p:3, q:0, type:"auto"},
             {n:"Script Python", c:800, p:12, q:0, type:"auto"},
-            {n:"Proxy Master", c:4500, p:45, q:0, type:"auto"},
-            {n:"Serveur Cloud", c:15000, p:110, q:0, type:"auto"},
-            {n:"IA DeepWeb", c:65000, p:350, q:0, type:"auto"},
-            {n:"Ferme GPU", c:200000, p:1200, q:0, type:"auto"},
-            {n:"Supercalculateur", c:1000000, p:6500, q:0, type:"auto"}
+            {n:"Proxy Master", c:4500, p:45, q:0, type:"auto"}
         ];
 
-        // GESTION AUDIO AMÉLIORÉE (Anti-coupure)
-        let audioCtx = null;
         function tap() {
-            let p = 1;
-            it.forEach(i => { if(i.type=="click") p += i.q * i.p; });
-            g.m += p;
-            if(g.s) beep();
-            draw();
+            let p = 1; it.forEach(i => { if(i.type=="click") p += i.q * i.p; });
+            g.m += p * g.mult; draw();
         }
 
-        function getP(base, q, amt) {
-            let t = 0; let cur = base;
-            for(let i=0; i<amt; i++) { t += cur; cur = Math.floor(cur * 1.5); }
-            return t;
-        }
-
-        function buy(i, amt) {
-            let price = getP(it[i].c, it[i].q, amt);
-            if(g.m >= price) {
-                g.m -= price;
-                it[i].q += amt;
-                for(let j=0; j<amt; j++) it[i].c = Math.floor(it[i].c * 1.5);
+        function claimGift() {
+            let now = Date.now();
+            if(now - g.lastGift > 604800000 || g.lastGift == 0) { // 7 jours en ms
+                let bonus = 10000 * g.mult;
+                g.m += bonus; g.lastGift = now;
+                alert("🎁 Tu as reçu " + bonus.toLocaleString() + " € !");
                 draw();
+            } else { alert("Attends encore un peu !"); }
+        }
+
+        function doRebirth() {
+            let currentGoal = 50000 * Math.pow(5, g.rb);
+            if(g.m >= currentGoal) {
+                g.rb++; g.mult += 1.0; g.m = 0;
+                it.forEach(i => { i.q = 0; i.c = Math.floor(i.c / 2); }); // Réduit un peu les prix au reset
+                it[0].c=15; it[1].c=150; it[2].c=800; it[3].c=4500;
+                tab(null, 's'); draw();
+                alert("REBIRTH VALIDÉ !");
             }
         }
 
         function draw() {
+            let currentGoal = 50000 * Math.pow(5, g.rb);
             document.getElementById('m').innerText = Math.floor(g.m).toLocaleString() + " €";
-            document.getElementById('pm').innerText = Math.floor(g.m).toLocaleString() + " €";
-            document.getElementById('pn').innerText = g.n;
+            document.getElementById('rb-count').innerText = g.rb;
+            document.getElementById('mult-val').innerText = g.mult.toFixed(1);
+            document.getElementById('rb-goal-text').innerText = currentGoal.toLocaleString() + " €";
+            document.getElementById('goal-text').innerText = "OBJECTIF : " + currentGoal.toLocaleString() + " €";
             
+            let percent = Math.min((g.m / currentGoal) * 100, 100);
+            document.getElementById('goal-bar').style.width = percent + "%";
+
+            let rbBtn = document.getElementById('reb-btn');
+            if(g.m >= currentGoal) { rbBtn.disabled = false; rbBtn.innerText = "LANCER LE REBIRTH !"; rbBtn.style.background = "gold"; rbBtn.style.color = "black"; }
+            else { rbBtn.disabled = true; rbBtn.innerText = "LOCKED"; rbBtn.style.background = "none"; rbBtn.style.color = "gold"; }
+
             let h = "";
             it.forEach((item, i) => {
-                let p1 = getP(item.c, item.q, 1);
-                let p5 = getP(item.c, item.q, 5);
-                let p10 = getP(item.c, item.q, 10);
+                let p1 = item.c;
                 h += `<div class="card">
-                    <div><b>${item.n}</b> (x${item.q})<br><small class="neon-text">+${item.p}${item.type=='click'?'/clic':'/s'}</small></div>
-                    <div class="buy-group">
-                        <button class="b-btn" ${g.m<p1?'disabled':''} onclick="buy(${i},1)">x1<br>${p1.toLocaleString()}</button>
-                        <button class="b-btn" ${g.m<p5?'disabled':''} onclick="buy(${i},5)">x5<br>${p5.toLocaleString()}</button>
-                        <button class="b-btn" ${g.m<p10?'disabled':''} onclick="buy(${i},10)">x10<br>${p10.toLocaleString()}</button>
-                    </div>
+                    <div><b>${item.n}</b> (x${item.q})<br><small>+${Math.floor(item.p*g.mult)}/clic</small></div>
+                    <button class="b-btn" ${g.m<p1?'disabled':''} onclick="buy(${i})">ACHETER: ${p1.toLocaleString()} €</button>
                 </div>`;
             });
             document.getElementById('s').innerHTML = h;
-            save();
+            localStorage.setItem('CT_V26', JSON.stringify({g, it}));
+        }
+
+        function buy(i) {
+            if(g.m >= it[i].c) { g.m -= it[i].c; it[i].q++; it[i].c = Math.floor(it[i].c * 1.5); draw(); }
         }
 
         function tab(e, id) {
             document.querySelectorAll('.p').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.t-btn').forEach(t => t.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            e.target.classList.add('active');
-        }
-
-        function st(t) { g.t=t; document.getElementById('b').className="theme-"+t; save(); }
-        function toggleS() { g.s=!g.s; document.getElementById('s-btn').innerText = g.s?"SON : ON":"SON : OFF"; }
-        function save() { localStorage.setItem('CT_V23_FINAL', JSON.stringify({g, it})); }
-
-        function beep() {
-            try {
-                if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                let o = audioCtx.createOscillator(); let gn = audioCtx.createGain();
-                o.type="sine"; o.frequency.value=400 + (Math.random()*50);
-                gn.gain.setValueAtTime(0.05, audioCtx.currentTime);
-                gn.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
-                o.connect(gn); gn.connect(audioCtx.destination);
-                o.start(); o.stop(audioCtx.currentTime + 0.1);
-            } catch(e){}
+            if(e) e.target.classList.add('active');
         }
 
         window.onload = () => {
-            let s = localStorage.getItem('CT_V23_FINAL');
-            if(s) {
-                let d = JSON.parse(s); g = d.g; it = d.it;
-                st(g.t); document.getElementById('ni').value = g.n;
-                document.getElementById('s-btn').innerText = g.s?"SON : ON":"SON : OFF";
-            }
+            let s = localStorage.getItem('CT_V26');
+            if(s) { let d = JSON.parse(s); g = d.g; it = d.it; }
             draw();
             setInterval(() => {
-                let auto = 0;
-                it.forEach(item => { if(item.type=="auto") auto += item.q * item.p; });
-                g.m += auto/10;
-                draw();
+                let auto = 0; it.forEach(item => { if(item.type=="auto") auto += item.q * item.p; });
+                g.m += (auto * g.mult)/10; draw();
             }, 100);
         };
     </script>
