@@ -2,94 +2,78 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Cyber Tycoon Ultimate</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cyber Tycoon V1.7</title>
     <style>
-        :root { --neon: #00f2ff; --gold: #ffd700; --bg: #050508; --panel: #111122; --btn-grad: linear-gradient(135deg, #00f2ff, #0066ff); }
-        .theme-red { --neon: #ff4757; --btn-grad: linear-gradient(135deg, #ff4757, #ff6b81); }
-        .theme-yellow { --neon: #ffd700; --btn-grad: linear-gradient(135deg, #ffd700, #ffa502); }
-        .theme-matrix { --neon: #2ecc71; --btn-grad: linear-gradient(135deg, #000, #2ecc71); }
-        .theme-flame { --neon: #ff6a00; --btn-grad: linear-gradient(135deg, #ff6a00, #ee0979); }
+        :root { --neon: #00f2ff; --gold: #ffd700; --bg: #050508; --panel: #111122; }
+        .theme-red { --neon: #ff4757; }
+        .theme-yellow { --neon: #ffd700; }
+        .theme-matrix { --neon: #2ecc71; }
+        .theme-flame { --neon: #ff6a00; }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-        body { margin: 0; background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; user-select: none; touch-action: none; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
+        body { margin: 0; background: var(--bg); color: white; font-family: sans-serif; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
         
-        #header { text-align: center; padding: 15px; background: var(--panel); border-bottom: 2px solid var(--neon); position: relative; }
-        #money { font-size: 2.5rem; font-weight: bold; color: var(--neon); text-shadow: 0 0 15px var(--neon); }
-        #settings-btn { position: absolute; top: 15px; right: 15px; font-size: 1.5rem; cursor: pointer; z-index: 100; }
+        #header { padding: 15px; background: var(--panel); border-bottom: 2px solid var(--neon); text-align: center; position: relative; }
+        #money { font-size: 2.2rem; font-weight: bold; color: var(--neon); }
+        #settings-btn { position: absolute; right: 15px; top: 15px; font-size: 1.5rem; cursor: pointer; padding: 5px; }
 
-        #click-area { flex: 1.2; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle, #101025 0%, #050508 100%); gap: 20px; }
-        #prestige-container { width: 85%; height: 14px; background: #1a1a35; border-radius: 10px; overflow: hidden; border: 1px solid #333; }
-        #prestige-bar { width: 0%; height: 100%; background: var(--btn-grad); transition: 0.3s; }
-
-        #main-btn { width: 150px; height: 150px; background: var(--btn-grad); border-radius: 50%; border: 6px solid rgba(255,255,255,0.2); box-shadow: 0 0 50px var(--neon); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 5rem; color: white; transition: transform 0.05s; z-index: 10; pointer-events: auto; }
+        /* ZONE DE CLIC PRIORITAIRE */
+        #click-area { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; z-index: 5; }
+        #main-btn { 
+            width: 160px; height: 160px; border-radius: 50%; border: 5px solid white;
+            background: linear-gradient(135deg, var(--neon), #0066ff);
+            color: white; font-size: 4rem; font-weight: bold; cursor: pointer;
+            box-shadow: 0 0 30px var(--neon); transition: 0.05s;
+            display: flex; align-items: center; justify-content: center;
+        }
         #main-btn:active { transform: scale(0.9); }
 
-        #tabs { display: flex; background: #0d0d1a; border-top: 1px solid #222; overflow-x: auto; }
-        .tab-btn { flex: 1; min-width: 80px; padding: 15px 5px; border: none; color: #555; background: none; font-size: 0.65rem; font-weight: bold; text-transform: uppercase; }
-        .tab-btn.active { color: var(--neon); border-bottom: 3px solid var(--neon); background: rgba(0,242,255,0.05); }
+        #tabs { display: flex; background: #0d0d1a; border-top: 1px solid #333; height: 60px; }
+        .tab-btn { flex: 1; border: none; background: none; color: #666; font-weight: bold; font-size: 0.7rem; text-transform: uppercase; cursor: pointer; }
+        .tab-btn.active { color: var(--neon); border-bottom: 3px solid var(--neon); }
 
-        .panel-container { flex: 1; overflow-y: auto; padding: 15px; background: #080810; }
-        .panel { display: none; flex-direction: column; gap: 10px; padding-bottom: 40px; }
-        .panel.active { display: flex; }
-        
-        .card { background: rgba(255, 255, 255, 0.04); padding: 12px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.08); }
-        .buy-btn { background: var(--panel); border: 2px solid var(--neon); color: var(--neon); padding: 8px 12px; border-radius: 6px; font-weight: bold; font-size: 0.75rem; }
-        .buy-btn:disabled { opacity: 0.2; }
+        .panel-container { height: 35vh; overflow-y: auto; background: #080810; padding: 15px; border-top: 1px solid #222; }
+        .panel { display: none; }
+        .panel.active { display: block; }
 
-        input, textarea { background: #1a1a35; border: 1px solid #333; color: white; padding: 10px; border-radius: 8px; width: 100%; margin: 10px 0; }
-        .color-box { height: 45px; border-radius: 8px; border: 2px solid #333; cursor: pointer; }
-        .rank-item { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #222; }
+        .card { background: #16162d; padding: 12px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #222; }
+        .buy-btn { background: none; border: 2px solid var(--neon); color: var(--neon); padding: 8px 12px; border-radius: 5px; font-weight: bold; }
+        .buy-btn:disabled { opacity: 0.3; }
+
+        .color-box { height: 40px; border-radius: 5px; cursor: pointer; border: 1px solid #fff; }
+        input, textarea { width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 10px; margin: 10px 0; border-radius: 5px; }
     </style>
 </head>
 <body id="game-body">
 
     <div id="header">
-        <div id="settings-btn" onclick="showTab(null, 'config')">⚙️</div>
+        <div id="settings-btn" onclick="openSettings()">⚙️</div>
         <div id="money">0 €</div>
-        <div style="font-size: 0.75rem; color: var(--gold);"><span id="display-name">Hacker</span></div>
+        <div style="font-size: 0.8rem; color: var(--gold);" id="display-name">Hacker</div>
     </div>
 
     <div id="click-area">
-        <div id="prestige-container"><div id="prestige-bar"></div></div>
-        <button id="main-btn" onclick="handleMainClick(event)">$</button>
+        <button id="main-btn" onclick="handleMainClick()">$</button>
     </div>
 
     <div id="tabs">
-        <button id="btn-upgrades" class="tab-btn active" onclick="showTab(event, 'upgrades')">Shop</button>
-        <button id="btn-quests" class="tab-btn" onclick="showTab(event, 'quests')">Missions</button>
-        <button id="btn-leaderboard" class="tab-btn" onclick="showTab(event, 'leaderboard')">Top</button>
-        <button id="btn-prestige" class="tab-btn" onclick="showTab(event, 'prestige')">Reset</button>
+        <button class="tab-btn active" onclick="switchTab(event, 'upgrades')">Shop</button>
+        <button class="tab-btn" onclick="switchTab(event, 'leaderboard')">Top</button>
+        <button class="tab-btn" onclick="switchTab(event, 'prestige')">Reset</button>
     </div>
 
     <div class="panel-container">
         <div id="upgrades" class="panel active"></div>
         
-        <div id="quests" class="panel">
-            <h3 style="color: var(--gold);">MISSIONS</h3>
-            <div id="quest-list"></div>
-        </div>
-
         <div id="leaderboard" class="panel">
-            <h3 style="color: var(--gold);">TOP HACKERS</h3>
-            <div class="rank-item"><span>1. Anonymous_99</span> <span>1.2M €</span></div>
-            <div class="rank-item"><span>2. Ghost_User</span> <span>850k €</span></div>
-            <div class="rank-item" style="color:var(--neon)"><span id="player-rank-name">Toi</span> <span id="player-rank-money">0 €</span></div>
+            <h3 style="color:var(--gold)">CLASSEMENT</h3>
+            <div class="card"><span>1. Anonymous_99</span><span>1.2M €</span></div>
+            <div class="card"><span>2. Ghost_User</span><span>850k €</span></div>
+            <div class="card" style="border-color: var(--neon)">
+                <span id="rank-name">Toi</span>
+                <span id="rank-money">0 €</span>
+            </div>
         </div>
 
         <div id="config" class="panel">
-            <h3 style="color: var(--neon);">PROFIL & AUDIO</h3>
-            <label>PSEUDO :</label>
-            <input type="text" id="name-input" maxlength="12" onchange="updateName(this.value)">
-            
-            <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px 0;">
-                <span>EFFETS SONORES</span>
-                <button id="sound-toggle" class="buy-btn" onclick="toggleSound()">ON</button>
-            </div>
-
-            <label>THÈMES :</label>
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-                <div class="color-box" style="background:#00f2ff" onclick="setTheme('default')"></div>
-                <div class="color-box" style="background:#ff4757" onclick="setTheme('red')"></div>
-                <div class="color-box" style="background:#ffd7
-
+            <h3 style="color:var(--neon)">PARAM
