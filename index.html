@@ -3,30 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Cyber Tycoon Pro</title>
+    <title>Cyber Tycoon Settings</title>
     <style>
         :root { --neon: #00f2ff; --gold: #ffd700; --bg: #050508; --panel: #111122; --btn-grad: linear-gradient(135deg, #00f2ff, #0066ff); }
         .theme-red { --neon: #ff4757; --btn-grad: linear-gradient(135deg, #ff4757, #ff6b81); }
         .theme-yellow { --neon: #ffd700; --btn-grad: linear-gradient(135deg, #ffd700, #ffa502); }
         .theme-matrix { --neon: #2ecc71; --btn-grad: linear-gradient(135deg, #000, #2ecc71); }
-        .theme-cyberpunk { --neon: #ff00ff; --btn-grad: linear-gradient(135deg, #ff00ff, #00f2ff); }
+        .theme-flame { --neon: #ff6a00; --btn-grad: linear-gradient(135deg, #ff6a00, #ee0979); }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-        body { margin: 0; background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; user-select: none; touch-action: none; overflow: hidden; height: 100vh; display: flex; flex-direction: column; transition: 0.3s; }
+        body { margin: 0; background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; user-select: none; touch-action: none; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
         
-        #header { text-align: center; padding: 15px; background: var(--panel); border-bottom: 2px solid var(--neon); }
+        #header { text-align: center; padding: 15px; background: var(--panel); border-bottom: 2px solid var(--neon); position: relative; }
         #money { font-size: 2.5rem; font-weight: bold; color: var(--neon); text-shadow: 0 0 15px var(--neon); }
-        
-        /* ZONE DE CLIC AGRANDIE */
-        #click-area { flex: 1.2; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle, #101025 0%, #050508 100%); gap: 20px; position: relative; border-bottom: 1px solid #222; }
+        #settings-btn { position: absolute; top: 15px; right: 15px; font-size: 1.5rem; cursor: pointer; }
+
+        #click-area { flex: 1.2; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle, #101025 0%, #050508 100%); gap: 20px; }
         #prestige-container { width: 85%; height: 14px; background: #1a1a35; border-radius: 10px; overflow: hidden; border: 1px solid #333; }
         #prestige-bar { width: 0%; height: 100%; background: var(--btn-grad); transition: 0.3s; }
 
-        #main-btn { width: 160px; height: 160px; background: var(--btn-grad); border-radius: 50%; border: 6px solid rgba(255,255,255,0.2); box-shadow: 0 0 50px var(--neon); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 5rem; color: white; transition: transform 0.05s; z-index: 10; }
+        #main-btn { width: 150px; height: 150px; background: var(--btn-grad); border-radius: 50%; border: 6px solid rgba(255,255,255,0.2); box-shadow: 0 0 50px var(--neon); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 5rem; color: white; transition: transform 0.05s; }
         #main-btn:active { transform: scale(0.9); }
 
-        #tabs { display: flex; background: #0d0d1a; border-top: 1px solid #222; overflow-x: auto; }
-        .tab-btn { flex: 1; min-width: 80px; padding: 15px 5px; border: none; color: #555; background: none; font-size: 0.6rem; font-weight: bold; text-transform: uppercase; white-space: nowrap; }
+        #tabs { display: flex; background: #0d0d1a; border-top: 1px solid #222; }
+        .tab-btn { flex: 1; padding: 15px; border: none; color: #555; background: none; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; }
         .tab-btn.active { color: var(--neon); border-bottom: 3px solid var(--neon); background: rgba(0,242,255,0.05); }
 
         .panel-container { flex: 1; overflow-y: auto; padding: 15px; background: #080810; }
@@ -34,62 +34,67 @@
         .panel.active { display: flex; }
         
         .card { background: rgba(255, 255, 255, 0.04); padding: 12px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.08); }
-        .buy-btn { background: var(--panel); border: 2px solid var(--neon); color: var(--neon); padding: 8px 12px; border-radius: 6px; font-weight: bold; font-size: 0.75rem; }
-        .buy-btn:disabled { opacity: 0.2; }
+        .buy-btn { background: var(--panel); border: 2px solid var(--neon); color: var(--neon); padding: 8px 12px; border-radius: 6px; font-weight: bold; }
+        
+        input, textarea { background: #1a1a35; border: 1px solid #333; color: white; padding: 10px; border-radius: 8px; width: 100%; margin: 10px 0; font-family: inherit; }
+        textarea { height: 80px; resize: none; }
+        label { font-size: 0.8rem; color: var(--neon); font-weight: bold; display: block; margin-top: 10px; }
+        .color-box { height: 45px; border-radius: 8px; border: 2px solid #333; cursor: pointer; }
 
-        .rank-item { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #222; font-size: 0.9rem; }
-        .rank-pos { color: var(--gold); font-weight: bold; width: 30px; }
+        /* SWITCH SON */
+        .switch-container { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; margin-top: 10px; }
     </style>
 </head>
 <body id="game-body">
 
     <div id="header">
+        <div id="settings-btn" onclick="showTab(null, 'config')">⚙️</div>
         <div id="money">0 €</div>
-        <div style="font-size: 0.75rem; margin-top: 5px; color: var(--gold);">VITESSE : <span id="mps">0.0</span> €/s</div>
+        <div style="font-size: 0.75rem; color: var(--gold);"><span id="display-name">Hacker</span></div>
     </div>
 
     <div id="click-area">
-        <div style="font-size: 0.65rem; color: #888; font-weight: bold; letter-spacing: 1px;">OBJECTIF SYSTÈME : <span id="goal-text">10 000</span> €</div>
         <div id="prestige-container"><div id="prestige-bar"></div></div>
         <button id="main-btn" onclick="handleMainClick(event)">$</button>
     </div>
 
     <div id="tabs">
-        <button class="tab-btn active" onclick="showTab(event, 'upgrades')">Shop</button>
-        <button class="tab-btn" onclick="showTab(event, 'quests')">Missions</button>
-        <button class="tab-btn" onclick="showTab(event, 'leaderboard')">Top</button>
-        <button class="tab-btn" onclick="showTab(event, 'style')">Style</button>
-        <button class="tab-btn" onclick="showTab(event, 'prestige')">Reset</button>
+        <button id="tab-upgrades" class="tab-btn active" onclick="showTab(event, 'upgrades')">Shop</button>
+        <button id="tab-leaderboard" class="tab-btn" onclick="showTab(event, 'leaderboard')">Top</button>
+        <button id="tab-prestige" class="tab-btn" onclick="showTab(event, 'prestige')">Reset</button>
     </div>
 
     <div class="panel-container">
         <div id="upgrades" class="panel active"></div>
-        <div id="quests" class="panel"><div id="quest-list"></div></div>
-        
-        <div id="leaderboard" class="panel">
-            <h3 style="color: var(--gold); margin: 0 0 10px 0;">TOP HACKERS MONDIAUX</h3>
-            <div id="ranks">
-                <div class="rank-item"><span class="rank-pos">1</span> <span>Anonymous_99</span> <span>1.2M €</span></div>
-                <div class="rank-item"><span class="rank-pos">2</span> <span>Ghost_User</span> <span>850k €</span></div>
-                <div class="rank-item"><span class="rank-pos">3</span> <span>Shadow_X</span> <span>420k €</span></div>
-                <div class="rank-item" style="color:var(--neon)"><span class="rank-pos">?</span> <span id="player-rank-name">Toi</span> <span id="player-rank-money">0 €</span></div>
-            </div>
-        </div>
+        <div id="leaderboard" class="panel"><h3 style="color: var(--gold);">CLASSEMENT MONDIAL</h3><div id="rank-content"></div></div>
 
-        <div id="style" class="panel">
-            <h3 style="color: var(--neon); margin: 0 0 10px 0;">STYLES</h3>
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-                <div style="height:45px; background:#00f2ff; border-radius:8px" onclick="setTheme('default')"></div>
-                <div style="height:45px; background:#ff4757; border-radius:8px" onclick="setTheme('red')"></div>
-                <div style="height:45px; background:#ffd700; border-radius:8px" onclick="setTheme('yellow')"></div>
-                <div style="height:45px; background:linear-gradient(135deg, #000, #2ecc71); border-radius:8px" onclick="setTheme('matrix')"></div>
-                <div style="height:45px; background:linear-gradient(135deg, #ff00ff, #00f2ff); border-radius:8px" onclick="setTheme('cyberpunk')"></div>
+        <div id="config" class="panel">
+            <h3 style="color: var(--neon); margin: 0;">PROFIL & AUDIO</h3>
+            
+            <label>PSEUDO :</label>
+            <input type="text" id="name-input" maxlength="12" onchange="updateName(this.value)">
+
+            <div class="switch-container">
+                <span>EFFETS SONORES</span>
+                <button id="sound-toggle" class="buy-btn" onclick="toggleSound()">ON</button>
             </div>
+            
+            <label>THÈMES :</label>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                <div class="color-box" style="background:#00f2ff" onclick="setTheme('default')"></div>
+                <div class="color-box" style="background:#ff4757" onclick="setTheme('red')"></div>
+                <div class="color-box" style="background:#ffd700" onclick="setTheme('yellow')"></div>
+                <div class="color-box" style="background:linear-gradient(135deg, #ff6a00, #ee0979)" onclick="setTheme('flame')"></div>
+                <div class="color-box" style="background:linear-gradient(135deg, #000, #2ecc71)" onclick="setTheme('matrix')"></div>
+            </div>
+
+            <h3 style="color: var(--gold); margin-top: 25px;">SUPPORT CONTACT</h3>
+            <textarea id="support-msg" placeholder="Signaler un bug..."></textarea>
+            <button class="buy-btn" style="width: 100%; border-color: var(--gold); color: var(--gold);" onclick="sendEmail()">ENVOYER MA REQUÊTE</button>
         </div>
 
         <div id="prestige" class="panel">
             <div style="text-align: center; padding: 20px; border: 2px solid var(--gold); border-radius: 15px;">
-                <p>Multiplicateur : <b style="color:var(--neon)">x<span id="mult-val">1.00</span></b></p>
                 <button id="rebirth-btn" class="buy-btn" style="width: 100%;" onclick="doRebirth()">LOCKED</button>
             </div>
         </div>
@@ -97,129 +102,14 @@
 
 <script>
     let audioCtx = null;
-    let state = { money: 0, multiplier: 1.0, goal: 10000, totalClicks: 0, completedQuests: [], theme: 'default' };
-    
+    let state = { money: 0, multiplier: 1.0, goal: 10000, theme: 'default', name: 'Hacker', soundOn: true };
     const upgs = [
-        { name: 'Clavier Méca', cost: 20, base: 20, power: 1, type: 'click', count: 0 },
+        { name: 'Clavier Zen', cost: 20, base: 20, power: 1, type: 'click', count: 0 },
         { name: 'Bot Auto', cost: 300, base: 300, power: 2, type: 'auto', count: 0 },
-        { name: 'Proxy Hack', cost: 2000, base: 2000, power: 15, type: 'auto', count: 0 },
-        { name: 'Serveur Cloud', cost: 12000, base: 12000, power: 65, type: 'auto', count: 0 }
+        { name: 'Proxy Hack', cost: 2000, base: 2000, power: 15, type: 'auto', count: 0 }
     ];
 
-    const questData = [
-        { id: 0, desc: "Novice : 100 clics", goal: 100, reward: 800, type: 'clicks' },
-        { id: 1, desc: "Hack : 10 Bots", goal: 10, reward: 3000, type: 'item', target: 1 },
-        { id: 2, desc: "IMPOSSIBLE : 1k Clicks + 50k €", goal: 1000, moneyGoal: 50000, reward: 25000, type: 'impossible' }
-    ];
+    function playZenSound(f) {
+        if (!state.soundOn) return;
+        if (!audioCtx)
 
-    function playSound(f, t, d) {
-        try {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
-            o.type = t; o.frequency.setValueAtTime(f, audioCtx.currentTime);
-            g.gain.setValueAtTime(0.05, audioCtx.currentTime);
-            g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + d);
-            o.connect(g).connect(audioCtx.destination);
-            o.start(); o.stop(audioCtx.currentTime + d);
-        } catch(e) {}
-    }
-
-    function handleMainClick(e) {
-        let gain = (1 + (upgs[0].count * upgs[0].power)) * state.multiplier;
-        state.money += gain; state.totalClicks++;
-        playSound(state.theme==='matrix'?150:250, 'square', 0.1);
-        updateUI();
-    }
-
-    function tick() {
-        let auto = 0;
-        for(let i=1; i<upgs.length; i++) auto += upgs[i].count * upgs[i].power;
-        state.money += (auto * state.multiplier) / 10;
-        updateUI();
-    }
-
-    function updateUI() {
-        document.getElementById('money').innerText = Math.floor(state.money).toLocaleString() + " €";
-        document.getElementById('player-rank-money').innerText = Math.floor(state.money).toLocaleString() + " €";
-        document.getElementById('goal-text').innerText = state.goal.toLocaleString();
-        document.getElementById('mult-val').innerText = state.multiplier.toFixed(2);
-        let auto = 0;
-        for(let i=1; i<upgs.length; i++) auto += upgs[i].count * upgs[i].power;
-        document.getElementById('mps').innerText = (auto * state.multiplier).toFixed(1);
-        document.getElementById('prestige-bar').style.width = Math.min((state.money / state.goal) * 100, 100) + "%";
-        document.getElementById('rebirth-btn').disabled = state.money < state.goal;
-        upgs.forEach((u, i) => { const b = document.getElementById('u-'+i); if(b) b.disabled = state.money < u.cost; });
-        renderQuests();
-    }
-
-    function buyUpg(i) {
-        if(state.money >= upgs[i].cost) {
-            state.money -= upgs[i].cost;
-            upgs[i].count++;
-            upgs[i].cost = Math.floor(upgs[i].base * Math.pow(1.6, upgs[i].count));
-            playSound(400, 'triangle', 0.2);
-            renderShop(); save();
-        }
-    }
-
-    function renderQuests() {
-        const list = document.getElementById('quest-list');
-        list.innerHTML = questData.map(q => {
-            const isDone = state.completedQuests.includes(q.id);
-            let cur = (q.type === 'clicks') ? state.totalClicks : (q.type === 'item' ? upgs[q.target].count : (state.totalClicks >= q.goal && state.money >= q.moneyGoal ? q.goal : 0));
-            const can = !isDone && (cur >= q.goal);
-            return `<div class="card" style="opacity:${isDone?0.4:1}; border-left:4px solid ${q.id===2?'#ff4757':'var(--gold)'}">
-                <div style="flex:1"><b>${q.desc}</b><br><small>+${q.reward}€</small></div>
-                <button class="buy-btn" ${!can?'disabled':''} onclick="claimQuest(${q.id})">${isDone?'OK':'CLAIM'}</button>
-            </div>`;
-        }).join('');
-    }
-
-    function claimQuest(id) {
-        state.money += questData[id].reward; state.completedQuests.push(id);
-        playSound(800, 'sine', 0.5); updateUI(); save();
-    }
-
-    function setTheme(t) {
-        state.theme = t;
-        document.getElementById('game-body').className = (t === 'default') ? '' : 'theme-' + t;
-        save();
-    }
-
-    function renderShop() {
-        document.getElementById('upgrades').innerHTML = upgs.map((u, i) => `
-            <div class="card">
-                <div><b>${u.name} (x${u.count})</b><br><small>${u.cost.toLocaleString()} €</small></div>
-                <button class="buy-btn" id="u-${i}" onclick="buyUpg(${i})">BUY</button>
-            </div>`).join('');
-    }
-
-    function doRebirth() {
-        state.multiplier += 1.2; state.money = 0; state.totalClicks = 0; state.completedQuests = [];
-        state.goal = Math.floor(state.goal * 3);
-        upgs.forEach(u => { u.count = 0; u.cost = u.base; });
-        playSound(150, 'sawtooth', 0.8); renderShop(); save(); showTab(null, 'upgrades');
-    }
-
-    function showTab(e, id) {
-        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        if(e) e.target.classList.add('active');
-    }
-
-    function save() { localStorage.setItem('cyberTycoonV12', JSON.stringify({ state, upgs })); }
-    function load() {
-        const s = localStorage.getItem('cyberTycoonV12');
-        if(s) {
-            const d = JSON.parse(s); state = d.state;
-            d.upgs.forEach((u, i) => { if(upgs[i]) { upgs[i].count = u.count; upgs[i].cost = u.cost; } });
-            setTheme(state.theme);
-        }
-    }
-
-    window.onload = () => { load(); renderShop(); setInterval(tick, 100); };
-</script>
-</body>
-</html>
