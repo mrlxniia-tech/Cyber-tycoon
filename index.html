@@ -3,155 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cyber Tycoon V1.8</title>
+    <title>Cyber Tycoon FIX</title>
     <style>
-        :root { --neon: #00f2ff; --gold: #ffd700; --bg: #050508; --panel: #111122; --btn-grad: linear-gradient(135deg, #00f2ff, #0066ff); }
-        .theme-red { --neon: #ff4757; --btn-grad: linear-gradient(135deg, #ff4757, #ff6b81); }
-        .theme-yellow { --neon: #ffd700; --btn-grad: linear-gradient(135deg, #ffd700, #ffa502); }
-        .theme-matrix { --neon: #2ecc71; --btn-grad: linear-gradient(135deg, #000, #2ecc71); }
-        .theme-flame { --neon: #ff6a00; --btn-grad: linear-gradient(135deg, #ff6a00, #ee0979); }
-
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-        body { margin: 0; background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; overflow: hidden; height: 100vh; display: flex; flex-direction: column; transition: 0.3s; }
+        :root { --neon: #00f2ff; --bg: #050508; }
+        .theme-flame { --neon: #ff6a00; }
         
-        /* HEADER */
-        #header { padding: 15px; background: var(--panel); border-bottom: 2px solid var(--neon); text-align: center; position: relative; z-index: 10; }
-        #money { font-size: 2.2rem; font-weight: bold; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
-        #settings-icon { position: absolute; right: 20px; top: 20px; font-size: 1.5rem; cursor: pointer; }
-
-        /* ZONE CLIC */
-        #click-zone { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; z-index: 5; }
-        #main-btn { 
-            width: 150px; height: 150px; border-radius: 50%; border: 6px solid rgba(255,255,255,0.2);
-            background: var(--btn-grad); color: white; font-size: 4rem; font-weight: bold; cursor: pointer;
-            box-shadow: 0 0 40px var(--neon); transition: transform 0.05s; display: flex; align-items: center; justify-content: center;
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            margin: 0; background: #050508; color: white; 
+            font-family: sans-serif; overflow: hidden; height: 100vh;
+            display: flex; flex-direction: column;
         }
-        #main-btn:active { transform: scale(0.9); }
 
-        /* NAVIGATION */
-        #navbar { display: flex; background: #0d0d1a; border-top: 1px solid #333; height: 65px; z-index: 10; }
-        .tab-link { flex: 1; border: none; background: none; color: #555; font-weight: bold; font-size: 0.7rem; text-transform: uppercase; cursor: pointer; }
-        .tab-link.active { color: var(--neon); border-bottom: 3px solid var(--neon); background: rgba(0,242,255,0.05); }
+        /* HEADER */
+        #header { height: 70px; background: #111122; border-bottom: 2px solid var(--neon); display: flex; align-items: center; justify-content: center; position: relative; }
+        #money { font-size: 2rem; font-weight: bold; color: var(--neon); }
+        #set-btn { position: absolute; right: 15px; font-size: 1.5rem; cursor: pointer; z-index: 100; }
 
-        /* CONTENU */
-        #content-area { height: 40vh; overflow-y: auto; background: #080810; padding: 15px; border-top: 1px solid #222; }
-        .page { display: none; flex-direction: column; gap: 10px; }
-        .page.active { display: flex; }
+        /* ZONE BOUTON - AUCUNE SUPERPOSITION ICI */
+        #game-zone { 
+            flex: 1; display: flex; align-items: center; justify-content: center; 
+            position: relative; background: radial-gradient(circle, #111 0%, #000 100%);
+        }
 
-        .card { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; }
-        .buy-btn { background: var(--panel); border: 2px solid var(--neon); color: var(--neon); padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        .buy-btn:disabled { opacity: 0.3; cursor: default; }
+        #main-btn {
+            width: 180px; height: 180px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--neon), #0066ff);
+            border: 5px solid white; color: white; font-size: 5rem;
+            cursor: pointer; box-shadow: 0 0 30px var(--neon);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 10; position: relative; /* Indispensable */
+        }
+        #main-btn:active { transform: scale(0.95); }
 
-        input, textarea { width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 12px; margin: 10px 0; border-radius: 8px; font-family: inherit; }
-        .color-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 10px 0; }
-        .color-opt { height: 40px; border-radius: 8px; cursor: pointer; border: 2px solid #222; }
+        /* PANNEAUX ET ONGLETS */
+        #ui-area { height: 35vh; background: #080810; display: flex; flex-direction: column; border-top: 2px solid #222; }
+        #tabs { display: flex; height: 50px; background: #000; }
+        .tab { flex: 1; border: none; background: none; color: #444; font-weight: bold; cursor: pointer; border-bottom: 2px solid transparent; }
+        .tab.active { color: var(--neon); border-bottom: 2px solid var(--neon); }
+
+        .content { flex: 1; overflow-y: auto; padding: 15px; display: none; }
+        .content.active { display: block; }
+
+        .item { background: #1a1a33; padding: 10px; border-radius: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .btn-buy { background: var(--neon); color: black; border: none; padding: 8px 12px; border-radius: 5px; font-weight: bold; }
+        
+        input { width: 100%; padding: 10px; margin: 10px 0; background: #000; color: #fff; border: 1px solid var(--neon); }
     </style>
 </head>
-<body id="game-body">
+<body id="b">
 
     <div id="header">
-        <div id="settings-icon" onclick="openSettings()">⚙️</div>
         <div id="money">0 €</div>
-        <div style="font-size: 0.7rem; color: var(--gold); margin-top: 5px;">HACKER: <span id="user-display">Hacker</span></div>
+        <div id="set-btn" onclick="openP('config')">⚙️</div>
     </div>
 
-    <div id="click-zone">
-        <div id="progress-wrap" style="width: 80%; height: 10px; background: #1a1a35; border-radius: 5px; overflow: hidden; border: 1px solid #333;">
-            <div id="progress-bar" style="width: 0%; height: 100%; background: var(--btn-grad); transition: 0.3s;"></div>
-        </div>
-        <button id="main-btn" onclick="doClick()">$</button>
+    <div id="game-zone">
+        <button id="main-btn" onclick="tap()">$</button>
     </div>
 
-    <div id="navbar">
-        <button class="tab-link active" onclick="showPage(event, 'shop')">Shop</button>
-        <button class="tab-link" onclick="showPage(event, 'top')">Top</button>
-        <button class="tab-link" onclick="showPage(event, 'reset')">Reset</button>
-    </div>
-
-    <div id="content-area">
-        <div id="shop" class="page active"></div>
-
-        <div id="top" class="page">
-            <h3 style="color:var(--gold)">TOP PLAYERS</h3>
-            <div class="card"><span>1. Anonymous_99</span> <span>1.2M €</span></div>
-            <div class="card"><span>2. Ghost_User</span> <span>850k €</span></div>
-            <div class="card" style="border-color: var(--neon)">
-                <span id="rank-name">Toi</span> <span id="rank-money">0 €</span>
-            </div>
+    <div id="ui-area">
+        <div id="tabs">
+            <button class="tab active" onclick="openP('shop', event)">SHOP</button>
+            <button class="tab" onclick="openP('top', event)">TOP</button>
+            <button class="tab" onclick="openP('config', event)">SET</button>
         </div>
 
-        <div id="settings" class="page">
-            <h3 style="color:var(--neon)">PARAMÈTRES</h3>
-            <label style="font-size: 0.8rem;">PSEUDO :</label>
-            <input type="text" id="name-in" maxlength="12" onchange="changeName(this.value)">
-            
-            <div class="card">
-                <span>SONS ZEN</span>
-                <button class="buy-btn" id="snd-btn" onclick="toggleSnd()">ON</button>
-            </div>
-
-            <label style="font-size: 0.8rem; margin-top: 10px; display: block;">THÈMES :</label>
-            <div class="color-grid">
-                <div class="color-opt" style="background:#00f2ff" onclick="applyTheme('default')"></div>
-                <div class="color-opt" style="background:#ff4757" onclick="applyTheme('red')"></div>
-                <div class="color-opt" style="background:#ffd700" onclick="applyTheme('yellow')"></div>
-                <div class="color-opt" style="background:linear-gradient(135deg, #ff6a00, #ee0979)" onclick="applyTheme('flame')"></div>
-                <div class="color-opt" style="background:#2ecc71" onclick="applyTheme('matrix')"></div>
-            </div>
-
-            <label style="font-size: 0.8rem; margin-top: 15px; display: block;">SUPPORT :</label>
-            <textarea id="sup-msg" placeholder="Un bug ou une idée ?"></textarea>
-            <button class="buy-btn" style="width:100%; border-color: var(--gold); color: var(--gold);" onclick="mailSupport()">ENVOYER MAIL</button>
+        <div id="shop" class="content active"></div>
+        
+        <div id="top" class="content">
+            <h3>CLASSEMENT</h3>
+            <div class="item"><span>Anonymous_99</span><span>1.2M €</span></div>
+            <div class="item"><span id="p-name">Toi</span><span id="p-money">0 €</span></div>
         </div>
 
-        <div id="reset" class="page">
-            <h3 style="color:var(--gold)">REBIRTH</h3>
-            <div class="card" style="flex-direction: column; gap: 10px; text-align: center;">
-                <p id="rebirth-desc">Atteignez 10 000 € pour reset</p>
-                <button id="rebirth-btn" class="buy-btn" style="width:100%" onclick="doRebirth()">BLOQUÉ</button>
-            </div>
+        <div id="config" class="content">
+            <h3>SETTINGS</h3>
+            <input type="text" placeholder="Ton pseudo" onchange="game.name=this.value; save();">
+            <button class="btn-buy" style="width:100%; margin-top:10px;" onclick="setT('flame')">Thème Flamme</button>
+            <button class="btn-buy" style="width:100%; margin-top:10px; background:#444; color:white;" onclick="game.sound=!game.sound; this.innerText=game.sound?'SON: ON':'SON: OFF'">SON: ON</button>
+            <hr>
+            <button class="btn-buy" style="width:100%; background:gold" onclick="window.location.href='mailto:Mrlxniia@gmail.com'">SUPPORT MAIL</button>
         </div>
     </div>
 
-<script>
-    let audio = null;
-    let game = { money: 0, mult: 1.0, name: 'Hacker', theme: 'default', sound: true };
-    const items = [
-        { name: 'Clavier Zen', cost: 20, base: 20, power: 1, count: 0 },
-        { name: 'Bot Hack', cost: 300, base: 300, power: 2, count: 0 },
-        { name: 'Proxy Master', cost: 2000, base: 2000, power: 15, count: 0 }
-    ];
+    <script>
+        // DATA
+        let game = { money: 0, name: "Hacker", theme: "default", sound: true };
+        let items = [{n:"Clavier", c:20, p:1, q:0}, {n:"Bot", c:300, p:5, q:0}];
 
-    function doClick() {
-        game.money += (1 + (items[0].count * items[0].power)) * game.mult;
-        playTone(440);
-        refresh();
-    }
-
-    function buyItem(i) {
-        if(game.money >= items[i].cost) {
-            game.money -= items[i].cost;
-            items[i].count++;
-            items[i].cost = Math.floor(items[i].base * Math.pow(1.5, items[i].count));
-            playTone(523);
-            refresh();
+        // CLIC PRINCIPAL
+        function tap() {
+            let power = 1;
+            items.forEach(i => { if(i.n=="Clavier") power += i.q * i.p; });
+            game.money += power;
+            if(game.sound) beep();
+            draw();
         }
-    }
 
-    function playTone(f) {
-        if(!game.sound) return;
-        try {
-            if(!audio) audio = new (window.AudioContext || window.webkitAudioContext)();
-            if(audio.state === 'suspended') audio.resume();
-            const o = audio.createOscillator(); const g = audio.createGain();
-            o.type = 'sine'; o.frequency.setValueAtTime(f, audio.currentTime);
-            g.gain.setValueAtTime(0.05, audio.currentTime);
-            g.gain.exponentialRampToValueAtTime(0.001, audio.currentTime + 0.3);
-            o.connect(g).connect(audio.destination);
-            o.start(); o.stop(audio.currentTime + 0.3);
-        } catch(e) {}
-    }
+        // ACHAT
+        function buy(idx) {
+            if(game.money >= items[idx].c) {
+                game.money -= items[idx].c;
+                items[idx].q++;
+                items[idx].c = Math.floor(items[idx].c * 1.5);
+                draw();
+            }
+        }
 
-    function refresh() {
-        document.getElementById('money').innerText = Math.floor(game.money).toLocaleString() + " €";
-        document.getElementById('user-display').innerText = game.name;
+        // UI
+        function draw() {
+            document.getElementById('money').innerText = game.money.toLocaleString() + " €";
+            document.getElementById('p-money').innerText = game.money.toLocaleString() + " €";
+            document.getElementById('p-name').innerText = game.name;
+            
+            let html = "";
+            items.forEach((it, i) => {
+                html += `<div class="item">
+                    <span>${it.n} (x${it.q})<br><small>${it.c}€</small></span>
+                    <button class="btn-buy" onclick="buy(${i})">ACHETER</button>
+                </div>`;
+            });
+            document.getElementById('shop').innerHTML = html;
+            save();
+        }
+
+        // ONGLETS
+        function openP(id, e) {
+            document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            if(e) e.target.classList.add('active');
+        }
+
+        // THEME
+        function setT(t) { game.theme=t; document.getElementById('b').className="theme-"+t; save(); }
+
+        // AUDIO
+        function beep() {
+            let ctx = new (window.AudioContext || window.webkitAudioContext)();
+            let o = ctx.createOscillator(); let g = ctx.createGain();
+            o.type = "sine"; o.frequency.value = 400;
+            g.gain.setValueAtTime(0.1, ctx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+            o.connect(g); g.connect(ctx.destination);
+            o.start(); o.stop(ctx.currentTime + 0.1);
+        }
+
+        // SAVE
+        function save() { localStorage.setItem('CT_FIX', JSON.stringify({game, items})); }
+        
+        window.onload = () => {
+            let s = localStorage.getItem('CT_FIX');
+            if(s) {
+                let d = JSON.parse(s); game = d.game; items = d.items;
+                setT(game.theme);
+            }
+            draw();
+            setInterval(() => {
+                items.forEach(it => { if(it.n != "Clavier") game.money += (it.q * it.p)/10; });
+                draw();
+            }, 100);
+        };
+    </script>
+</body>
+</html>
+
