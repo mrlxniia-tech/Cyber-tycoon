@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cyber Tycoon V4.1 - Rebirth Edition</title>
+    <title>Cyber Tycoon V4.1.2 - Rebirth Edition</title>
 
-    <link rel="icon" type="image/png" href="icon.png">
-    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="icon" type="image/png" href="images/icon.png">
+    <link rel="apple-touch-icon" href="images/icon.png">
+    
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="mobile-web-app-capable" content="yes">
@@ -200,7 +201,7 @@
             let fullL = [...rivals, {n:g.n + " (Toi)", m:g.m}].sort((a,b) => b.m - a.m);
             let rH = ""; fullL.forEach((r, idx) => { rH += `<div class="rank-line ${r.n.includes('(Toi)') ? 'me' : ''}"><span>#${idx+1} ${r.n}</span><span>${Math.floor(r.m).toLocaleString()} €</span></div>`; });
             document.getElementById('leaderboard').innerHTML = rH;
-            localStorage.setItem('CyberOMEGA_V411', JSON.stringify({g, it, qs}));
+            localStorage.setItem('CyberOMEGA_V412', JSON.stringify({g, it, qs}));
         }
 
         function claimQ(i) { g.m += qs[i].reward; qs[i].done = true; draw(); }
@@ -208,7 +209,7 @@
         function tab(e, id) { document.querySelectorAll('.p').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.t-btn').forEach(b=>b.classList.remove('active')); document.getElementById(id).classList.add('active'); e.target.classList.add('active'); }
 
         window.onload = () => {
-            let saved = localStorage.getItem('CyberOMEGA_V411');
+            let saved = localStorage.getItem('CyberOMEGA_V412');
             if(saved) {
                 let d = JSON.parse(saved); g = d.g; it = d.it; qs = d.qs || qs; st(g.t); document.getElementById('ni').value = g.n;
                 let offT = (Date.now() - g.lastS) / 1000;
