@@ -3,168 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cyber Tycoon Master V2.5</title>
-    <link rel="icon" type="image/png" href="icon.png">
+    <title>Cyber Tycoon V3.1 - Sound & Multi</title>
     <style>
-        :root { --neon: #00f2ff; --bg: #050508; }
-        .theme-green { --neon: #2ecc71; } .theme-red { --neon: #ff4757; } .theme-gold { --neon: #ffd700; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
-        body { background: var(--bg); color: white; font-family: 'Courier New', monospace; height: 100vh; overflow: hidden; transition: 0.3s; }
+        :root { --neon: #00f2ff; --bg: #020205; --card: rgba(15, 15, 25, 0.9); }
+        .theme-green { --neon: #00ff41; } .theme-red { --neon: #ff003c; } 
+        .theme-gold { --neon: #ffcc00; } .theme-purple { --neon: #bc13fe; }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Courier New', monospace; }
+        body { background: var(--bg); color: white; margin: 0; overflow: hidden; transition: 0.5s; }
         #matrix { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.15; }
-        
+
+        /* WELCOME SCREEN */
+        #welcome-screen { position: fixed; inset: 0; background: black; z-index: 10000; display: flex; align-items: center; justify-content: center; }
+        #welcome-box { width: 85%; max-width: 400px; padding: 30px; border: 2px solid var(--neon); border-radius: 20px; text-align: center; box-shadow: 0 0 30px var(--neon); background: rgba(0,0,0,0.9); }
+
         /* HEADER */
-        #h { height: 120px; background: rgba(17,17,34,0.9); border-bottom: 2px solid var(--neon); display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--neon); }
-        #m { font-size: 2rem; font-weight: bold; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
-        
-        /* CLICK ZONE */
-        #cz { height: 30vh; display: flex; align-items: center; justify-content: center; }
-        #btn { width: 130px; height: 130px; border-radius: 50%; background: #111; border: 4px solid var(--neon); color: var(--neon); font-size: 4rem; box-shadow: 0 0 20px var(--neon); transition: 0.05s; }
-        #btn:active { transform: scale(0.9); }
+        header { height: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-bottom: 1px solid var(--neon); background: var(--card); }
+        #money { font-size: 2.2rem; font-weight: 900; color: var(--neon); text-shadow: 0 0 15px var(--neon); }
 
-        /* UI AREA */
-        #ui { height: calc(70vh - 120px); background: rgba(8,8,16,0.98); border-top: 1px solid #333; display: flex; flex-direction: column; }
-        #nav { display: flex; height: 50px; background: #000; }
-        .t-btn { flex: 1; border: none; background: none; color: #555; font-weight: bold; font-size: 0.65rem; }
-        .t-btn.active { color: var(--neon); border-bottom: 3px solid var(--neon); }
-        
-        .p { flex: 1; overflow-y: auto; padding: 15px; display: none; padding-bottom: 60px; }
-        .p.active { display: block; }
-        .card { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 10px; margin-bottom: 10px; border: 1px solid #222; }
-        .b-btn { width: 100%; background: var(--neon); color: #000; border: none; padding: 10px; border-radius: 5px; font-weight: bold; margin-top: 5px; cursor: pointer; }
-        .b-btn:disabled { background: #333; color: #666; }
+        /* CLICKER */
+        #game-area { height: 30vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        #main-btn { width: 130px; height: 130px; border-radius: 50%; border: 4px solid var(--neon); background: none; color: var(--neon); font-size: 3.5rem; transition: 0.1s; box-shadow: 0 0 15px var(--neon); }
+        #main-btn:active { transform: scale(0.9); }
 
-        /* SPECIALS */
-        .quest-item { border-left: 4px solid var(--neon); margin-bottom: 10px; padding: 10px; background: rgba(0,242,255,0.05); }
-        .theme-box { display: inline-block; width: 40px; height: 40px; border-radius: 5px; margin: 5px; border: 2px solid white; }
+        /* SHOP MULTIPLIER BUTTONS */
+        .multi-selector { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
+        .m-btn { background: none; border: 1px solid var(--neon); color: var(--neon); padding: 5px 15px; border-radius: 5px; font-size: 0.7rem; }
+        .m-btn.active { background: var(--neon); color: black; }
+
+        /* UI PANELS */
+        nav { display: flex; background: #000; border-top: 1px solid #333; height: 60px; }
+        .nav-btn { flex: 1; border: none; background: none; color: #666; font-size: 0.7rem; }
+        .nav-btn.active { color: var(--neon); border-top: 3px solid var(--neon); }
+
+        .panel { height: calc(70vh - 180px); overflow-y: auto; padding: 15px; display: none; }
+        .panel.active { display: block; }
+
+        .item-card { background: var(--card); border: 1px solid #222; padding: 12px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .buy-btn { background: var(--neon); color: black; border: none; padding: 10px; border-radius: 5px; font-weight: bold; min-width: 100px; }
+        .buy-btn:disabled { background: #333; color: #666; }
+
+        .rank-line { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #222; font-size: 0.8rem; }
     </style>
 </head>
-<body id="b">
-    <canvas id="matrix"></canvas>
+<body id="body-tag">
 
-    <div id="h">
-        <div id="m">0 €</div>
-        <div id="income-bar" style="font-size: 0.8rem; color: #2ecc71;">+0 €/s</div>
-        <div style="font-size: 0.6rem; color: #888; margin-top: 5px;">HACKER: <span id="dn">...</span> | XP: <span id="xp">0</span></div>
+    <div id="welcome-screen">
+        <div id="welcome-box">
+            <h1 style="color:var(--neon)">CYBER TYCOON</h1>
+            <input type="text" id="p-input" placeholder="HACKER NAME..." maxlength="12" style="width:100%; background:#111; border:1px solid var(--neon); color:white; padding:12px; border-radius:8px; margin:20px 0; text-align:center;">
+            <button onclick="startGame()" style="width:100%; background:var(--neon); color:black; border:none; padding:15px; border-radius:8px; font-weight:bold;">CONNECT</button>
+        </div>
     </div>
 
-    <div id="cz"><button id="btn" onclick="tap()">$</button></div>
+    <canvas id="matrix"></canvas>
 
-    <div id="ui">
-        <div id="nav">
-            <button class="t-btn active" onclick="tab(event, 's')">HARDWARE</button>
-            <button class="t-btn" onclick="tab(event, 'q')">QUÊTES</button>
-            <button class="t-btn" onclick="tab(event, 't')">RÉSEAU</button>
-            <button class="t-btn" onclick="tab(event, 'c')">SYSTEM</button>
+    <header>
+        <div id="money">0 €</div>
+        <div id="ips" style="color:#00ff41">+0 €/s</div>
+        <div style="font-size:0.6rem; color:#888; margin-top:5px;">USER: <span id="h-name">...</span> | MULT: x<span id="mult-val">1</span></div>
+    </header>
+
+    <div id="game-area">
+        <button id="main-btn" onclick="tap(event)">$</button>
+    </div>
+
+    <nav>
+        <button class="nav-btn active" onclick="showTab(event, 'shop')">Hardware</button>
+        <button class="nav-btn" onclick="showTab(event, 'rank')">Network</button>
+        <button class="nav-btn" onclick="showTab(event, 'config')">System</button>
+    </nav>
+
+    <div id="shop" class="panel active">
+        <div class="multi-selector">
+            <button class="m-btn active" onclick="setBuyMulti(1, event)">x1</button>
+            <button class="m-btn" onclick="setBuyMulti(5, event)">x5</button>
+            <button class="m-btn" onclick="setBuyMulti(10, event)">x10</button>
         </div>
+        <div id="shop-list"></div>
+    </div>
+    
+    <div id="rank" class="panel"><div id="lb-content"></div></div>
 
-        <div id="s" class="p active"></div>
-
-        <div id="q" class="p">
-            <h3 style="color:var(--neon)">CONTRATS EN COURS</h3>
-            <div id="quest-list"></div>
-        </div>
-
-        <div id="t" class="p">
-            <h3 style="color:var(--neon)">CLASSEMENT MONDIAL</h3>
-            <div id="leaderboard"></div>
-        </div>
-
-        <div id="c" class="p">
-            <h3>PERSONNALISATION</h3>
-            <div class="card">
-                <p>Thème de l'interface :</p>
-                <div class="theme-box" style="background:#00f2ff" onclick="setTheme('')"></div>
-                <div class="theme-box" style="background:#2ecc71" onclick="setTheme('theme-green')"></div>
-                <div class="theme-box" style="background:#ff4757" onclick="setTheme('theme-red')"></div>
-                <div class="theme-box" style="background:#ffd700" onclick="setTheme('theme-gold')"></div>
-            </div>
-            <div class="card">
-                <p>Stats : Clics <b id="st-c">0</b></p>
-                <button class="b-btn" style="background:#444; color:white;" onclick="reset()">RESET SYSTEM</button>
-            </div>
-        </div>
+    <div id="config" class="panel">
+        <h3>SUPPORT</h3>
+        <button class="buy-btn" style="width:100%" onclick="window.location.href='mailto:Mrlxniia@gmail.com'">CONTACTER LE SUPPORT</button>
+        <h3 style="margin-top:20px;">COULEURS</h3>
+        <button onclick="setTheme('')" style="background:#00f2ff; width:40px; height:40px; border-radius:50%; border:none;"></button>
+        <button onclick="setTheme('theme-green')" style="background:#00ff41; width:40px; height:40px; border-radius:50%; border:none;"></button>
+        <button onclick="setTheme('theme-red')" style="background:#ff003c; width:40px; height:40px; border-radius:50%; border:none;"></button>
+        <button onclick="resetGame()" style="margin-top:30px; background:red; color:white; width:100%; border:none; padding:10px;">RESET GAME</button>
     </div>
 
     <script>
-        let g = { m: 0, n: "Hacker", items: [0,0,0,0], xp: 0, tc: 0, theme: "" };
-        const data = [
-            { n: "Script Python", c: 15, p: 1 },
-            { n: "Serveur Rack", c: 200, p: 10 },
-            { n: "IA Hack", c: 1500, p: 50 },
-            { n: "Mainframe God", c: 10000, p: 250 }
+        let g = { m: 0, n: "", items: [0,0,0,0,0,0], buyM: 1, th: "" };
+        const items = [
+            { n: "Script Auto", c: 15, p: 1 },
+            { n: "Proxy", c: 150, p: 8 },
+            { n: "Serveur", c: 1200, p: 40 },
+            { n: "Botnet", c: 10000, p: 200 },
+            { n: "IA Hack", c: 75000, p: 900 },
+            { n: "Quantum", c: 500000, p: 5000 }
         ];
-        const quests = [
-            { n: "Premier pas", target: 100, type: "m", reward: 50, done: false },
-            { n: "Cliqueur fou", target: 50, type: "c", reward: 200, done: false },
-            { n: "Investisseur", target: 10, type: "i", reward: 500, done: false }
-        ];
+
+        // AUDIO SYSTEM (Web Audio API)
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playSound(freq, type, dur) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + dur);
+        }
 
         window.onload = () => {
-            let s = localStorage.getItem('CyberMasterV25');
-            if(s) g = JSON.parse(s);
-            if(!g.n || g.n === "Hacker") g.n = prompt("Nom de code, Hacker ?") || "User"+Math.floor(Math.random()*999);
-            setTheme(g.theme);
-            update();
-            setInterval(loop, 1000);
-            startMatrix();
+            let s = localStorage.getItem('CT_31');
+            if(s) { g = JSON.parse(s); document.getElementById('welcome-screen').style.display = 'none'; }
+            render(); startMatrix(); setInterval(tick, 1000);
         };
 
-        function tap() { g.m += 1; g.tc++; update(); save(); }
+        function startGame() {
+            g.n = document.getElementById('p-input').value || "Hacker";
+            document.getElementById('welcome-screen').style.display = 'none';
+            audioCtx.resume(); playSound(800, 'square', 0.1); save(); render();
+        }
 
-        function buy(i) {
-            let cost = Math.floor(data[i].c * Math.pow(1.5, g.items[i]));
-            if(g.m >= cost) {
-                g.m -= cost; g.items[i]++;
-                update(); save();
+        function tap() { g.m += 1; playSound(400, 'sine', 0.05); render(); save(); }
+
+        function setBuyMulti(num, e) {
+            g.buyM = num;
+            document.querySelectorAll('.m-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            render();
+        }
+
+        function getCost(index, count) {
+            let total = 0;
+            for(let i=0; i<count; i++) {
+                total += Math.floor(items[index].c * Math.pow(1.5, g.items[index] + i));
             }
+            return total;
         }
 
-        function loop() {
-            let ips = 0;
-            g.items.forEach((q, i) => ips += q * data[i].p);
-            g.m += ips;
-            update();
+        function buy(idx) {
+            let cost = getCost(idx, g.buyM);
+            if(g.m >= cost) {
+                g.m -= cost; g.items[idx] += g.buyM;
+                playSound(600, 'triangle', 0.2);
+            } else {
+                playSound(150, 'sawtooth', 0.3);
+            }
+            render(); save();
         }
 
-        function update() {
-            document.getElementById('m').innerText = Math.floor(g.m).toLocaleString() + " €";
-            document.getElementById('dn').innerText = g.n;
-            document.getElementById('xp').innerText = g.xp;
-            document.getElementById('st-c').innerText = g.tc;
+        function tick() {
+            let gain = 0; g.items.forEach((qty, i) => gain += qty * items[i].p);
+            g.m += gain; render();
+        }
 
-            // Shop
-            let sh = "";
-            data.forEach((d, i) => {
-                let cost = Math.floor(d.c * Math.pow(1.5, g.items[i]));
-                sh += `<div class="card"><b>${d.n}</b> (x${g.items[i]})<br><button class="b-btn" ${g.m < cost ? 'disabled' : ''} onclick="buy(${i})">${cost} €</button></div>`;
+        function render() {
+            document.getElementById('money').innerText = Math.floor(g.m).toLocaleString() + " €";
+            document.getElementById('h-name').innerText = g.n;
+            let gain = 0; g.items.forEach((qty, i) => gain += qty * items[i].p);
+            document.getElementById('ips').innerText = "+" + gain.toLocaleString() + " €/s";
+
+            let h = "";
+            items.forEach((it, i) => {
+                let cost = getCost(i, g.buyM);
+                h += `<div class="item-card">
+                    <span><b>${it.n}</b> (x${g.items[i]})</span>
+                    <button class="buy-btn" ${g.m < cost ? 'disabled' : ''} onclick="buy(${i})">${cost.toLocaleString()}€</button>
+                </div>`;
             });
-            document.getElementById('s').innerHTML = sh;
-
-            // Quêtes
-            let qh = "";
-            quests.forEach(q => {
-                let cur = q.type === "m" ? g.m : (q.type === "c" ? g.tc : g.items.reduce((a,b)=>a+b));
-                if(cur >= q.target && !q.done) { q.done = true; g.m += q.reward; alert("Quête finie : "+q.n); }
-                qh += `<div class="quest-item"><b>${q.n}</b><br><small>${cur}/${q.target} - Récompense: ${q.reward}€</small> [${q.done?'OK':'...'}]</div>`;
-            });
-            document.getElementById('quest-list').innerHTML = qh;
-
-            // Leaderboard
-            let players = [{n:"Satoshi", m:1000000}, {n:"AcidBurn", m:50000}, {n:g.n, m:g.m}].sort((a,b)=>b.m-a.m);
-            let th = "";
-            players.forEach((p, i) => th += `<div class="card" style="${p.n==g.n?'border:1px solid var(--neon)':''}">#${i+1} ${p.n} - ${Math.floor(p.m).toLocaleString()}€</div>`);
-            document.getElementById('leaderboard').innerHTML = th;
+            document.getElementById('shop-list').innerHTML = h;
         }
 
-        function setTheme(t) { g.theme = t; document.getElementById('b').className = t; save(); }
-        function save() { localStorage.setItem('CyberMasterV25', JSON.stringify(g)); }
-        function reset() { if(confirm("Supprimer ?")) { localStorage.clear(); location.reload(); } }
-        function tab(e, id) { 
-            document.querySelectorAll('.p').forEach(x => x.classList.remove('active'));
-            document.querySelectorAll('.t-btn').forEach(x => x.classList.remove('active'));
+        function showTab(e, id) {
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active'); e.target.classList.add('active');
         }
-        function startMatrix() { /* Matrix Code... */ }
+
+        function setTheme(t) { document.getElementById('body-tag').className = t; g.th = t; save(); }
+        function save() { localStorage.setItem('CT_31', JSON.stringify(g)); }
+        function resetGame() { localStorage.clear(); location.reload(); }
+
+        function startMatrix() {
+            const canvas = document.getElementById('matrix'); const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            const drops = Array(Math.floor(canvas.width / 10)).fill(1);
+            setInterval(() => {
+                ctx.fillStyle = "rgba(0,0,0,0.05)"; ctx.fillRect(0,0,canvas.width,canvas.height);
+                ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--neon');
+                drops.forEach((y, i) => {
+                    ctx.fillText(Math.floor(Math.random()*2), i*10, y*10);
+                    if(y*10 > canvas.height && Math.random() > 0.975) drops[i] = 0; drops[i]++;
+                });
+            }, 50);
+        }
     </script>
 </body>
 </html>
+
