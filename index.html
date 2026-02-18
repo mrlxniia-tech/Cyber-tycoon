@@ -3,47 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cyber Tycoon V4.6 - Overclock</title>
+    <title>Cyber Tycoon V5.0 - Social</title>
     <style>
         :root { --neon: #00f2ff; --bg: #010103; --card: rgba(10, 10, 15, 0.98); }
         .theme-green { --neon: #00ff41; } .theme-red { --neon: #ff003c; } 
         .theme-gold { --neon: #ffcc00; } .theme-purple { --neon: #bc13fe; }
-        .theme-white { --neon: #ffffff; }
-
+        
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Courier New', monospace; }
         body { background: var(--bg); color: white; margin: 0; height: 100vh; overflow: hidden; transition: 0.5s; }
-        #matrix { position: fixed; inset: 0; z-index: -1; opacity: 0.25; }
+        #matrix { position: fixed; inset: 0; z-index: -1; opacity: 0.2; }
 
+        /* WELCOME */
         #welcome-screen { position: fixed; inset: 0; background: #000; z-index: 10000; display: flex; align-items: center; justify-content: center; }
-        #welcome-box { width: 85%; max-width: 350px; padding: 30px; border: 1px solid var(--neon); text-align: center; background: #05050a; }
-        input#p-input { width: 100%; background: #000; border: 1px solid #222; color: var(--neon); padding: 12px; text-align: center; margin: 20px 0; outline: none; }
+        #welcome-box { width: 85%; max-width: 350px; padding: 30px; border: 1px solid var(--neon); text-align: center; background: #05050a; box-shadow: 0 0 20px var(--neon); }
+        input#p-input { width: 100%; background: #000; border: 1px solid #222; color: var(--neon); padding: 12px; text-align: center; margin: 20px 0; outline: none; border-radius: 5px; }
 
+        /* INTERFACE */
         header { height: 110px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-bottom: 1px solid var(--neon); background: var(--card); }
         #money { font-size: 2.2rem; font-weight: bold; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
-
-        #game-area { height: 35vh; display: flex; align-items: center; justify-content: center; position: relative; }
-        #main-btn { width: 180px; height: 180px; border-radius: 50%; border: 2px solid var(--neon); background: rgba(0,0,0,0.5); color: var(--neon); font-size: 4.5rem; box-shadow: 0 0 20px var(--neon); }
         
-        .floating-text { position: absolute; color: var(--neon); font-weight: bold; pointer-events: none; animation: floatUp 0.8s forwards; z-index: 50; }
-        @keyframes floatUp { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-100px); opacity: 0; } }
+        #game-area { height: 35vh; display: flex; align-items: center; justify-content: center; position: relative; }
+        #main-btn { width: 180px; height: 180px; border-radius: 50%; border: 3px solid var(--neon); background: rgba(0,0,0,0.5); color: var(--neon); font-size: 4.5rem; box-shadow: 0 0 20px var(--neon); }
 
         nav { display: flex; background: #000; height: 60px; border-top: 1px solid #222; }
-        .nav-btn { flex: 1; border: none; background: none; color: #444; font-size: 0.65rem; font-weight: bold; }
+        .nav-btn { flex: 1; border: none; background: none; color: #444; font-size: 0.6rem; font-weight: bold; }
         .nav-btn.active { color: var(--neon); border-bottom: 2px solid var(--neon); }
 
         .panel { height: calc(65vh - 170px); overflow-y: auto; padding: 20px; display: none; padding-bottom: 150px; }
         .panel.active { display: block; }
 
-        .card { background: rgba(255,255,255,0.03); border: 1px solid #222; padding: 15px; margin-bottom: 12px; }
-        .buy-btn { background: var(--neon); color: black; border: none; padding: 10px; font-weight: bold; border-radius: 2px; min-width: 90px; }
+        .card { background: rgba(255,255,255,0.03); border: 1px solid #222; padding: 15px; margin-bottom: 12px; border-radius: 5px; }
+        .buy-btn { background: var(--neon); color: black; border: none; padding: 10px; font-weight: bold; border-radius: 3px; }
         .buy-btn:disabled { background: #222; color: #555; }
+
+        /* FLOATING TEXT */
+        .floating-text { position: absolute; color: var(--neon); font-weight: bold; pointer-events: none; animation: floatUp 0.8s forwards; z-index: 50; }
+        @keyframes floatUp { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-100px); opacity: 0; } }
 
         .tgl { width: 50px; height: 25px; background: #222; border-radius: 25px; position: relative; cursor: pointer; }
         .tgl.on { background: var(--neon); }
         .tgl::after { content: ""; position: absolute; width: 21px; height: 21px; background: white; border-radius: 50%; top: 2px; left: 2px; transition: 0.3s; }
         .tgl.on::after { left: 27px; }
-
-        .color-dot { width: 45px; height: 45px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); cursor: pointer; }
     </style>
 </head>
 <body id="b-tag">
@@ -51,9 +51,9 @@
 
     <div id="welcome-screen">
         <div id="welcome-box">
-            <h2 style="letter-spacing:5px; color:var(--neon);">SYSTEM BOOT</h2>
-            <input type="text" id="p-input" placeholder="LOGIN_ID" maxlength="12">
-            <button onclick="startGame()" style="width:100%; background:var(--neon); color:black; border:none; padding:15px; font-weight:bold;">INITIALIZE</button>
+            <h2 style="letter-spacing:5px; color:var(--neon);">IDENTITY_REQ</h2>
+            <input type="text" id="p-input" placeholder="USERNAME" maxlength="12">
+            <button onclick="startGame()" style="width:100%; background:var(--neon); color:black; border:none; padding:15px; font-weight:bold;">INITIALIZE_LINK</button>
         </div>
     </div>
 
@@ -69,8 +69,8 @@
 
     <nav>
         <button class="nav-btn active" onclick="tab(event, 'shop')">HARDWARE</button>
-        <button class="nav-btn" onclick="tab(event, 'quest')">MISSIONS</button>
         <button class="nav-btn" onclick="tab(event, 'rank')">NETWORK</button>
+        <button class="nav-btn" onclick="tab(event, 'social')">SOCIAL</button>
         <button class="nav-btn" onclick="tab(event, 'config')">SYSTEM</button>
     </nav>
 
@@ -83,51 +83,53 @@
         <div id="shop-list"></div>
     </div>
 
-    <div id="quest" class="panel"></div>
     <div id="rank" class="panel"></div>
 
-    <div id="config" class="panel">
-        <h3>AUDIO_STATION</h3>
-        <div style="display:flex; justify-content:space-between; margin-bottom:15px;"><span>CYBER_PULSE</span><div id="tgl-mus" class="tgl" onclick="toggleMus()"></div></div>
-        <div style="display:flex; justify-content:space-between; margin-bottom:15px;"><span>FX_SOUNDS</span><div id="tgl-sfx" class="tgl" onclick="toggleSfx()"></div></div>
-
-        <h3>NEON_STYLE</h3>
-        <div style="display:flex; flex-wrap:wrap; gap:15px; margin-bottom:30px;">
-            <div class="color-dot" style="background:#00f2ff" onclick="setTh('')"></div>
-            <div class="color-dot" style="background:#00ff41" onclick="setTh('theme-green')"></div>
-            <div class="color-dot" style="background:#ff003c" onclick="setTh('theme-red')"></div>
-            <div class="color-dot" style="background:#ffcc00" onclick="setTh('theme-gold')"></div>
-            <div class="color-dot" style="background:#bc13fe" onclick="setTh('theme-purple')"></div>
-            <div class="color-dot" style="background:#ffffff" onclick="setTh('theme-white')"></div>
+    <div id="social" class="panel">
+        <h3>FRIEND_SYSTEM</h3>
+        <div class="card">
+            <p style="font-size:0.8rem;">TON CODE DE PARTAGE :</p>
+            <input type="text" id="my-code" readonly style="width:100%; background:#111; color:var(--neon); border:1px solid #333; padding:10px; text-align:center;">
+            <button class="buy-btn" style="width:100%; margin-top:10px;" onclick="copyMyCode()">COPIER MON CODE</button>
         </div>
+        <div class="card">
+            <p style="font-size:0.8rem;">AJOUTER UN AMI :</p>
+            <input type="text" id="friend-input" placeholder="COLLER LE CODE ICI" style="width:100%; background:#000; color:white; border:1px solid var(--neon); padding:10px; text-align:center;">
+            <button class="buy-btn" style="width:100%; margin-top:10px;" onclick="addFriend()">LIER L'AMI</button>
+        </div>
+    </div>
 
-        <button class="buy-btn" id="rb-btn" onclick="doRebirth()" style="width:100%; margin-bottom:20px;">PERFORM REBIRTH (1M €)</button>
-        <button class="buy-btn" style="width:100%; background:#444; color:white;" onclick="window.location.href='mailto:Mrlxniia@gmail.com'">SUPPORT_ADMIN</button>
-        <button onclick="resetGame()" style="margin-top:30px; width:100%; background:none; border:1px solid red; color:red; padding:10px;">WIPE_DATABASE</button>
+    <div id="config" class="panel">
+        <h3>AUDIO</h3>
+        <div style="display:flex; justify-content:space-between; margin-bottom:15px;"><span>CYBER_DRONE</span><div id="tgl-mus" class="tgl" onclick="toggleMus()"></div></div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:15px;"><span>SFX_HACK</span><div id="tgl-sfx" class="tgl" onclick="toggleSfx()"></div></div>
+        <button class="buy-btn" id="rb-btn" onclick="doRebirth()" style="width:100%; margin-bottom:20px;">REBIRTH (1M €)</button>
+        <button onclick="resetGame()" style="width:100%; background:none; border:1px solid red; color:red; padding:10px;">RESET_DATA</button>
     </div>
 
     <script>
-        let g = { m: 0, n: "", items: [0,0,0,0,0,0], rb: 0, buyM: 1, th: "", tc: 0, q: [false,false,false,false,false,false], mus: false, sfx: true };
+        let g = { m: 0, n: "", items: [0,0,0,0,0], rb: 0, buyM: 1, th: "", tc: 0, mus: false, sfx: true, friends: [] };
         const items = [
-            { n: "Overclock CPU", c: 50, p: 1.5, type: 'click' }, // Amélioration du clic
-            { n: "Script Python", c: 15, p: 1, type: 'auto' },
-            { n: "Proxy V9", c: 150, p: 8, type: 'auto' },
-            { n: "Rack Unit", c: 1000, p: 45, type: 'auto' },
-            { n: "Botnet Cluster", c: 12000, p: 250, type: 'auto' },
-            { n: "Neural Core", c: 100000, p: 1500, type: 'auto' }
+            { n: "Overclock", c: 50, p: 2 },
+            { n: "Python", c: 15, p: 1 },
+            { n: "Proxy", c: 150, p: 8 },
+            { n: "Rack", c: 1000, p: 45 },
+            { n: "Neural", c: 100000, p: 2000 }
         ];
 
         let AC, musNode, musGain;
 
         function initAudio() {
-            if (AC) return;
-            AC = new (window.AudioContext || window.webkitAudioContext)();
+            if (!AC) {
+                AC = new (window.AudioContext || window.webkitAudioContext)();
+                if(AC.state === 'suspended') AC.resume();
+            }
         }
 
         function playSfx(f, d) {
             if(!g.sfx || !AC) return;
             let o = AC.createOscillator(), gn = AC.createGain();
-            o.type = 'sine'; o.frequency.value = f;
+            o.type = 'square'; o.frequency.value = f;
             gn.gain.setValueAtTime(0.05, AC.currentTime);
             gn.gain.exponentialRampToValueAtTime(0.0001, AC.currentTime + d);
             o.connect(gn); gn.connect(AC.destination);
@@ -135,47 +137,40 @@
         }
 
         function toggleMus() {
-            initAudio();
-            g.mus = !g.mus;
+            initAudio(); g.mus = !g.mus;
             if(g.mus) {
                 musGain = AC.createGain(); musGain.gain.value = 0.02;
-                musNode = AC.createOscillator(); musNode.type = 'triangle';
-                musNode.frequency.value = 60;
-                let lfo = AC.createOscillator(); lfo.frequency.value = 0.5;
-                let lG = AC.createGain(); lG.gain.value = 20;
-                lfo.connect(lG); lG.connect(musNode.frequency);
+                musNode = AC.createOscillator(); musNode.type = 'sawtooth';
+                musNode.frequency.value = 50;
                 musNode.connect(musGain); musGain.connect(AC.destination);
-                lfo.start(); musNode.start();
-            } else if(musNode) {
-                musNode.stop(); musNode = null;
-            }
+                musNode.start();
+            } else if(musNode) { musNode.stop(); musNode = null; }
             render(); save();
         }
 
         window.onload = () => {
-            let s = localStorage.getItem('CT_46');
+            let s = localStorage.getItem('CT_V5');
             if(s) { g = JSON.parse(s); document.getElementById('welcome-screen').style.display = 'none'; }
-            setTh(g.th); render(); startMatrix(); setInterval(tick, 1000);
+            render(); startMatrix(); setInterval(tick, 1000);
         };
 
         function startGame() {
             g.n = document.getElementById('p-input').value || "Anon";
             document.getElementById('welcome-screen').style.display = 'none';
-            initAudio(); save(); render();
+            initAudio(); playSfx(800, 0.2); save(); render();
         }
 
         function tap(e) {
-            let clickPow = 1 + (g.items[0] * items[0].p);
-            let total = clickPow * (1 + g.rb * 2);
-            g.m += total; g.tc++;
-            playSfx(400, 0.1);
-            let d = document.createElement('div'); d.className='floating-text'; d.style.left=e.clientX+'px'; d.style.top=e.clientY+'px'; d.innerText="+"+Math.floor(total)+"€";
+            initAudio();
+            let p = (1 + (g.items[0] * 2)) * (1 + g.rb * 2);
+            g.m += p; g.tc++; playSfx(400, 0.1);
+            let d = document.createElement('div'); d.className='floating-text'; d.style.left=e.clientX+'px'; d.style.top=e.clientY+'px'; d.innerText="+"+p+"€";
             document.body.appendChild(d); setTimeout(()=>d.remove(), 800);
             render(); save();
         }
 
         function tick() {
-            let ips = 0; g.items.forEach((q, i) => { if(items[i].type === 'auto') ips += q * items[i].p; });
+            let ips = 0; g.items.forEach((q, i) => { if(i>0) ips += q * items[i].p; });
             g.m += (ips * (1 + g.rb)); render();
         }
 
@@ -183,49 +178,60 @@
             document.getElementById('money').innerText = Math.floor(g.m).toLocaleString() + " €";
             document.getElementById('h-name').innerText = g.n;
             document.getElementById('rb-val').innerText = g.rb;
-            let ips = 0; g.items.forEach((q, i) => { if(items[i].type === 'auto') ips += q * items[i].p; });
-            document.getElementById('ips').innerText = "+" + Math.floor(ips * (1 + g.rb)).toLocaleString() + " €/s";
-            document.getElementById('rb-btn').disabled = (g.m < 1000000);
             document.getElementById('tgl-mus').className = g.mus ? 'tgl on' : 'tgl';
             document.getElementById('tgl-sfx').className = g.sfx ? 'tgl on' : 'tgl';
+            document.getElementById('my-code').value = btoa(g.n + "|" + Math.floor(g.m));
 
             let sh = ""; items.forEach((it, i) => {
                 let c = 0; for(let n=0;n<g.buyM;n++) c += Math.floor(it.c * Math.pow(1.8, g.items[i]+n));
                 sh += `<div class="card" style="display:flex; justify-content:space-between; align-items:center;">
-                    <span><b>${it.n}</b> (x${g.items[i]})<br><small style="color:#666">${it.type==='click'?'+'+it.p+'/clic':'+'+it.p+'€/s'}</small></span>
+                    <span><b>${it.n}</b> (x${g.items[i]})</span>
                     <button class="buy-btn" ${g.m < c ? 'disabled' : ''} onclick="buy(${i})">${c.toLocaleString()}€</button>
                 </div>`;
             });
             document.getElementById('shop-list').innerHTML = sh;
 
-            let qData = [{n:"Novice", t:1000, v:g.m}, {n:"Hacker", t:100000, v:g.m}, {n:"Million", t:1000000, v:g.m}, {n:"CPU Killer", t:10, v:g.items[0]}];
-            let qh = "<h3>MISSIONS</h3>"; qData.forEach((q, i) => {
-                if(q.v >= q.t && !g.q[i]) { g.q[i] = true; g.m += q.t * 0.1; }
-                qh += `<div class="card">${q.n} [${Math.min(q.v, q.t)}/${q.t}] ${g.q[i]?'✅':''}</div>`;
-            });
-            document.getElementById('quest').innerHTML = qh;
-
-            let lbd = [{n:"Satoshi",m:1000000000},{n:g.n,m:g.m,me:true}].sort((a,b)=>b.m-a.m);
-            document.getElementById('rank').innerHTML = "<h3>NETWORK</h3>" + lbd.map((r,i)=>`<div class="card" style="${r.me?'border-color:var(--neon)':''}">${i+1}. ${r.n} - ${Math.floor(r.m).toLocaleString()}€</div>`).join('');
+            let lbd = [
+                {n:"Satoshi",m:1000000000},{n:"Anonymous",m:500000000},{n:"AcidBurn",m:100000000},
+                {n:"ZeroCool",m:50000000},{n:"CerealK",m:10000000},{n:"Neo",m:5000000},
+                {n:"Trinity",m:2000000},{n:"Morpheus",m:1000000},{n:"Oracle",m:500000},
+                {n:"Tank",m:250000},{n:"Dozer",m:100000},{n:"Mouse",m:50000},
+                {n:"Cypher",m:25000},{n:"Switch",m:10000},{n:"Apoc",m:5000},
+                {n:g.n,m:g.m,me:true}, ...g.friends
+            ].sort((a,b)=>b.m-a.m);
+            document.getElementById('rank').innerHTML = "<h3>NETWORK_NODES</h3>" + lbd.map((r,i)=>`<div class="card" style="${r.me?'border-color:var(--neon)':''}">${i+1}. ${r.n} - ${Math.floor(r.m).toLocaleString()}€</div>`).join('');
         }
 
         function buy(i) {
-            let it = items[i];
-            let c = 0; for(let n=0;n<g.buyM;n++) c += Math.floor(it.c * Math.pow(1.8, g.items[i]+n));
+            let c = 0; for(let n=0;n<g.buyM;n++) c += Math.floor(items[i].c * Math.pow(1.8, g.items[i]+n));
             if(g.m >= c) { g.m -= c; g.items[i] += g.buyM; playSfx(600, 0.2); render(); save(); }
         }
 
-        function toggleSfx() { g.sfx = !g.sfx; render(); save(); }
+        function addFriend() {
+            try {
+                let val = atob(document.getElementById('friend-input').value).split('|');
+                if(val.length === 2) {
+                    g.friends.push({n: val[0], m: parseInt(val[1])});
+                    alert("Ami ajouté !"); render(); save();
+                }
+            } catch(e) { alert("Code invalide"); }
+        }
+
+        function copyMyCode() {
+            let copyText = document.getElementById("my-code");
+            copyText.select(); document.execCommand("copy");
+            alert("Code copié ! Envoie-le à ton ami.");
+        }
+
         function setM(n) { g.buyM = n; render(); }
-        function setTh(t) { g.th = t; document.getElementById('b-tag').className = t; save(); }
         function tab(e, id) { 
             document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
             document.getElementById(id).classList.add('active'); e.target.classList.add('active');
         }
-        function save() { localStorage.setItem('CT_46', JSON.stringify(g)); }
-        function resetGame() { if(confirm("WIPE DATA?")) { localStorage.clear(); location.reload(); } }
-        function doRebirth() { if(g.m >= 1000000) { g.m=0; g.items=[0,0,0,0,0,0]; g.rb++; save(); render(); } }
+        function save() { localStorage.setItem('CT_V5', JSON.stringify(g)); }
+        function resetGame() { localStorage.clear(); location.reload(); }
+        function doRebirth() { if(g.m >= 1000000) { g.m=0; g.items=[0,0,0,0,0]; g.rb++; save(); render(); } }
 
         function startMatrix() {
             const c = document.getElementById('matrix'); const ctx = c.getContext('2d');
@@ -244,3 +250,4 @@
     </script>
 </body>
 </html>
+
