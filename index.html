@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cyber Tycoon V3.6</title>
+    <title>Cyber Tycoon V4.0</title>
     <style>
-        :root { --neon: #00f2ff; --bg: #020205; --card: rgba(15, 15, 25, 0.95); }
+        :root { --neon: #00f2ff; --bg: #020205; --card: rgba(15, 15, 25, 0.98); }
         .theme-green { --neon: #00ff41; } .theme-red { --neon: #ff003c; } 
         .theme-gold { --neon: #ffcc00; } .theme-purple { --neon: #bc13fe; }
         .theme-white { --neon: #ffffff; }
@@ -14,42 +14,46 @@
         body { background: var(--bg); color: white; margin: 0; height: 100vh; overflow: hidden; transition: 0.5s; }
         #matrix { position: fixed; inset: 0; z-index: -1; opacity: 0.15; }
 
-        /* ÉCRAN BIENVENUE AMÉLIORÉ */
-        #welcome-screen { position: fixed; inset: 0; background: #000; z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        #welcome-box { width: 100%; max-width: 350px; padding: 40px 25px; border: 1px solid var(--neon); border-radius: 4px; text-align: center; background: rgba(5,5,10,0.9); box-shadow: 0 0 40px rgba(0,242,255,0.1); position: relative; }
-        #welcome-box::before { content: ""; position: absolute; top: -2px; left: -2px; right: -2px; height: 2px; background: var(--neon); animation: scanline 3s infinite; }
-        @keyframes scanline { 0% { top: 0%; } 100% { top: 100%; } }
-        
-        input#p-input { width: 100%; background: #000; border: 1px solid #333; color: var(--neon); padding: 15px; text-align: center; margin: 25px 0; font-size: 1rem; outline: none; border-radius: 0; }
-        input#p-input:focus { border-color: var(--neon); }
+        /* WELCOME */
+        #welcome-screen { position: fixed; inset: 0; background: #000; z-index: 10000; display: flex; align-items: center; justify-content: center; }
+        #welcome-box { width: 85%; max-width: 350px; padding: 30px; border: 1px solid var(--neon); text-align: center; background: #05050a; box-shadow: 0 0 20px rgba(0,242,255,0.2); }
+        input#p-input { width: 100%; background: #000; border: 1px solid #222; color: var(--neon); padding: 12px; text-align: center; margin: 20px 0; outline: none; }
 
         /* HEADER */
-        header { height: 110px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-bottom: 1px solid var(--neon); background: var(--card); }
+        header { height: 110px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-bottom: 1px solid var(--neon); background: var(--card); z-index: 100; }
         #money { font-size: 2.2rem; font-weight: bold; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
 
         /* GAME AREA */
         #game-area { height: 35vh; display: flex; align-items: center; justify-content: center; position: relative; }
-        #main-btn { width: 170px; height: 170px; border-radius: 50%; border: 2px solid var(--neon); background: rgba(0,0,0,0.3); color: var(--neon); font-size: 4rem; box-shadow: 0 0 15px var(--neon); z-index: 5; transition: 0.1s; }
-        #main-btn:active { transform: scale(0.95); box-shadow: 0 0 30px var(--neon); }
+        #main-btn { width: 180px; height: 180px; border-radius: 50%; border: 3px solid var(--neon); background: rgba(0,0,0,0.5); color: var(--neon); font-size: 4.5rem; box-shadow: 0 0 20px var(--neon); transition: 0.1s; z-index: 5; }
+        #main-btn:active { transform: scale(0.92); box-shadow: 0 0 40px var(--neon); }
+        
+        .floating-text { position: absolute; color: var(--neon); font-weight: bold; pointer-events: none; animation: floatUp 0.8s forwards; z-index: 50; }
+        @keyframes floatUp { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-100px); opacity: 0; } }
 
-        .floating-text { position: absolute; color: var(--neon); font-weight: bold; pointer-events: none; animation: floatUp 0.8s ease-out forwards; }
-        @keyframes floatUp { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-80px); opacity: 0; } }
-
-        /* UI & SCROLL FIX */
-        nav { display: flex; background: #000; height: 60px; border-top: 1px solid #222; }
+        /* NAVIGATION */
+        nav { display: flex; background: #000; height: 60px; border-top: 1px solid #222; position: relative; z-index: 100; }
         .nav-btn { flex: 1; border: none; background: none; color: #444; font-size: 0.7rem; font-weight: bold; }
         .nav-btn.active { color: var(--neon); border-bottom: 2px solid var(--neon); }
 
-        .panel { height: calc(65vh - 170px); overflow-y: auto; padding: 20px; display: none; padding-bottom: 100px; /* Ajout d'espace en bas pour le scroll */ }
+        /* PANELS */
+        .panel { height: calc(65vh - 170px); overflow-y: auto; padding: 20px; display: none; padding-bottom: 120px; }
         .panel.active { display: block; }
 
-        .card { background: rgba(255,255,255,0.03); border: 1px solid #222; padding: 15px; border-radius: 4px; margin-bottom: 12px; }
-        .buy-btn { background: var(--neon); color: black; border: none; padding: 10px; font-weight: bold; width: 100px; border-radius: 2px; }
+        .card { background: rgba(255,255,255,0.03); border: 1px solid #222; padding: 15px; margin-bottom: 12px; }
+        .buy-btn { background: var(--neon); color: black; border: none; padding: 10px; font-weight: bold; border-radius: 2px; min-width: 90px; }
         .buy-btn:disabled { background: #222; color: #555; }
 
-        .m-row { display: flex; gap: 8px; margin-bottom: 15px; }
-        .m-btn { flex: 1; background: none; border: 1px solid #333; color: #666; padding: 8px; font-size: 0.8rem; }
-        .m-btn.active { border-color: var(--neon); color: var(--neon); }
+        /* TOGGLE SWITCHES */
+        .setting-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 10px; border-bottom: 1px solid #222; }
+        .tgl { width: 50px; height: 25px; background: #222; border-radius: 25px; position: relative; cursor: pointer; transition: 0.3s; }
+        .tgl.on { background: var(--neon); }
+        .tgl::after { content: ""; position: absolute; width: 21px; height: 21px; background: white; border-radius: 50%; top: 2px; left: 2px; transition: 0.3s; }
+        .tgl.on::after { left: 27px; }
+
+        /* MODERN COLOR DOTS */
+        .color-dot { width: 45px; height: 45px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.2); cursor: pointer; transition: 0.3s; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
+        .color-dot:active { transform: scale(0.8); }
     </style>
 </head>
 <body id="b-tag">
@@ -57,16 +61,16 @@
 
     <div id="welcome-screen">
         <div id="welcome-box">
-            <h2 style="margin:0; letter-spacing:4px;">SESSION_START</h2>
-            <input type="text" id="p-input" placeholder="ENTER_CODE_NAME" maxlength="12">
-            <button onclick="startGame()" style="width:100%; background:none; border:1px solid var(--neon); color:var(--neon); padding:15px; font-weight:bold; cursor:pointer;">INITIALIZE</button>
+            <h2 style="letter-spacing:5px; color:var(--neon);">INITIALIZING...</h2>
+            <input type="text" id="p-input" placeholder="HACKER_ID" maxlength="12">
+            <button onclick="startGame()" style="width:100%; background:var(--neon); color:black; border:none; padding:15px; font-weight:bold;">ACCESS_GRANTED</button>
         </div>
     </div>
 
     <header>
         <div id="money">0 €</div>
         <div id="ips" style="color:#00ff41; font-size:0.8rem;">+0 €/s</div>
-        <div style="font-size:0.6rem; color:#666; margin-top:5px;">HACKER: <span id="h-name">...</span> | RB: <span id="rb-val">0</span></div>
+        <div style="font-size:0.6rem; color:#666; margin-top:5px;">USER: <span id="h-name">...</span> | RB: <span id="rb-val">0</span></div>
     </header>
 
     <div id="game-area" onclick="tap(event)">
@@ -75,109 +79,106 @@
 
     <nav>
         <button class="nav-btn active" onclick="tab(event, 'shop')">HARDWARE</button>
-        <button class="nav-btn" onclick="tab(event, 'quest')">QUÊTES</button>
-        <button class="nav-btn" onclick="tab(event, 'rank')">RÉSEAU</button>
+        <button class="nav-btn" onclick="tab(event, 'quest')">MISSIONS</button>
+        <button class="nav-btn" onclick="tab(event, 'rank')">NETWORK</button>
         <button class="nav-btn" onclick="tab(event, 'config')">SYSTEM</button>
     </nav>
 
     <div id="shop" class="panel active">
-        <div class="m-row">
-            <button class="m-btn active" onclick="setM(1, event)">X1</button>
-            <button class="m-btn" onclick="setM(5, event)">X5</button>
-            <button class="m-btn" onclick="setM(10, event)">X10</button>
+        <div style="display:flex; gap:10px; margin-bottom:15px;">
+            <button class="buy-btn" style="flex:1" onclick="setM(1)">X1</button>
+            <button class="buy-btn" style="flex:1" onclick="setM(5)">X5</button>
+            <button class="buy-btn" style="flex:1" onclick="setM(10)">X10</button>
         </div>
         <div id="shop-list"></div>
     </div>
 
-    <div id="quest" class="panel">
-        <h3 style="color:var(--neon); font-size:0.9rem;">MISSIONS_LOG</h3>
-        <div id="quest-list"></div>
-    </div>
+    <div id="quest" class="panel"></div>
 
-    <div id="rank" class="panel">
-        <h3 style="color:var(--neon); font-size:0.9rem;">GLOBAL_NETWORK</h3>
-        <div id="lb-list"></div>
-    </div>
+    <div id="rank" class="panel"></div>
 
     <div id="config" class="panel">
-        <div class="card">
-            <p style="font-size:0.8rem;">PRESTIGE (REBIRTH)</p>
-            <small style="color:#666;">Requis: 1,000,000 €</small>
-            <button class="buy-btn" id="rb-btn" onclick="doRebirth()" style="width:100%; margin-top:10px;" disabled>ACTIVER</button>
+        <h3>AUDIO_SETTINGS</h3>
+        <div class="setting-row">
+            <span>MUSIC_STATION</span>
+            <div id="tgl-mus" class="tgl" onclick="toggleMus()"></div>
         </div>
-        <h3 style="font-size:0.9rem;">INTERFACE_COLOR</h3>
-        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top:10px;">
-            <button onclick="setTh('')" style="background:#00f2ff; width:40px; height:40px; border:1px solid white;"></button>
-            <button onclick="setTh('theme-green')" style="background:#00ff41; width:40px; height:40px; border:1px solid white;"></button>
-            <button onclick="setTh('theme-red')" style="background:#ff003c; width:40px; height:40px; border:1px solid white;"></button>
-            <button onclick="setTh('theme-gold')" style="background:#ffcc00; width:40px; height:40px; border:1px solid white;"></button>
-            <button onclick="setTh('theme-purple')" style="background:#bc13fe; width:40px; height:40px; border:1px solid white;"></button>
+        <div class="setting-row">
+            <span>SOUND_EFFECTS</span>
+            <div id="tgl-sfx" class="tgl" onclick="toggleSfx()"></div>
         </div>
-        <div class="card" style="margin-top:20px;">
-            <p style="font-size:0.8rem;">CONTACT_SUPPORT</p>
-            <button class="buy-btn" style="width:100%;" onclick="window.location.href='mailto:Mrlxniia@gmail.com'">EMAIL_ADMIN</button>
+
+        <h3>SYSTEM_COLOR</h3>
+        <div style="display:flex; flex-wrap:wrap; gap:15px; margin-bottom:30px;">
+            <div class="color-dot" style="background:#00f2ff" onclick="setTh('')"></div>
+            <div class="color-dot" style="background:#00ff41" onclick="setTh('theme-green')"></div>
+            <div class="color-dot" style="background:#ff003c" onclick="setTh('theme-red')"></div>
+            <div class="color-dot" style="background:#ffcc00" onclick="setTh('theme-gold')"></div>
+            <div class="color-dot" style="background:#bc13fe" onclick="setTh('theme-purple')"></div>
+            <div class="color-dot" style="background:#ffffff" onclick="setTh('theme-white')"></div>
         </div>
-        <button onclick="resetGame()" style="background:none; border:1px solid red; color:red; width:100%; padding:10px; margin-top:20px;">WIPE_ALL_DATA</button>
+
+        <button class="buy-btn" id="rb-btn" onclick="doRebirth()" style="width:100%; margin-bottom:20px;">PERFORM REBIRTH (1M €)</button>
+        <button class="buy-btn" style="width:100%; background:#444; color:white;" onclick="window.location.href='mailto:Mrlxniia@gmail.com'">SUPPORT_ADMIN</button>
+        <button onclick="resetGame()" style="margin-top:30px; width:100%; background:none; border:1px solid red; color:red; padding:10px;">WIPE_DATABASE</button>
     </div>
 
     <script>
-        let g = { m: 0, n: "", items: [0,0,0,0,0], rb: 0, buyM: 1, th: "", tc: 0, q: [false, false, false] };
+        let g = { m: 0, n: "", items: [0,0,0,0,0], rb: 0, buyM: 1, th: "", tc: 0, q: [false,false,false], mus: false, sfx: true };
         const items = [
-            { n: "Python Script", c: 15, p: 1 },
-            { n: "Proxy Server", c: 150, p: 8 },
+            { n: "Script Python", c: 15, p: 1 },
+            { n: "Proxy V9", c: 150, p: 8 },
             { n: "Rack Unit", c: 1000, p: 45 },
             { n: "Botnet Cluster", c: 12000, p: 250 },
             { n: "Neural Core", c: 100000, p: 1500 }
         ];
 
+        // AUDIO ENGINE
+        const AC = new (window.AudioContext || window.webkitAudioContext)();
+        let musNode = null, musGain = null;
+
+        function playSfx(f, t, d) {
+            if(!g.sfx) return;
+            let o = AC.createOscillator(), gn = AC.createGain();
+            o.type = t; o.frequency.setValueAtTime(f, AC.currentTime);
+            gn.gain.setValueAtTime(0.1, AC.currentTime);
+            gn.gain.exponentialRampToValueAtTime(0.0001, AC.currentTime + d);
+            o.connect(gn); gn.connect(AC.destination);
+            o.start(); o.stop(AC.currentTime + d);
+        }
+
+        function playMus() {
+            if(musNode) return;
+            musGain = AC.createGain(); musGain.gain.value = 0.05;
+            musNode = AC.createOscillator(); musNode.type = 'sawtooth';
+            musNode.frequency.setValueAtTime(55, AC.currentTime); // Deep bass
+            let lfo = AC.createOscillator(); lfo.frequency.value = 0.5;
+            let lfoGain = AC.createGain(); lfoGain.gain.value = 10;
+            lfo.connect(lfoGain); lfoGain.connect(musNode.frequency);
+            musNode.connect(musGain); musGain.connect(AC.destination);
+            lfo.start(); musNode.start();
+        }
+
+        function stopMus() { if(musNode) { musNode.stop(); musNode = null; } }
+
         window.onload = () => {
-            let s = localStorage.getItem('CT_36');
+            let s = localStorage.getItem('CT_40');
             if(s) { g = JSON.parse(s); document.getElementById('welcome-screen').style.display = 'none'; }
-            setTh(g.th); render(); startMatrix(); setInterval(tick, 1000);
+            setTh(g.th); uiUpdate(); startMatrix(); setInterval(tick, 1000);
         };
 
         function startGame() {
-            let val = document.getElementById('p-input').value;
-            if(val.length < 2) return alert("Pseudo requis");
-            g.n = val; document.getElementById('welcome-screen').style.display = 'none';
-            save(); render();
+            g.n = document.getElementById('p-input').value || "Anon";
+            document.getElementById('welcome-screen').style.display = 'none';
+            AC.resume(); if(g.mus) playMus(); save(); render();
         }
 
         function tap(e) {
-            let val = (1 + (g.rb * 2));
-            g.m += val; g.tc++;
-            const div = document.createElement('div');
-            div.className = 'floating-text';
-            div.style.left = e.clientX + 'px'; div.style.top = e.clientY + 'px';
-            div.innerText = "+"+val+"€";
-            document.body.appendChild(div);
-            setTimeout(() => div.remove(), 800);
+            let val = (1 + (g.rb * 2)); g.m += val; g.tc++;
+            playSfx(400, 'sine', 0.1);
+            let d = document.createElement('div'); d.className='floating-text'; d.style.left=e.clientX+'px'; d.style.top=e.clientY+'px'; d.innerText="+"+val+"€";
+            document.body.appendChild(d); setTimeout(()=>d.remove(), 800);
             render(); save();
-        }
-
-        function setM(n, e) {
-            g.buyM = n;
-            document.querySelectorAll('.m-btn').forEach(b => b.classList.remove('active'));
-            e.target.classList.add('active');
-            render();
-        }
-
-        function getC(idx, qty) {
-            let t = 0;
-            for(let i=0; i<qty; i++) t += Math.floor(items[idx].c * Math.pow(1.5, g.items[idx] + i));
-            return t;
-        }
-
-        function buy(idx) {
-            let cost = getC(idx, g.buyM);
-            if(g.m >= cost) { g.m -= cost; g.items[idx] += g.buyM; render(); save(); }
-        }
-
-        function doRebirth() {
-            if(g.m >= 1000000) {
-                g.m = 0; g.items = [0,0,0,0,0]; g.rb++;
-                render(); save(); alert("PRESTIGE ACTIVÉ !");
-            }
         }
 
         function tick() {
@@ -192,39 +193,50 @@
             let ips = 0; g.items.forEach((q, i) => ips += q * items[i].p);
             document.getElementById('ips').innerText = "+" + (ips * (1 + g.rb)).toLocaleString() + " €/s";
             document.getElementById('rb-btn').disabled = (g.m < 1000000);
+            
+            // UI Toggle States
+            document.getElementById('tgl-mus').className = g.mus ? 'tgl on' : 'tgl';
+            document.getElementById('tgl-sfx').className = g.sfx ? 'tgl on' : 'tgl';
 
-            let sh = "";
-            items.forEach((it, i) => {
-                let c = getC(i, g.buyM);
+            let sh = ""; items.forEach((it, i) => {
+                let c = 0; for(let n=0;n<g.buyM;n++) c += Math.floor(it.c * Math.pow(1.5, g.items[i]+n));
                 sh += `<div class="card" style="display:flex; justify-content:space-between; align-items:center;">
-                    <div style="font-size:0.8rem;"><b>${it.n}</b><br><small style="color:#666;">+${it.p}€/s (x${g.items[i]})</small></div>
+                    <span><b>${it.n}</b> (x${g.items[i]})</span>
                     <button class="buy-btn" ${g.m < c ? 'disabled' : ''} onclick="buy(${i})">${c.toLocaleString()}€</button>
                 </div>`;
             });
             document.getElementById('shop-list').innerHTML = sh;
 
-            let qData = [{n:"Script Kiddie", t:1000, v:g.m, r:500}, {n:"Fast Fingers", t:100, v:g.tc, r:1000}, {n:"Millionaire", t:1000000, v:g.m, r:50000}];
-            let qh = "";
-            qData.forEach((q, i) => {
-                if(q.v >= q.t && !g.q[i]) { g.q[i] = true; g.m += q.r; }
-                qh += `<div class="card"><b>${q.n}</b><br><small>${Math.min(q.v, q.t)}/${q.t} | Reward: ${q.r}€ ${g.q[i]?'✅':''}</small></div>`;
+            let qData = [{n:"Kiddie", t:1000, v:g.m}, {n:"Clicker", t:100, v:g.tc}, {n:"Million", t:1000000, v:g.m}];
+            let qh = "<h3>MISSIONS</h3>"; qData.forEach((q, i) => {
+                if(q.v >= q.t && !g.q[i]) { g.q[i] = true; g.m += q.t/2; playSfx(800,'square',0.3); }
+                qh += `<div class="card">${q.n} [${Math.min(q.v, q.t)}/${q.t}] ${g.q[i]?'✅':''}</div>`;
             });
-            document.getElementById('quest-list').innerHTML = qh;
+            document.getElementById('quest').innerHTML = qh;
 
-            let rvs = [{n:"Satoshi", m:10000000}, {n:"AcidBurn", m:500000}, {n:g.n, m:g.m, me:true}].sort((a,b)=>b.m-a.m);
-            let rh = "";
-            rvs.forEach((r, i) => rh += `<div class="card" style="${r.me?'border-color:var(--neon)':''}">#${i+1} ${r.n} - ${Math.floor(r.m).toLocaleString()}€</div>`);
-            document.getElementById('lb-list').innerHTML = rh;
+            let lbd = [{n:"Satoshi",m:100000000},{n:"AcidBurn",m:50000000},{n:"ZeroCool",m:10000000},{n:"CerealK",m:5000000},{n:"Neo",m:2000000},{n:"Trinity",m:1000000},{n:"Morpheus",m:500000},{n:"Oracle",m:250000},{n:g.n,m:g.m,me:true}].sort((a,b)=>b.m-a.m);
+            let rh = "<h3>NETWORK_RANK</h3>"; lbd.forEach((r,i)=> rh += `<div class="card" style="${r.me?'border-color:var(--neon)':''}">${i+1}. ${r.n} - ${Math.floor(r.m).toLocaleString()}€</div>`);
+            document.getElementById('rank').innerHTML = rh;
         }
 
-        function tab(e, id) {
-            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        function buy(i) {
+            let c = 0; for(let n=0;n<g.buyM;n++) c += Math.floor(items[i].c * Math.pow(1.5, g.items[i]+n));
+            if(g.m >= c) { g.m -= c; g.items[i] += g.buyM; playSfx(600,'triangle',0.2); render(); save(); }
+        }
+
+        function toggleMus() { g.mus = !g.mus; if(g.mus) playMus(); else stopMus(); render(); save(); }
+        function toggleSfx() { g.sfx = !g.sfx; render(); save(); }
+        function setM(n) { g.buyM = n; render(); }
+        function setTh(t) { g.th = t; document.getElementById('b-tag').className = t; save(); }
+        function tab(e, id) { 
+            document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
             document.getElementById(id).classList.add('active'); e.target.classList.add('active');
         }
-        function setTh(t) { g.th = t; document.getElementById('b-tag').className = t; save(); }
-        function save() { localStorage.setItem('CT_36', JSON.stringify(g)); }
-        function resetGame() { if(confirm("Supprimer toute la progression ?")) { localStorage.clear(); location.reload(); } }
+        function save() { localStorage.setItem('CT_40', JSON.stringify(g)); }
+        function resetGame() { if(confirm("DELETE DATA?")) { localStorage.clear(); location.reload(); } }
+        function doRebirth() { if(g.m >= 1000000) { g.m=0; g.items=[0,0,0,0,0]; g.rb++; alert("REBIRTH!"); save(); render(); } }
+
         function startMatrix() {
             const c = document.getElementById('matrix'); const ctx = c.getContext('2d');
             c.width = window.innerWidth; c.height = window.innerHeight;
