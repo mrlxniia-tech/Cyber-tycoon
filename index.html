@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cyber Tycoon V4.0</title>
+    <title>Cyber Tycoon V4.5 - Elite</title>
     <style>
-        :root { --neon: #00f2ff; --bg: #020205; --card: rgba(15, 15, 25, 0.98); }
+        :root { --neon: #00f2ff; --bg: #010103; --card: rgba(10, 10, 15, 0.98); }
         .theme-green { --neon: #00ff41; } .theme-red { --neon: #ff003c; } 
         .theme-gold { --neon: #ffcc00; } .theme-purple { --neon: #bc13fe; }
         .theme-white { --neon: #ffffff; }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Courier New', monospace; }
         body { background: var(--bg); color: white; margin: 0; height: 100vh; overflow: hidden; transition: 0.5s; }
-        #matrix { position: fixed; inset: 0; z-index: -1; opacity: 0.15; }
+        #matrix { position: fixed; inset: 0; z-index: -1; opacity: 0.25; }
 
         /* WELCOME */
         #welcome-screen { position: fixed; inset: 0; background: #000; z-index: 10000; display: flex; align-items: center; justify-content: center; }
@@ -20,40 +20,36 @@
         input#p-input { width: 100%; background: #000; border: 1px solid #222; color: var(--neon); padding: 12px; text-align: center; margin: 20px 0; outline: none; }
 
         /* HEADER */
-        header { height: 110px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-bottom: 1px solid var(--neon); background: var(--card); z-index: 100; }
+        header { height: 110px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-bottom: 1px solid var(--neon); background: var(--card); }
         #money { font-size: 2.2rem; font-weight: bold; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
 
         /* GAME AREA */
         #game-area { height: 35vh; display: flex; align-items: center; justify-content: center; position: relative; }
-        #main-btn { width: 180px; height: 180px; border-radius: 50%; border: 3px solid var(--neon); background: rgba(0,0,0,0.5); color: var(--neon); font-size: 4.5rem; box-shadow: 0 0 20px var(--neon); transition: 0.1s; z-index: 5; }
-        #main-btn:active { transform: scale(0.92); box-shadow: 0 0 40px var(--neon); }
+        #main-btn { width: 180px; height: 180px; border-radius: 50%; border: 2px solid var(--neon); background: rgba(0,0,0,0.5); color: var(--neon); font-size: 4.5rem; box-shadow: 0 0 20px var(--neon); transition: 0.1s; }
+        #main-btn:active { transform: scale(0.92); }
         
         .floating-text { position: absolute; color: var(--neon); font-weight: bold; pointer-events: none; animation: floatUp 0.8s forwards; z-index: 50; }
         @keyframes floatUp { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-100px); opacity: 0; } }
 
-        /* NAVIGATION */
-        nav { display: flex; background: #000; height: 60px; border-top: 1px solid #222; position: relative; z-index: 100; }
-        .nav-btn { flex: 1; border: none; background: none; color: #444; font-size: 0.7rem; font-weight: bold; }
+        /* UI */
+        nav { display: flex; background: #000; height: 60px; border-top: 1px solid #222; }
+        .nav-btn { flex: 1; border: none; background: none; color: #444; font-size: 0.65rem; font-weight: bold; }
         .nav-btn.active { color: var(--neon); border-bottom: 2px solid var(--neon); }
 
-        /* PANELS */
-        .panel { height: calc(65vh - 170px); overflow-y: auto; padding: 20px; display: none; padding-bottom: 120px; }
+        .panel { height: calc(65vh - 170px); overflow-y: auto; padding: 20px; display: none; padding-bottom: 150px; }
         .panel.active { display: block; }
 
         .card { background: rgba(255,255,255,0.03); border: 1px solid #222; padding: 15px; margin-bottom: 12px; }
         .buy-btn { background: var(--neon); color: black; border: none; padding: 10px; font-weight: bold; border-radius: 2px; min-width: 90px; }
         .buy-btn:disabled { background: #222; color: #555; }
 
-        /* TOGGLE SWITCHES */
         .setting-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 10px; border-bottom: 1px solid #222; }
-        .tgl { width: 50px; height: 25px; background: #222; border-radius: 25px; position: relative; cursor: pointer; transition: 0.3s; }
+        .tgl { width: 50px; height: 25px; background: #222; border-radius: 25px; position: relative; cursor: pointer; }
         .tgl.on { background: var(--neon); }
         .tgl::after { content: ""; position: absolute; width: 21px; height: 21px; background: white; border-radius: 50%; top: 2px; left: 2px; transition: 0.3s; }
         .tgl.on::after { left: 27px; }
 
-        /* MODERN COLOR DOTS */
-        .color-dot { width: 45px; height: 45px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.2); cursor: pointer; transition: 0.3s; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
-        .color-dot:active { transform: scale(0.8); }
+        .color-dot { width: 45px; height: 45px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); cursor: pointer; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
     </style>
 </head>
 <body id="b-tag">
@@ -61,9 +57,9 @@
 
     <div id="welcome-screen">
         <div id="welcome-box">
-            <h2 style="letter-spacing:5px; color:var(--neon);">INITIALIZING...</h2>
+            <h2 style="letter-spacing:5px; color:var(--neon);">AUTHENTICATION</h2>
             <input type="text" id="p-input" placeholder="HACKER_ID" maxlength="12">
-            <button onclick="startGame()" style="width:100%; background:var(--neon); color:black; border:none; padding:15px; font-weight:bold;">ACCESS_GRANTED</button>
+            <button onclick="startGame()" style="width:100%; background:var(--neon); color:black; border:none; padding:15px; font-weight:bold;">CONNECT</button>
         </div>
     </div>
 
@@ -98,24 +94,18 @@
     <div id="rank" class="panel"></div>
 
     <div id="config" class="panel">
-        <h3>AUDIO_SETTINGS</h3>
-        <div class="setting-row">
-            <span>MUSIC_STATION</span>
-            <div id="tgl-mus" class="tgl" onclick="toggleMus()"></div>
-        </div>
-        <div class="setting-row">
-            <span>SOUND_EFFECTS</span>
-            <div id="tgl-sfx" class="tgl" onclick="toggleSfx()"></div>
-        </div>
+        <h3>AUDIO_STATION</h3>
+        <div class="setting-row"><span>DARK_AMBIENT</span><div id="tgl-mus" class="tgl" onclick="toggleMus()"></div></div>
+        <div class="setting-row"><span>FX_FEEDBACK</span><div id="tgl-sfx" class="tgl" onclick="toggleSfx()"></div></div>
 
-        <h3>SYSTEM_COLOR</h3>
+        <h3>NEON_OVERRIDE</h3>
         <div style="display:flex; flex-wrap:wrap; gap:15px; margin-bottom:30px;">
-            <div class="color-dot" style="background:#00f2ff" onclick="setTh('')"></div>
-            <div class="color-dot" style="background:#00ff41" onclick="setTh('theme-green')"></div>
-            <div class="color-dot" style="background:#ff003c" onclick="setTh('theme-red')"></div>
-            <div class="color-dot" style="background:#ffcc00" onclick="setTh('theme-gold')"></div>
-            <div class="color-dot" style="background:#bc13fe" onclick="setTh('theme-purple')"></div>
-            <div class="color-dot" style="background:#ffffff" onclick="setTh('theme-white')"></div>
+            <div class="color-dot" style="background:#00f2ff; box-shadow: 0 0 15px #00f2ff88;" onclick="setTh('')"></div>
+            <div class="color-dot" style="background:#00ff41; box-shadow: 0 0 15px #00ff4188;" onclick="setTh('theme-green')"></div>
+            <div class="color-dot" style="background:#ff003c; box-shadow: 0 0 15px #ff003c88;" onclick="setTh('theme-red')"></div>
+            <div class="color-dot" style="background:#ffcc00; box-shadow: 0 0 15px #ffcc0088;" onclick="setTh('theme-gold')"></div>
+            <div class="color-dot" style="background:#bc13fe; box-shadow: 0 0 15px #bc13fe88;" onclick="setTh('theme-purple')"></div>
+            <div class="color-dot" style="background:#ffffff; box-shadow: 0 0 15px #ffffff88;" onclick="setTh('theme-white')"></div>
         </div>
 
         <button class="buy-btn" id="rb-btn" onclick="doRebirth()" style="width:100%; margin-bottom:20px;">PERFORM REBIRTH (1M €)</button>
@@ -124,7 +114,7 @@
     </div>
 
     <script>
-        let g = { m: 0, n: "", items: [0,0,0,0,0], rb: 0, buyM: 1, th: "", tc: 0, q: [false,false,false], mus: false, sfx: true };
+        let g = { m: 0, n: "", items: [0,0,0,0,0], rb: 0, buyM: 1, th: "", tc: 0, q: [false,false,false,false,false,false], mus: false, sfx: true };
         const items = [
             { n: "Script Python", c: 15, p: 1 },
             { n: "Proxy V9", c: 150, p: 8 },
@@ -133,7 +123,6 @@
             { n: "Neural Core", c: 100000, p: 1500 }
         ];
 
-        // AUDIO ENGINE
         const AC = new (window.AudioContext || window.webkitAudioContext)();
         let musNode = null, musGain = null;
 
@@ -141,7 +130,7 @@
             if(!g.sfx) return;
             let o = AC.createOscillator(), gn = AC.createGain();
             o.type = t; o.frequency.setValueAtTime(f, AC.currentTime);
-            gn.gain.setValueAtTime(0.1, AC.currentTime);
+            gn.gain.setValueAtTime(0.05, AC.currentTime);
             gn.gain.exponentialRampToValueAtTime(0.0001, AC.currentTime + d);
             o.connect(gn); gn.connect(AC.destination);
             o.start(); o.stop(AC.currentTime + d);
@@ -149,22 +138,22 @@
 
         function playMus() {
             if(musNode) return;
-            musGain = AC.createGain(); musGain.gain.value = 0.05;
-            musNode = AC.createOscillator(); musNode.type = 'sawtooth';
-            musNode.frequency.setValueAtTime(55, AC.currentTime); // Deep bass
-            let lfo = AC.createOscillator(); lfo.frequency.value = 0.5;
-            let lfoGain = AC.createGain(); lfoGain.gain.value = 10;
-            lfo.connect(lfoGain); lfoGain.connect(musNode.frequency);
+            musGain = AC.createGain(); musGain.gain.value = 0.03;
+            musNode = AC.createOscillator(); musNode.type = 'sine';
+            musNode.frequency.setValueAtTime(40, AC.currentTime); 
+            let mod = AC.createOscillator(); mod.frequency.value = 0.2;
+            let modG = AC.createGain(); modG.gain.value = 5;
+            mod.connect(modG); modG.connect(musNode.frequency);
             musNode.connect(musGain); musGain.connect(AC.destination);
-            lfo.start(); musNode.start();
+            mod.start(); musNode.start();
         }
 
         function stopMus() { if(musNode) { musNode.stop(); musNode = null; } }
 
         window.onload = () => {
-            let s = localStorage.getItem('CT_40');
+            let s = localStorage.getItem('CT_45');
             if(s) { g = JSON.parse(s); document.getElementById('welcome-screen').style.display = 'none'; }
-            setTh(g.th); uiUpdate(); startMatrix(); setInterval(tick, 1000);
+            setTh(g.th); render(); startMatrix(); setInterval(tick, 1000);
         };
 
         function startGame() {
@@ -175,7 +164,7 @@
 
         function tap(e) {
             let val = (1 + (g.rb * 2)); g.m += val; g.tc++;
-            playSfx(400, 'sine', 0.1);
+            playSfx(300, 'sine', 0.1);
             let d = document.createElement('div'); d.className='floating-text'; d.style.left=e.clientX+'px'; d.style.top=e.clientY+'px'; d.innerText="+"+val+"€";
             document.body.appendChild(d); setTimeout(()=>d.remove(), 800);
             render(); save();
@@ -193,8 +182,6 @@
             let ips = 0; g.items.forEach((q, i) => ips += q * items[i].p);
             document.getElementById('ips').innerText = "+" + (ips * (1 + g.rb)).toLocaleString() + " €/s";
             document.getElementById('rb-btn').disabled = (g.m < 1000000);
-            
-            // UI Toggle States
             document.getElementById('tgl-mus').className = g.mus ? 'tgl on' : 'tgl';
             document.getElementById('tgl-sfx').className = g.sfx ? 'tgl on' : 'tgl';
 
@@ -207,21 +194,24 @@
             });
             document.getElementById('shop-list').innerHTML = sh;
 
-            let qData = [{n:"Kiddie", t:1000, v:g.m}, {n:"Clicker", t:100, v:g.tc}, {n:"Million", t:1000000, v:g.m}];
-            let qh = "<h3>MISSIONS</h3>"; qData.forEach((q, i) => {
-                if(q.v >= q.t && !g.q[i]) { g.q[i] = true; g.m += q.t/2; playSfx(800,'square',0.3); }
+            let qData = [
+                {n:"Kiddie", t:1000, v:g.m}, {n:"Fast Fingers", t:100, v:g.tc}, {n:"Millionaire", t:1000000, v:g.m},
+                {n:"Botnet Master", t:10, v:g.items[3]}, {n:"Neural Architect", t:5, v:g.items[4]}, {n:"Ghost", t:1, v:g.rb}
+            ];
+            let qh = "<h3>MISSIONS_DATABASE</h3>"; qData.forEach((q, i) => {
+                if(q.v >= q.t && !g.q[i]) { g.q[i] = true; g.m += 5000; playSfx(600,'square',0.3); }
                 qh += `<div class="card">${q.n} [${Math.min(q.v, q.t)}/${q.t}] ${g.q[i]?'✅':''}</div>`;
             });
             document.getElementById('quest').innerHTML = qh;
 
-            let lbd = [{n:"Satoshi",m:100000000},{n:"AcidBurn",m:50000000},{n:"ZeroCool",m:10000000},{n:"CerealK",m:5000000},{n:"Neo",m:2000000},{n:"Trinity",m:1000000},{n:"Morpheus",m:500000},{n:"Oracle",m:250000},{n:g.n,m:g.m,me:true}].sort((a,b)=>b.m-a.m);
+            let lbd = [{n:"Satoshi",m:1000000000},{n:"AcidBurn",m:500000000},{n:"ZeroCool",m:100000000},{n:"CerealKiller",m:50000000},{n:"Neo",m:10000000},{n:"Trinity",m:5000000},{n:"Morpheus",m:2000000},{n:"Oracle",m:1000000},{n:"GhostInShell",m:500000},{n:"Tank",m:250000},{n:g.n,m:g.m,me:true}].sort((a,b)=>b.m-a.m);
             let rh = "<h3>NETWORK_RANK</h3>"; lbd.forEach((r,i)=> rh += `<div class="card" style="${r.me?'border-color:var(--neon)':''}">${i+1}. ${r.n} - ${Math.floor(r.m).toLocaleString()}€</div>`);
             document.getElementById('rank').innerHTML = rh;
         }
 
         function buy(i) {
             let c = 0; for(let n=0;n<g.buyM;n++) c += Math.floor(items[i].c * Math.pow(1.5, g.items[i]+n));
-            if(g.m >= c) { g.m -= c; g.items[i] += g.buyM; playSfx(600,'triangle',0.2); render(); save(); }
+            if(g.m >= c) { g.m -= c; g.items[i] += g.buyM; playSfx(500,'triangle',0.2); render(); save(); }
         }
 
         function toggleMus() { g.mus = !g.mus; if(g.mus) playMus(); else stopMus(); render(); save(); }
@@ -233,20 +223,27 @@
             document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
             document.getElementById(id).classList.add('active'); e.target.classList.add('active');
         }
-        function save() { localStorage.setItem('CT_40', JSON.stringify(g)); }
-        function resetGame() { if(confirm("DELETE DATA?")) { localStorage.clear(); location.reload(); } }
+        function save() { localStorage.setItem('CT_45', JSON.stringify(g)); }
+        function resetGame() { if(confirm("WIPE DATABASE?")) { localStorage.clear(); location.reload(); } }
         function doRebirth() { if(g.m >= 1000000) { g.m=0; g.items=[0,0,0,0,0]; g.rb++; alert("REBIRTH!"); save(); render(); } }
 
         function startMatrix() {
             const c = document.getElementById('matrix'); const ctx = c.getContext('2d');
             c.width = window.innerWidth; c.height = window.innerHeight;
-            const drops = Array(Math.floor(c.width/10)).fill(1);
+            const fontSize = 14;
+            const columns = c.width / fontSize;
+            const drops = [];
+            const speeds = [];
+            for (let x = 0; x < columns; x++) { drops[x] = 1; speeds[x] = Math.random() * 2 + 1; }
             setInterval(() => {
                 ctx.fillStyle = "rgba(0,0,0,0.05)"; ctx.fillRect(0,0,c.width,c.height);
                 ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--neon');
+                ctx.font = fontSize + "px monospace";
                 drops.forEach((y, i) => {
-                    ctx.fillText(Math.floor(Math.random()*2), i*10, y*10);
-                    if(y*10 > c.height && Math.random() > 0.975) drops[i] = 0; drops[i]++;
+                    const text = Math.floor(Math.random() * 2);
+                    ctx.fillText(text, i * fontSize, y * fontSize);
+                    if (y * fontSize > c.height && Math.random() > 0.975) drops[i] = 0;
+                    drops[i] += speeds[i];
                 });
             }, 50);
         }
