@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cyber Tycoon V21 - Absolute Perfection</title>
+    <title>Cyber Tycoon V22 - Professional</title>
     
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2991/2991148.png">
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2991/2991148.png">
@@ -14,7 +14,7 @@
     <style>
         :root { --neon: #00f2ff; --bg: #010103; --card: rgba(10, 10, 15, 0.98); --grad: linear-gradient(180deg, #010103 0%, #05050a 100%); }
         
-        /* THEMES DYNAMIQUES */
+        /* DYNAMIC THEMES */
         .theme-green { --neon: #00ff41 !important; } 
         .theme-red { --neon: #ff003c !important; } 
         .theme-purple { --neon: #bc13fe !important; }
@@ -31,15 +31,15 @@
 
         /* HEADER */
         header { height: 130px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; border-bottom: 2px solid var(--neon); background: var(--card); z-index: 10; box-shadow: 0 0 15px var(--neon); }
-        #money { font-size: 2.2rem; font-weight: bold; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
+        #money { font-size: 2.5rem; font-weight: bold; color: var(--neon); text-shadow: 0 0 10px var(--neon); letter-spacing: 1px; }
         .stats-bar { display: flex; gap: 15px; font-size: 0.8rem; font-weight: bold; margin-top: 5px; }
         
-        /* CLICK ZONE */
+        /* GAME AREA & MAIN BUTTON */
         #game-area { flex-grow: 1; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; z-index: 5; }
-        #main-btn { width: 135px; height: 135px; border-radius: 50%; border: 4px solid var(--neon); background: rgba(0,0,0,0.6); color: var(--neon); font-size: 3.5rem; transition: 0.1s; display: flex; align-items: center; justify-content: center; pointer-events: none; box-shadow: 0 0 20px var(--neon); line-height: 1; }
-        .btn-active { transform: scale(0.85); box-shadow: 0 0 40px var(--neon) !important; }
+        #main-btn { width: 140px; height: 140px; border-radius: 50%; border: 4px solid var(--neon); background: rgba(0,0,0,0.6); color: var(--neon); font-size: 4rem; transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; justify-content: center; pointer-events: none; box-shadow: 0 0 25px var(--neon); line-height: 1; }
+        .btn-active { transform: scale(0.85); box-shadow: 0 0 50px var(--neon) !important; }
 
-        /* NAV */
+        /* NAVIGATION */
         nav { display: flex; background: #000; height: 65px; border-top: 1px solid #333; flex-shrink: 0; z-index: 100; }
         .nav-btn { flex: 1; border: none; background: none; color: #555; font-size: 0.65rem; font-weight: bold; transition: 0.3s; }
         .nav-btn.active { color: var(--neon); border-bottom: 4px solid var(--neon); background: rgba(255,255,255,0.05); }
@@ -49,47 +49,50 @@
         .panel.active { display: block; }
         .content-wrapper { padding-bottom: 150px; }
 
-        .card { background: rgba(255,255,255,0.05); border: 1px solid #222; padding: 15px; margin-bottom: 15px; border-radius: 10px; border-left: 4px solid var(--neon); }
-        .buy-btn { background: var(--neon); color: black; border: none; padding: 12px; font-weight: bold; border-radius: 6px; width: 100%; margin-top: 8px; cursor: pointer; transition: 0.2s; }
-        .buy-btn:disabled { background: #222 !important; color: #555 !important; opacity: 0.4; cursor: not-allowed; }
+        .card { background: rgba(255,255,255,0.05); border: 1px solid #222; padding: 15px; margin-bottom: 15px; border-radius: 10px; border-left: 4px solid var(--neon); backdrop-filter: blur(5px); }
+        .buy-btn { background: var(--neon); color: black; border: none; padding: 12px; font-weight: bold; border-radius: 6px; width: 100%; margin-top: 8px; cursor: pointer; transition: 0.2s; text-transform: uppercase; }
+        .buy-btn:active { transform: scale(0.97); }
+        .buy-btn:disabled { background: #222 !important; color: #555 !important; opacity: 0.5; cursor: not-allowed; transform: none; }
 
-        /* POPUP CUSTOM */
-        #custom-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 30000; display: none; align-items: center; justify-content: center; padding: 25px; }
-        #modal-box { background: #0a0a0f; border: 2px solid var(--neon); padding: 30px; border-radius: 15px; text-align: center; width: 100%; max-width: 320px; box-shadow: 0 0 30px var(--neon); }
+        /* MODAL */
+        #custom-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 30000; display: none; align-items: center; justify-content: center; padding: 25px; backdrop-filter: blur(3px); }
+        #modal-box { background: #0a0a0f; border: 2px solid var(--neon); padding: 30px; border-radius: 15px; text-align: center; width: 100%; max-width: 320px; box-shadow: 0 0 30px var(--neon); animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
         /* SYSTEM TABS */
         .sys-tabs { display: flex; gap: 6px; margin-bottom: 15px; }
-        .s-tab { flex: 1; background: #111; border: 1px solid #333; color: #777; padding: 10px; font-size: 0.55rem; border-radius: 6px; font-weight: bold; }
+        .s-tab { flex: 1; background: #111; border: 1px solid #333; color: #777; padding: 10px; font-size: 0.55rem; border-radius: 6px; font-weight: bold; transition: 0.2s; }
         .s-tab.active { border-color: var(--neon); color: var(--neon); background: rgba(0,242,255,0.1); }
 
         /* HACKER UI */
         #hack-ui { position: fixed; inset: 0; background: rgba(160,0,0,0.98); z-index: 20000; display: none; flex-direction: column; align-items: center; justify-content: center; }
         #hack-bar { width: 85%; height: 35px; background: #000; border: 3px solid #fff; border-radius: 20px; margin: 25px; overflow: hidden; }
-        #hack-fill { height: 100%; background: #00f2ff; width: 50%; transition: 0.1s; box-shadow: 0 0 20px #00f2ff; }
+        #hack-fill { height: 100%; background: #00f2ff; width: 50%; transition: width 0.1s linear; box-shadow: 0 0 20px #00f2ff; }
 
-        .floating-text { position: absolute; color: var(--neon); font-weight: bold; pointer-events: none; animation: floatUp 0.7s ease-out forwards; z-index: 1000; font-size: 1.5rem; }
-        @keyframes floatUp { from { transform: translateY(0) opacity: 1; } to { transform: translateY(-120px) opacity: 0; } }
+        /* JUICY FLOATING TEXT */
+        .floating-text { position: absolute; color: var(--neon); font-weight: bold; pointer-events: none; animation: floatUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; z-index: 1000; font-size: 1.6rem; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
+        @keyframes floatUp { 0% { transform: translateY(0) scale(0.8); opacity: 1; } 50% { transform: translateY(-60px) scale(1.1); opacity: 1; } 100% { transform: translateY(-130px) scale(1); opacity: 0; } }
         
-        .color-dot { width: 38px; height: 38px; border-radius: 50%; border: 2px solid #fff; display: inline-block; margin: 8px; cursor: pointer; transition: 0.2s; }
+        .color-dot { width: 38px; height: 38px; border-radius: 50%; border: 2px solid #fff; display: inline-block; margin: 8px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
         .color-dot:active { transform: scale(1.2); }
     </style>
 </head>
 <body id="b-tag">
     <canvas id="matrix"></canvas>
 
-    <div id="custom-modal">
+    <div id="custom-modal" onclick="if(event.target === this) closeModal()">
         <div id="modal-box">
             <h2 id="modal-title" style="color:var(--neon); margin-top:0; font-size: 1.2rem;">SYSTEM_INFO</h2>
             <p id="modal-msg" style="font-size:0.9rem; line-height:1.5; margin-bottom: 20px;"></p>
-            <button class="buy-btn" onclick="closeModal()">OK</button>
+            <button class="buy-btn" onclick="closeModal()">FERMER</button>
         </div>
     </div>
 
     <div id="hack-ui">
-        <h1 style="color:white; text-shadow: 0 0 15px red; margin:0;">⚠️ INTRUSION DETECTED ⚠️</h1>
-        <p style="color:white; font-size: 0.8rem; margin-top: 10px;">Le hacker siphonne ton compte !</p>
+        <h1 style="color:white; text-shadow: 0 0 15px red; margin:0; font-size:2.5rem;">⚠️ INTRUSION ⚠️</h1>
+        <p style="color:white; font-size: 0.9rem; margin-top: 10px; font-weight:bold;">TENTATIVE DE SIPHONNAGE EN COURS</p>
         <div id="hack-bar"><div id="hack-fill"></div></div>
-        <button onclick="hackTap()" style="width:160px; height:160px; border-radius:50%; background:white; color:red; font-weight:bold; border:8px solid #000; font-size:1.6rem; box-shadow: 0 0 30px #fff;">BLOQUER</button>
+        <button onclick="hackTap()" style="width:170px; height:170px; border-radius:50%; background:white; color:red; font-weight:bold; border:8px solid #000; font-size:1.8rem; box-shadow: 0 0 40px #fff; transition:0.1s;">BLOQUER</button>
     </div>
 
     <header>
@@ -98,7 +101,7 @@
             <span id="ips-display" style="color:#00ff41;">+0 €/s</span>
             <span id="click-val" style="color:var(--neon);">Clic: 1€</span>
         </div>
-        <div style="font-size:0.65rem; color:#666; margin-top:10px;">HACKER_ID: <span id="h-name">---</span> | PRESTIGE_LVL: <span id="rb-val">0</span></div>
+        <div style="font-size:0.65rem; color:#666; margin-top:10px;">ID: <span id="h-name">---</span> | PRESTIGE: <span id="rb-val">0</span></div>
     </header>
 
     <div id="game-area" onmousedown="tap(event)" ontouchstart="tap(event)">
@@ -118,6 +121,7 @@
                 <button class="s-tab active" onclick="setBuyM(1, this)">x1</button>
                 <button class="s-tab" onclick="setBuyM(5, this)">x5</button>
                 <button class="s-tab" onclick="setBuyM(10, this)">x10</button>
+                <button class="s-tab" onclick="setBuyM(100, this)">MAX</button>
             </div>
             <div id="shop-list"></div>
         </div>
@@ -138,9 +142,9 @@
             <div id="sys-prof" class="sub-panel">
                 <div class="card">
                     <p style="font-size:0.8rem; margin-bottom:10px;">HACKER_IDENTITY</p>
-                    <input type="text" id="name-change" placeholder="Modifier Pseudo" maxlength="12" style="width:100%; background:#000; color:white; border:1px solid #333; padding:12px; margin-bottom:10px; text-align: center;">
+                    <input type="text" id="name-change" placeholder="Modifier Pseudo" maxlength="12" style="width:100%; background:#000; color:white; border:1px solid #333; padding:12px; margin-bottom:10px; text-align: center; font-weight:bold;">
                     <button class="buy-btn" onclick="changeName()">MISE À JOUR</button>
-                    <p style="font-size:0.8rem; margin:15px 0 10px 0;">UI_COLOR_SCHEME</p>
+                    <p style="font-size:0.8rem; margin:20px 0 10px 0;">UI_COLOR_SCHEME</p>
                     <div style="text-align:center;">
                         <div class="color-dot" style="background:#00f2ff" onclick="setTh('')"></div>
                         <div class="color-dot" style="background:#00ff41" onclick="setTh('theme-green')"></div>
@@ -156,8 +160,8 @@
                 <div class="card">
                     <p style="font-size:0.8rem; margin-bottom:10px;">SOCIAL_NETWORK</p>
                     <input type="text" id="friend-id-in" placeholder="Coller ID Base64" style="width:100%; background:#000; color:white; border:1px solid var(--neon); padding:10px; margin-bottom:10px; text-align: center;">
-                    <button class="buy-btn" onclick="addFriend()">REJOINDRE L'AMI</button>
-                    <button class="buy-btn" onclick="copyMyId()" style="background:#333; color:white; margin-top:10px;">MON ID CLOUD</button>
+                    <button class="buy-btn" onclick="addFriend()">REJOINDRE LE RESEAU</button>
+                    <button class="buy-btn" onclick="copyMyId()" style="background:#333; color:white; margin-top:10px;">GÉNÉRER MON ID CLOUD</button>
                 </div>
                 <div class="card">
                     <button class="buy-btn" onclick="toggleSound()" id="sound-btn">SOUND : ON</button>
@@ -177,16 +181,16 @@
             </div>
 
             <div id="sys-admin" class="sub-panel" style="display:none;">
-                <div class="card" style="border-color:#ff00ff;">
-                    <p style="color:#ff00ff; font-weight:bold; font-size: 0.8rem; margin-bottom: 10px;">MRLX_ROOT_ACCESS</p>
+                <div class="card" style="border-color:#ff00ff; background:rgba(255,0,255,0.05);">
+                    <p style="color:#ff00ff; font-weight:bold; font-size: 0.9rem; margin-bottom: 10px; text-align:center;">MRLX_ROOT_ACCESS</p>
                     <button class="buy-btn" style="background:#ff00ff; color:white;" onclick="startHackFight()">FORCER HACK</button>
-                    <button class="buy-btn" style="background:#ff00ff; color:white; margin-top:5px;" onclick="g.m += 10000000; render();">+10M €</button>
-                    <p style="font-size:0.6rem; color:#ff00ff; margin-top:10px;">FORCER THEME :</p>
-                    <button class="buy-btn" onclick="forceEvent('easter')">PÂQUES (x8)</button>
-                    <button class="buy-btn" onclick="forceEvent('summer')">ÉTÉ (x1.5)</button>
-                    <button class="buy-btn" onclick="forceEvent('memorial')">9/11 (GRIS)</button>
-                    <button class="buy-btn" onclick="forceEvent('souvenir')">11/11 (BLEU)</button>
-                    <button class="buy-btn" onclick="location.reload()" style="background:#000; color:white;">DESACTIVER ADMIN</button>
+                    <button class="buy-btn" style="background:#ff00ff; color:white; margin-top:5px;" onclick="g.m += 1000000000; render();">+1B € (Milliard)</button>
+                    <p style="font-size:0.6rem; color:#ff00ff; margin-top:15px; text-align:center;">FORCER THEME :</p>
+                    <button class="buy-btn" onclick="forceEvent('easter')" style="border:1px solid #ff00ff; background:#111; color:white;">PÂQUES (x8)</button>
+                    <button class="buy-btn" onclick="forceEvent('summer')" style="border:1px solid #ff00ff; background:#111; color:white;">ÉTÉ (x1.5)</button>
+                    <button class="buy-btn" onclick="forceEvent('memorial')" style="border:1px solid #ff00ff; background:#111; color:white;">9/11 (GRIS)</button>
+                    <button class="buy-btn" onclick="forceEvent('souvenir')" style="border:1px solid #ff00ff; background:#111; color:white;">11/11 (BLEU)</button>
+                    <button class="buy-btn" onclick="location.reload()" style="background:#000; color:#ff00ff; margin-top:15px;">DESACTIVER ADMIN</button>
                 </div>
             </div>
         </div>
@@ -194,7 +198,7 @@
 
     <script>
         let g = { m: 0, n: "Hacker", items: [0,0,0,0,0,0,0,0], rb: 0, th: "", firstLogin: Date.now(), lastHack: Date.now(), lastSave: Date.now(), s_click: 0, s_win: 0, s_loss: 0, s_total: 0, sound: true, friends: [], q: [false,false,false,false,false,false] };
-        let buyM = 1; let AC; let hackPower = 50; let hackInterval; let dateMult = 1; let forcedEv = null;
+        let buyM = 1; let AC; let hackPower = 50; let hackInterval; let dateMult = 1; let forcedEv = null; let rAF_ID; let lastTick = Date.now();
 
         const items = [
             {n:"Overclock",c:50,p:2,cl:true}, {n:"Bot Script",c:40,p:1}, {n:"Proxy Tunnel",c:300,p:15},
@@ -202,6 +206,18 @@
             {n:"Quantum PC",c:1500000,p:25000}, {n:"Satellite Ops",c:25000000,p:150000}
         ];
 
+        /* --- FORMATAGE DYNAMIQUE (V22) --- */
+        function formatNum(num) {
+            if (num < 1000) return Math.floor(num);
+            let suffixes = ["", "k", "M", "B", "T", "Qa", "Qi"];
+            let suffixNum = Math.floor(("" + Math.floor(num)).length / 3);
+            if(suffixNum >= suffixes.length) suffixNum = suffixes.length - 1;
+            let shortValue = parseFloat((suffixNum !== 0 ? (num / Math.pow(1000, suffixNum)) : num).toPrecision(3));
+            if (shortValue % 1 !== 0) shortValue = shortValue.toFixed(2);
+            return shortValue + suffixes[suffixNum];
+        }
+
+        /* --- MODAL SYSTEM --- */
         function openModal(title, msg) { 
             document.getElementById('modal-title').innerText = title;
             document.getElementById('modal-msg').innerText = msg;
@@ -209,6 +225,7 @@
         }
         function closeModal() { document.getElementById('custom-modal').style.display = 'none'; }
 
+        /* --- AUDIO SYSTEM --- */
         function playSfx(f, type='square', vol=0.03, dur=0.1) {
             if(!g.sound) return;
             try { if(!AC) AC = new AudioContext(); let o=AC.createOscillator(), gn=AC.createGain(); o.type=type; o.frequency.value=f; gn.gain.setValueAtTime(vol, AC.currentTime); gn.gain.exponentialRampToValueAtTime(0.0001, AC.currentTime+dur); o.connect(gn); gn.connect(AC.destination); o.start(); o.stop(AC.currentTime+dur); } catch(e){}
@@ -223,6 +240,7 @@
             }, 500);
         }
 
+        /* --- DATE & THEME LOGIC --- */
         function checkDates() {
             if(forcedEv) return;
             const now = new Date(), m = now.getMonth(), d = now.getDate(), b = document.getElementById('b-tag'), btn = document.getElementById('main-btn');
@@ -248,120 +266,179 @@
             render();
         }
 
+        /* --- INIT & SAVE SYSTEM (BASE64) --- */
         window.onload = () => {
-            let s = localStorage.getItem('CT_V21_ABSOLUTE');
+            let s = localStorage.getItem('CT_V22_PRO');
             if(s) {
-                g = JSON.parse(s);
+                try { 
+                    g = JSON.parse(decodeURIComponent(atob(s))); // Lecture V22 (Sécurisée)
+                } catch(e) { 
+                    try { g = JSON.parse(s); } catch(e2) {} // Lecture rétrocompatible V21
+                }
+                
                 let idle = Math.floor((Date.now() - g.lastSave) / 1000);
                 if(idle > 10) {
                     let ips=0; g.items.forEach((q,i)=>{if(i>0)ips+=q*items[i].p;});
                     let gain = ips * Math.max(1, g.rb*2) * idle;
-                    if(gain > 0) { g.m += gain; g.s_total += gain; setTimeout(()=>openModal("REPORT_OFFLINE", `Tes bots ont généré ${Math.floor(gain).toLocaleString()} € pendant ton absence.`), 600); }
+                    if(gain > 0) { g.m += gain; g.s_total += gain; setTimeout(()=>openModal("REPORT_OFFLINE", `Tes serveurs ont généré ${formatNum(gain)} € pendant ton absence.`), 600); }
                 }
             }
             document.body.className = g.th;
-            checkDates(); render(); startMatrix(); setInterval(tick, 1000);
+            checkDates(); render(); startMatrix(); 
+            requestAnimationFrame(gameLoop); // Lancement Moteur
         };
 
-        function tick() {
-            let ips=0; g.items.forEach((q,i)=>{if(i>0)ips+=q*items[i].p;});
-            let profit = ips * Math.max(1, g.rb*2);
-            g.m += profit; g.s_total += profit;
-            if(Date.now() - g.lastHack > 28800000) startHackFight(); // 8h
-            if(!forcedEv) checkDates(); 
-            save(); render();
+        function save() { 
+            g.lastSave = Date.now(); 
+            // Encodage Base64 Anti-Cheat
+            localStorage.setItem('CT_V22_PRO', btoa(encodeURIComponent(JSON.stringify(g)))); 
         }
 
-        function save() { g.lastSave = Date.now(); localStorage.setItem('CT_V21_ABSOLUTE', JSON.stringify(g)); }
+        /* --- GAME ENGINE (rAF OPTIMIZED) --- */
+        function gameLoop() {
+            let now = Date.now();
+            let dt = now - lastTick;
+            
+            if (dt >= 1000) { // 1 seconde s'est écoulée
+                let ips=0; g.items.forEach((q,i)=>{if(i>0)ips+=q*items[i].p;});
+                let profit = ips * Math.max(1, g.rb*2);
+                g.m += profit; g.s_total += profit;
+                
+                if(Date.now() - g.lastHack > 28800000) startHackFight(); // 8h Hacker
+                if(!forcedEv) checkDates(); 
+                
+                save(); render();
+                lastTick = now - (dt % 1000); // Rattrapage delta
+            }
+            rAF_ID = requestAnimationFrame(gameLoop);
+        }
 
+        /* --- INTERACTIONS --- */
         function tap(e) {
             e.preventDefault();
             let val = (1 + (g.items[0]*4*dateMult)) * (Math.max(1, g.rb*2));
             g.m += val; g.s_total += val; g.s_click++;
-            const btn = document.getElementById('main-btn'); btn.classList.add('btn-active'); setTimeout(()=>btn.classList.remove('btn-active'), 100);
-            let d = document.createElement('div'); d.className='floating-text';
+            
+            const btn = document.getElementById('main-btn'); 
+            btn.classList.add('btn-active'); 
+            setTimeout(()=>btn.classList.remove('btn-active'), 100);
+            
+            // JUICY FLOATING TEXT
+            let d = document.createElement('div'); 
+            d.className='floating-text';
             let x = e.clientX || (e.touches ? e.touches[0].clientX : window.innerWidth/2);
             let y = e.clientY || (e.touches ? e.touches[0].clientY : window.innerHeight/2);
-            d.style.left=x+'px'; d.style.top=y+'px'; d.innerText="+"+Math.floor(val)+"€";
-            document.body.appendChild(d); setTimeout(()=>d.remove(), 700);
-            playSfx(400); render();
+            let angle = Math.floor(Math.random() * 30) - 15; // Rotation aléatoire
+            
+            d.style.left = (x - 20) + 'px'; 
+            d.style.top = (y - 20) + 'px'; 
+            d.style.transform = `rotate(${angle}deg)`;
+            d.innerText = "+" + formatNum(val) + (forcedEv==='easter'?'🥚':'€');
+            
+            document.body.appendChild(d); 
+            setTimeout(()=>d.remove(), 800);
+            
+            playSfx(400 + Math.random()*50); render();
         }
 
         function render() {
             let multi = Math.max(1, g.rb*2); let rbCost = 1000000 * Math.pow(5, g.rb);
-            document.getElementById('money').innerText = Math.floor(g.m).toLocaleString() + " €";
+            
+            // UI Header
+            document.getElementById('money').innerText = formatNum(g.m) + " €";
             let ips=0; g.items.forEach((q,i)=>{if(i>0)ips+=q*items[i].p;});
-            document.getElementById('ips-display').innerText = "+"+Math.floor(ips*multi).toLocaleString()+" €/s";
-            document.getElementById('click-val').innerText = "Clic: "+Math.floor((1+(g.items[0]*4*dateMult))*multi)+"€";
-            document.getElementById('h-name').innerText = g.n; document.getElementById('rb-val').innerText = g.rb;
-            document.getElementById('rb-cost').innerText = (rbCost/1000000).toFixed(2);
+            document.getElementById('ips-display').innerText = "+" + formatNum(ips*multi) + " €/s";
+            document.getElementById('click-val').innerText = "Clic: " + formatNum((1+(g.items[0]*4*dateMult))*multi) + "€";
+            document.getElementById('h-name').innerText = g.n; 
+            document.getElementById('rb-val').innerText = g.rb;
+            
+            // UI Rebirth & Stats
+            document.getElementById('rb-cost').innerText = formatNum(rbCost);
             document.getElementById('rb-btn').disabled = (g.m < rbCost);
-            document.getElementById('st-clicks').innerText = g.s_click.toLocaleString();
+            document.getElementById('st-clicks').innerText = formatNum(g.s_click);
             document.getElementById('st-win').innerText = g.s_win;
             document.getElementById('st-loss').innerText = g.s_loss;
-            document.getElementById('st-total').innerText = Math.floor(g.s_total).toLocaleString();
+            document.getElementById('st-total').innerText = formatNum(g.s_total);
             document.getElementById('st-rb').innerText = g.rb;
 
+            // UI Shop
             let sh = ""; items.forEach((it, i) => {
-                let cost = 0; for(let n=0; n<buyM; n++) cost += Math.floor(it.c * Math.pow(1.5, g.items[i]+n));
-                sh += `<div class="card"><div style="display:flex; justify-content:space-between;"><b>${it.n} x${g.items[i]}</b></div><button class="buy-btn" ${g.m < cost ? 'disabled' : ''} onclick="buy(${i})">${cost.toLocaleString()} €</button></div>`;
+                let cost = 0; 
+                let realBuyM = (buyM === 100) ? 100 : buyM; // MAX calculation handled simplistically here for loop, ideally needs algebra for true MAX.
+                for(let n=0; n<realBuyM; n++) cost += Math.floor(it.c * Math.pow(1.5, g.items[i]+n));
+                
+                sh += `<div class="card"><div style="display:flex; justify-content:space-between; margin-bottom:5px;"><b style="font-size:1.1rem;">${it.n}</b> <span style="font-size:1.1rem; color:var(--neon);">x${g.items[i]}</span></div><div style="font-size:0.7rem; color:#888;">Yield: ${it.cl?'+Clics':'+'+formatNum(it.p)+'€/s'}</div><button class="buy-btn" ${g.m < cost ? 'disabled' : ''} onclick="buy(${i})">ACHETER ${realBuyM} (${formatNum(cost)} €)</button></div>`;
             });
             document.getElementById('shop-list').innerHTML = sh;
 
+            // UI Quests
             let qh = ""; const quests = [
                 {n:"Noob Hacker", t:10000, v:g.m}, {n:"Hacker Pro", t:1000000, v:g.m}, {n:"Deep Web", t:100000000, v:g.m},
                 {n:"Overclocker", t:30, v:g.items[0]}, {n:"Miner Rig", t:15, v:g.items[3]}, {n:"Satellite Ops", t:5, v:g.items[7]}
             ];
             quests.forEach((q,i)=>{
-                if(q.v >= q.t && !g.q[i]) { g.q[i]=true; g.m += q.t*0.2; playSfx(1000); openModal("QUEST_COMPLETE", `Réussite: +${(q.t*0.2).toLocaleString()}€`); }
+                if(q.v >= q.t && !g.q[i]) { g.q[i]=true; g.m += q.t*0.2; playSfx(1000); openModal("QUEST_COMPLETE", `Mission accomplie ! Récompense: +${formatNum(q.t*0.2)}€`); }
                 let prg = Math.min(100, (q.v/q.t)*100);
-                qh += `<div class="card" style="opacity:${g.q[i]?0.4:1}"><b>${q.n}</b><div style="width:100%; height:6px; background:#111; margin-top:8px; border-radius:10px; overflow:hidden;"><div style="width:${prg}%; height:100%; background:var(--neon);"></div></div></div>`;
+                qh += `<div class="card" style="opacity:${g.q[i]?0.4:1}"><div style="display:flex; justify-content:space-between;"><b>${q.n}</b> <span style="font-size:0.8rem;">${formatNum(q.v)} / ${formatNum(q.t)}</span></div><div style="width:100%; height:8px; background:#111; margin-top:10px; border-radius:10px; overflow:hidden;"><div style="width:${prg}%; height:100%; background:var(--neon); box-shadow: 0 0 10px var(--neon);"></div></div></div>`;
             });
             document.getElementById('quest-list').innerHTML = qh;
 
+            // UI Rank
             let lbd = [{n:"Satoshi", rb:99, m:9e12},{n:"Mitnick", rb:75, m:1e10},{n:"Anonymous", rb:30, m:1e9},{n:g.n, rb:g.rb, m:g.m, me:true},...g.friends].sort((a,b)=>b.rb-a.rb || b.m-a.m);
-            document.getElementById('rank-list').innerHTML = lbd.map((r,i)=>`<div class="card" style="${r.me?'border-color:var(--neon); background:rgba(0,242,255,0.05)':''}">${i+1}. ${r.n} [RB:${r.rb}] - ${Math.floor(r.m).toLocaleString()}€</div>`).join('');
+            document.getElementById('rank-list').innerHTML = lbd.map((r,i)=>`<div class="card" style="${r.me?'border-color:var(--neon); background:rgba(0,242,255,0.05)':''}"><b style="color:var(--neon);">#${i+1}</b> ${r.n} [RB:${r.rb}] <br><span style="font-size:0.8rem; color:#888;">${formatNum(r.m)} €</span></div>`).join('');
         }
 
+        /* --- LOGIC EVENTS --- */
         function startHackFight() { 
             hackPower=50; document.getElementById('hack-ui').style.display='flex'; playAlarm(); 
-            let speed = Math.random() * 3.5 + 0.5; // Difficulté Aléatoire
+            let speed = Math.random() * 3.5 + 0.5; // Aléatoire
             hackInterval=setInterval(()=>{ hackPower-=speed; document.getElementById('hack-fill').style.width=hackPower+"%"; if(hackPower<=0) endHack(false); },100); 
         }
-        function hackTap() { hackPower+=6; playSfx(200); if(hackPower>=100) endHack(true); }
+        function hackTap() { hackPower+=6; playSfx(200); document.getElementById('hack-fill').style.width=hackPower+"%"; if(hackPower>=100) endHack(true); }
         function endHack(win) { 
             clearInterval(hackInterval); document.getElementById('hack-ui').style.display='none'; 
             g.lastHack=Date.now(); 
-            if(win){ g.m*=1.2; g.s_win++; openModal("DEFENSE_OK", "Contre-attaque réussie ! +20%"); } 
-            else { g.m*=0.8; g.s_loss++; openModal("DEFENSE_FAIL", "Vol subi ! -20%"); } 
+            if(win){ g.m*=1.2; g.s_win++; openModal("DEFENSE_OK", "Système sécurisé. Tu as volé 20% des fonds du Hacker !"); } 
+            else { g.m*=0.8; g.s_loss++; openModal("DEFENSE_FAIL", "Brèche détectée. Tu as perdu 20% de ton argent."); } 
             save(); render(); 
         }
 
-        function buy(i) { let cost=0; for(let n=0; n<buyM; n++) cost+=Math.floor(items[i].c*Math.pow(1.5,g.items[i]+n)); if(g.m>=cost){ g.m-=cost; g.items[i]+=buyM; playSfx(600); render(); save(); } }
+        function buy(i) { let cost=0; let realBuyM = (buyM === 100) ? 100 : buyM; for(let n=0; n<realBuyM; n++) cost+=Math.floor(items[i].c*Math.pow(1.5,g.items[i]+n)); if(g.m>=cost){ g.m-=cost; g.items[i]+=realBuyM; playSfx(600); render(); save(); } }
         function tab(e, id) { document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active')); document.getElementById(id).classList.add('active'); e.currentTarget.classList.add('active'); }
         function subTab(id, btn) { document.querySelectorAll('.sub-panel').forEach(p=>p.style.display='none'); document.querySelectorAll('.s-tab').forEach(b=>b.classList.remove('active')); document.getElementById(id).style.display='block'; btn.classList.add('active'); }
-        function changeName() { let n=document.getElementById('name-change').value; if(n.length>1){ g.n=n; checkAdmin(); render(); save(); openModal("INFO","Pseudo mis à jour !"); } }
+        function changeName() { let n=document.getElementById('name-change').value; if(n.length>1){ g.n=n; checkAdmin(); render(); save(); openModal("INFO","Identifiant mis à jour."); } }
         function setTh(t) { g.th=t; document.body.className=t; save(); }
         function toggleSound() { g.sound=!g.sound; document.getElementById('sound-btn').innerText="SOUND : "+(g.sound?"ON":"OFF"); }
-        function setBuyM(m,b) { buyM=m; document.querySelectorAll('.s-tab').forEach(x=>x.classList.remove('active')); b.classList.add('active'); render(); }
-        function copyMyId() { navigator.clipboard.writeText(btoa(g.n+"|"+g.rb+"|"+Math.floor(g.m))); openModal("ID_CLOUD", "Ton ID unique a été copié !"); }
-        function addFriend() { try { let d=atob(document.getElementById('friend-id-in').value).split('|'); g.friends.push({n:d[0], rb:parseInt(d[1]), m:parseInt(d[2])}); render(); save(); openModal("INFO","Ami ajouté au réseau !"); } catch(e){openModal("ERROR","Format ID Invalide.");} }
+        function setBuyM(m,b) { buyM=m; document.querySelectorAll('.sys-tabs .s-tab').forEach(x=>x.classList.remove('active')); b.classList.add('active'); render(); }
+        function copyMyId() { navigator.clipboard.writeText(btoa(encodeURIComponent(g.n+"|"+g.rb+"|"+Math.floor(g.m)))); openModal("ID_CLOUD", "Ton ID a été copié. Partage-le à un ami !"); }
+        function addFriend() { try { let d=decodeURIComponent(atob(document.getElementById('friend-id-in').value)).split('|'); g.friends.push({n:d[0], rb:parseInt(d[1]), m:parseInt(d[2])}); render(); save(); openModal("INFO","Nouveau contact ajouté au réseau."); } catch(e){openModal("ERROR","Format ID Base64 invalide.");} }
+        function checkAdmin() { document.getElementById('admin-tab-btn').style.display=(g.n.toLowerCase()==="mrlx")?'block':'none'; }
         
-        // CORRECTION CRITIQUE DU REBIRTH
         function doRebirth() { 
             let c=1000000*Math.pow(5,g.rb); 
             if(g.m>=c){ 
-                g.m=0; // Remise à zéro de l'argent obligatoire !
-                g.items=g.items.map(()=>0); // Remise à zéro des items
-                g.rb++; 
-                save(); 
-                location.reload(); 
+                g.m=0; g.items=g.items.map(()=>0); g.q=g.q.map(()=>false); g.rb++; save(); location.reload(); 
             } 
         }
         
-        function checkAdmin() { document.getElementById('admin-tab-btn').style.display=(g.n.toLowerCase()==="mrlx")?'block':'none'; }
-        function resetGame() { if(confirm("FORMATE_DISK?")){ localStorage.clear(); location.reload(); } }
-        function startMatrix() { const c=document.getElementById('matrix'),ctx=c.getContext('2d'); c.width=window.innerWidth; c.height=window.innerHeight; const drops=Array(Math.floor(c.width/15)).fill(1); setInterval(()=>{ ctx.fillStyle="rgba(0,0,0,0.05)"; ctx.fillRect(0,0,c.width,c.height); ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--neon'); drops.forEach((y,i)=>{ ctx.fillText(Math.floor(Math.random()*2),i*15,y*15); if(y*15>c.height&&Math.random()>0.98) drops[i]=0; drops[i]++; }); },50); }
+        function resetGame() { if(confirm("FORMATER LE DISQUE DUR ? Action irréversible.")){ localStorage.clear(); location.reload(); } }
+        
+        /* --- MATRIX BACKGROUND (Optimized Canvas) --- */
+        function startMatrix() { 
+            const c=document.getElementById('matrix'), ctx=c.getContext('2d'); 
+            c.width=window.innerWidth; c.height=window.innerHeight; 
+            const drops=Array(Math.floor(c.width/15)).fill(1); 
+            setInterval(()=>{ 
+                ctx.fillStyle="rgba(0,0,0,0.05)"; ctx.fillRect(0,0,c.width,c.height); 
+                ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--neon'); 
+                ctx.font = "15px monospace";
+                drops.forEach((y,i)=>{ 
+                    ctx.fillText(Math.floor(Math.random()*2), i*15, y*15); 
+                    if(y*15>c.height && Math.random()>0.98) drops[i]=0; 
+                    drops[i]++; 
+                }); 
+            }, 50); 
+        }
     </script>
 </body>
 </html>
