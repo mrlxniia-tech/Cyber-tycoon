@@ -3,49 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cyber Tycoon V11.1 - Fixed Edition</title>
+    <title>Cyber Tycoon V11.3 - Full Tap</title>
     <style>
         :root { --neon: #00f2ff; --bg: #010103; --card: rgba(10, 10, 15, 0.98); }
         .theme-welcome { --neon: #0077ff !important; }
         .theme-green { --neon: #00ff41 !important; } .theme-red { --neon: #ff003c !important; } 
-        .theme-gold { --neon: #ffcc00 !important; } .theme-summer { --neon: #ffaa00 !important; }
-        .theme-memorial { --neon: #aaaaaa !important; } .theme-souvenir { --neon: #3366ff !important; }
-        .theme-purple { --neon: #bc13fe !important; } .theme-white { --neon: #ffffff !important; }
+        .theme-gold { --neon: #ffcc00 !important; } .theme-purple { --neon: #bc13fe !important; }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Courier New', monospace; outline: none; }
-        body { background: var(--bg); color: white; margin: 0; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+        body { background: var(--bg); color: white; margin: 0; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         #matrix { position: fixed; inset: 0; z-index: -1; opacity: 0.15; }
 
-        /* HEADER */
-        header { height: 130px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; border-bottom: 2px solid var(--neon); background: var(--card); box-shadow: 0 0 15px var(--neon); z-index: 10; }
-        #money { font-size: 2.2rem; font-weight: bold; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
-        .stats-row { display: flex; gap: 15px; font-size: 0.8rem; font-weight: bold; margin-top: 5px; }
+        header { height: 120px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; border-bottom: 2px solid var(--neon); background: var(--card); z-index: 10; }
+        #money { font-size: 2rem; font-weight: bold; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
+        .stats-row { display: flex; gap: 15px; font-size: 0.75rem; font-weight: bold; }
         
-        /* CLICKER */
-        #game-area { height: 25vh; flex-shrink: 0; display: flex; align-items: center; justify-content: center; position: relative; }
-        #main-btn { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--neon); background: rgba(0,0,0,0.4); color: var(--neon); font-size: 3rem; transition: 0.1s; z-index: 10; cursor: pointer; }
-        #main-btn:active { transform: scale(0.9); box-shadow: 0 0 30px var(--neon); }
+        /* ZONE DE CLIC ÉTENDUE */
+        #game-area { flex-grow: 1; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; z-index: 5; }
+        #main-btn { width: 110px; height: 110px; border-radius: 50%; border: 4px solid var(--neon); background: rgba(0,0,0,0.6); color: var(--neon); font-size: 2.5rem; transition: 0.1s; pointer-events: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(0,242,255,0.2); }
+        .btn-active { transform: scale(0.9); box-shadow: 0 0 30px var(--neon) !important; }
 
-        .floating-text { position: absolute; color: var(--neon); font-weight: bold; pointer-events: none; animation: floatUp 0.8s ease-out forwards; z-index: 100; font-size: 1.2rem; }
-        @keyframes floatUp { from { transform: translateY(0) opacity: 1; } to { transform: translateY(-100px) opacity: 0; } }
+        nav { display: flex; background: #000; height: 65px; border-top: 1px solid #333; flex-shrink: 0; z-index: 100; }
+        .nav-btn { flex: 1; border: none; background: none; color: #555; font-size: 0.65rem; font-weight: bold; }
+        .nav-btn.active { color: var(--neon); border-bottom: 4px solid var(--neon); }
 
-        /* NAV & PANELS */
-        nav { display: flex; background: #000; height: 60px; border-top: 1px solid #333; flex-shrink: 0; }
-        .nav-btn { flex: 1; border: none; background: none; color: #555; font-size: 0.65rem; font-weight: bold; cursor: pointer; }
-        .nav-btn.active { color: var(--neon); border-bottom: 3px solid var(--neon); }
-
-        .panel { flex-grow: 1; overflow-y: auto; padding: 20px; display: none; padding-bottom: 40px; }
+        .panel { height: 50vh; overflow-y: auto; padding: 15px; display: none; -webkit-overflow-scrolling: touch; background: var(--bg); }
         .panel.active { display: block; }
-        .card { background: rgba(255,255,255,0.05); border: 1px solid #222; padding: 15px; margin-bottom: 12px; border-radius: 8px; border-left: 4px solid var(--neon); }
+        .content-wrapper { padding-bottom: 150px; }
+
+        .card { background: rgba(255,255,255,0.05); border: 1px solid #222; padding: 12px; margin-bottom: 10px; border-radius: 8px; border-left: 4px solid var(--neon); }
         .buy-btn { background: var(--neon); color: black; border: none; padding: 12px; font-weight: bold; border-radius: 4px; width: 100%; margin-top: 5px; cursor: pointer; }
-        .buy-btn:disabled { background: #222; color: #555; cursor: not-allowed; }
+        .buy-btn:disabled { background: #222; color: #555; }
         
-        /* EXTRAS */
-        #event-bubble { position: fixed; left: -180px; top: 40%; transform: translateY(-50%); background: var(--neon); color: black; padding: 12px 20px; border-radius: 0 25px 25px 0; font-weight: bold; font-size: 0.75rem; transition: 0.5s; z-index: 1000; cursor: pointer; }
+        .floating-text { position: absolute; color: var(--neon); font-weight: bold; pointer-events: none; animation: floatUp 0.6s ease-out forwards; z-index: 1000; }
+        @keyframes floatUp { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-80px); opacity: 0; } }
+
+        #event-bubble { position: fixed; left: -180px; top: 20%; transform: translateY(-50%); background: var(--neon); color: black; padding: 10px 15px; border-radius: 0 20px 20px 0; font-weight: bold; font-size: 0.7rem; transition: 0.5s; z-index: 1000; }
         #event-bubble.active { left: 0; }
         #welcome-screen { position: fixed; inset: 0; background: #000; z-index: 10000; display: flex; align-items: center; justify-content: center; }
-        #welcome-box { width: 85%; max-width: 350px; padding: 30px; border: 2px solid var(--neon); text-align: center; background: #05050a; }
-        .color-dot { width: 35px; height: 35px; border-radius: 50%; border: 2px solid white; display: inline-block; margin: 8px; cursor: pointer; }
+        #welcome-box { width: 85%; padding: 25px; border: 2px solid var(--neon); text-align: center; background: #05050a; }
     </style>
 </head>
 <body id="b-tag">
@@ -54,10 +50,9 @@
 
     <div id="welcome-screen">
         <div id="welcome-box">
-            <h2 style="color:var(--neon); margin:0;">CYBER_TYCOON</h2>
-            <p style="font-size:0.6rem; color:#666; margin-bottom:20px;">INITIALISATION V11.1</p>
-            <input type="text" id="p-input" placeholder="NOM_DU_HACKER" maxlength="12" style="width:100%; background:#111; border:1px solid #333; color:white; padding:15px; margin-bottom:20px; text-align:center;">
-            <button onclick="startGame()" style="width:100%; background:var(--neon); color:black; border:none; padding:15px; font-weight:bold;">ACCÈS SYSTÈME</button>
+            <h2 style="color:var(--neon);">CYBER_TYCOON</h2>
+            <input type="text" id="p-input" placeholder="NOM_DU_HACKER" maxlength="12" style="width:100%; background:#111; border:1px solid #333; color:white; padding:12px; margin-bottom:15px; text-align:center;">
+            <button onclick="startGame()" style="width:100%; background:var(--neon); color:black; border:none; padding:12px; font-weight:bold;">INITIALISER</button>
         </div>
     </div>
 
@@ -67,67 +62,85 @@
             <span id="ips-display" style="color:#00ff41;">+0 €/s</span>
             <span id="click-val" style="color:var(--neon);">Clic: 1€</span>
         </div>
-        <div style="font-size:0.6rem; color:#666; margin-top:8px;">ID: <span id="h-name">---</span> | RB: <span id="rb-val">0</span></div>
+        <div style="font-size:0.6rem; color:#666; margin-top:5px;">USER: <span id="h-name">---</span> | RB: <span id="rb-val">0</span></div>
     </header>
 
-    <div id="game-area"><button id="main-btn" onclick="tap(event)">$</button></div>
+    <div id="game-area" onmousedown="tap(event)" ontouchstart="tap(event)">
+        <div id="main-btn">$</div>
+    </div>
 
     <nav>
-        <button class="nav-btn active" onclick="tab(event, 'shop')">BOUTIQUE</button>
-        <button class="nav-btn" onclick="tab(event, 'quest')">MISSIONS</button>
+        <button class="nav-btn active" onclick="tab(event, 'shop')">SHOP</button>
+        <button class="nav-btn" onclick="tab(event, 'quest')">QUÊTES</button>
         <button class="nav-btn" onclick="tab(event, 'rank')">RÉSEAU</button>
-        <button class="nav-btn" onclick="tab(event, 'config')">SYSTÈME</button>
+        <button class="nav-btn" onclick="tab(event, 'config')">SYSTEM</button>
     </nav>
 
-    <div id="shop" class="panel active"><div id="shop-list"></div></div>
-    <div id="quest" class="panel"><div id="quest-list"></div></div>
-    <div id="rank" class="panel"><div id="rank-list"></div></div>
+    <div id="shop" class="panel active"><div class="content-wrapper" id="shop-list"></div></div>
+    <div id="quest" class="panel"><div class="content-wrapper" id="quest-list"></div></div>
+    <div id="rank" class="panel"><div class="content-wrapper" id="rank-list"></div></div>
 
     <div id="config" class="panel">
-        <div class="card">
-            <p style="font-size:0.8rem; margin:0;">REBIRTH (PRESTIGE)</p>
-            <small style="color:#666;">Multiplie tous les gains par 2 (cumulatif).</small>
-            <button class="buy-btn" id="rb-btn" onclick="doRebirth()" disabled style="margin-top:10px;">LANCER (1M €)</button>
+        <div class="content-wrapper">
+            <div class="card">
+                <p style="font-size:0.8rem; margin:0;">REBIRTH (PRESTIGE)</p>
+                <button class="buy-btn" id="rb-btn" onclick="doRebirth()" disabled>RESET + MULTI x2 (1M €)</button>
+            </div>
+            <div class="card">
+                <p style="margin:0 0 10px 0; font-size:0.8rem;">THEMES</p>
+                <button onclick="setTh('')" style="background:#00f2ff; width:30px; height:30px; border-radius:50%; border:none; margin:5px;"></button>
+                <button onclick="setTh('theme-green')" style="background:#00ff41; width:30px; height:30px; border-radius:50%; border:none; margin:5px;"></button>
+                <button onclick="setTh('theme-red')" style="background:#ff003c; width:30px; height:30px; border-radius:50%; border:none; margin:5px;"></button>
+                <button onclick="setTh('theme-purple')" style="background:#bc13fe; width:30px; height:30px; border-radius:50%; border:none; margin:5px;"></button>
+            </div>
+            <div class="card">
+                <p style="margin:0 0 10px 0; font-size:0.8rem;">ID SOCIAL</p>
+                <input type="text" id="my-id" readonly style="width:100%; background:#000; color:var(--neon); border:none; text-align:center; font-size:0.7rem; padding:8px;">
+                <button class="buy-btn" onclick="copyId()" style="background:#333; color:white;">COPIER ID</button>
+                <input type="text" id="friend-in" placeholder="ID AMI" style="width:100%; background:#000; color:white; border:1px solid var(--neon); margin-top:10px; padding:8px; text-align:center;">
+                <button class="buy-btn" onclick="addFriend()">AJOUTER</button>
+            </div>
+            <button onclick="resetGame()" style="margin-top:20px; width:100%; background:none; border:1px solid red; color:red; padding:12px; font-size:0.7rem; font-weight:bold; border-radius:5px;">☢️ RÉINITIALISER TOUT ☢️</button>
         </div>
-        <div class="card">
-            <p style="margin:0 0 10px 0;">COULEURS</p>
-            <div class="color-dot" style="background:#00f2ff" onclick="setTh('')"></div>
-            <div class="color-dot" style="background:#00ff41" onclick="setTh('theme-green')"></div>
-            <div class="color-dot" style="background:#ff003c" onclick="setTh('theme-red')"></div>
-            <div class="color-dot" style="background:#ffcc00" onclick="setTh('theme-gold')"></div>
-            <div class="color-dot" style="background:#bc13fe" onclick="setTh('theme-purple')"></div>
-            <div class="color-dot" style="background:#ffffff" onclick="setTh('theme-white')"></div>
-        </div>
-        <div class="card">
-            <p style="margin:0 0 10px 0;">ID SOCIAL</p>
-            <input type="text" id="my-id" readonly style="width:100%; background:#000; color:var(--neon); border:none; text-align:center; font-size:0.7rem; padding:10px;">
-            <button class="buy-btn" onclick="copyId()" style="background:#333; color:white;">COPIER MON ID</button>
-            <input type="text" id="friend-in" placeholder="ID DE L'AMI" style="width:100%; background:#000; color:white; border:1px solid var(--neon); margin-top:10px; padding:10px; text-align:center;">
-            <button class="buy-btn" onclick="addFriend()">REJOINDRE</button>
-        </div>
-        <button onclick="resetGame()" style="margin-top:20px; width:100%; background:none; border:1px solid red; color:red; padding:10px; font-size:0.7rem;">RÉINITIALISER TOUT</button>
     </div>
 
     <script>
-        let g = { m: 0, n: "Hacker", items: [0,0,0,0,0], rb: 0, th: "", lastClaim: 0, firstLogin: Date.now(), q: [false,false,false], friends: [] };
-        const items = [{ n: "Overclock", c: 50, p: 2 }, { n: "Script", c: 20, p: 1 }, { n: "Proxy", c: 200, p: 10 }, { n: "Rack", c: 2000, p: 60 }, { n: "Neural", c: 50000, p: 1500 }];
-        let AC;
+        let g = { m: 0, n: "Hacker", items: [0,0,0,0,0,0,0,0], rb: 0, th: "", lastClaim: 0, firstLogin: Date.now(), q: [false,false,false,false,false], friends: [] };
+        
+        const items = [
+            { n: "CPU Overclock", c: 50, p: 2, click: true },
+            { n: "Script Auto", c: 30, p: 1 },
+            { n: "Proxy Serveur", c: 250, p: 12 },
+            { n: "Mining Rig", c: 2500, p: 85 },
+            { n: "Mainframe IA", c: 25000, p: 650 },
+            { n: "Neural Link", c: 150000, p: 3200 },
+            { n: "Cluster Quantum", c: 1000000, p: 18000 },
+            { n: "Satellite Pirate", c: 15000000, p: 120000 }
+        ];
 
+        let AC;
         function playSfx(f) {
-            try { if(!AC) AC = new (window.AudioContext || window.webkitAudioContext)(); let o = AC.createOscillator(), gn = AC.createGain(); o.type = 'square'; o.frequency.value = f; gn.gain.setValueAtTime(0.04, AC.currentTime); gn.gain.exponentialRampToValueAtTime(0.0001, AC.currentTime + 0.1); o.connect(gn); gn.connect(AC.destination); o.start(); o.stop(AC.currentTime + 0.1); } catch(e) {}
+            try { if(!AC) AC = new (window.AudioContext || window.webkitAudioContext)(); let o = AC.createOscillator(), gn = AC.createGain(); o.type = 'square'; o.frequency.value = f; gn.gain.setValueAtTime(0.02, AC.currentTime); gn.gain.exponentialRampToValueAtTime(0.0001, AC.currentTime + 0.1); o.connect(gn); gn.connect(AC.destination); o.start(); o.stop(AC.currentTime + 0.1); } catch(e) {}
         }
 
         function checkDates() {
-            const now = new Date(), m = now.getMonth(), d = now.getDate(), b = document.getElementById('b-tag'), bubble = document.getElementById('event-bubble');
-            let ev = false;
-            if (Date.now() - g.firstLogin < 259200000) { b.className = "theme-welcome"; bubble.innerText = "🚀 DÉBUTANT x2"; ev = true; }
-            if(!ev) { b.className = g.th; if(Date.now() - g.lastClaim > 86400000) bubble.classList.add('active'); else bubble.classList.remove('active'); }
-            else bubble.classList.add('active');
+            const bubble = document.getElementById('event-bubble');
+            if (Date.now() - g.firstLogin < 259200000) { 
+                document.getElementById('b-tag').className = "theme-welcome"; 
+                bubble.innerText = "🚀 BONUS DÉBUTANT x2";
+                bubble.classList.add('active');
+            } else {
+                document.getElementById('b-tag').className = g.th;
+                if(Date.now() - g.lastClaim > 86400000) bubble.classList.add('active'); else bubble.classList.remove('active');
+            }
         }
 
         window.onload = () => {
-            let s = localStorage.getItem('CT_V11');
-            if(s) { g = JSON.parse(s); if(!g.friends) g.friends = []; document.getElementById('welcome-screen').style.display = 'none'; }
+            let s = localStorage.getItem('CT_V11_3');
+            if(s) { 
+                g = JSON.parse(s);
+                document.getElementById('welcome-screen').style.display = 'none'; 
+            }
             checkDates(); render(); startMatrix(); setInterval(tick, 1000);
         };
 
@@ -140,14 +153,25 @@
         }
 
         function tap(e) {
-            let mult = (document.getElementById('b-tag').classList.contains('theme-welcome')) ? 2 : 1;
-            let val = (1 + (g.items[0] * 2 * mult)) * (Math.max(1, g.rb * 2));
-            g.m += val; playSfx(400); 
+            e.preventDefault();
+            let multi = (document.getElementById('b-tag').classList.contains('theme-welcome')) ? 2 : 1;
+            let val = (1 + (g.items[0] * 3 * multi)) * (Math.max(1, g.rb * 2));
+            g.m += val; 
+            
+            // Effet visuel bouton
+            const btn = document.getElementById('main-btn');
+            btn.classList.add('btn-active');
+            setTimeout(() => btn.classList.remove('btn-active'), 100);
+
+            // Effet flottant
             let d = document.createElement('div'); d.className = 'floating-text';
-            d.style.left = (e.clientX || window.innerWidth/2) + 'px'; d.style.top = (e.clientY || window.innerHeight/2) + 'px';
+            let x = e.clientX || (e.touches ? e.touches[0].clientX : window.innerWidth/2);
+            let y = e.clientY || (e.touches ? e.touches[0].clientY : window.innerHeight/2);
+            d.style.left = x + 'px'; d.style.top = y + 'px';
             d.innerText = "+" + Math.floor(val) + "€"; document.body.appendChild(d);
-            setTimeout(() => d.remove(), 800);
-            render(); save();
+            setTimeout(() => d.remove(), 600);
+
+            playSfx(400); render(); save();
         }
 
         function tick() {
@@ -157,12 +181,13 @@
         }
 
         function render() {
+            let multi = Math.max(1, g.rb * 2);
             document.getElementById('money').innerText = Math.floor(g.m).toLocaleString() + " €";
             let ips = 0; g.items.forEach((q, i) => { if(i>0) ips += q * items[i].p; });
-            document.getElementById('ips-display').innerText = "+" + Math.floor(ips * Math.max(1, g.rb * 2)).toLocaleString() + " €/s";
+            document.getElementById('ips-display').innerText = "+" + Math.floor(ips * multi).toLocaleString() + " €/s";
             
-            let mult = (document.getElementById('b-tag').classList.contains('theme-welcome')) ? 2 : 1;
-            document.getElementById('click-val').innerText = "Clic: " + (1 + (g.items[0] * 2 * mult)) * (Math.max(1, g.rb * 2)) + "€";
+            let clickMult = (document.getElementById('b-tag').classList.contains('theme-welcome')) ? 2 : 1;
+            document.getElementById('click-val').innerText = "Clic: " + Math.floor((1 + (g.items[0] * 3 * clickMult)) * multi) + "€";
             
             document.getElementById('h-name').innerText = g.n;
             document.getElementById('rb-val').innerText = g.rb;
@@ -170,28 +195,34 @@
             document.getElementById('my-id').value = btoa(g.n + "|" + Math.floor(g.m));
 
             let sh = ""; items.forEach((it, i) => {
-                let cost = Math.floor(it.c * Math.pow(1.6, g.items[i]));
-                sh += `<div class="card"><div style="display:flex; justify-content:space-between;"><b>${it.n}</b><span>x${g.items[i]}</span></div><button class="buy-btn" ${g.m < cost ? 'disabled' : ''} onclick="buy(${i})">${cost.toLocaleString()} €</button></div>`;
+                let cost = Math.floor(it.c * Math.pow(1.5, g.items[i]));
+                sh += `<div class="card"><div style="display:flex; justify-content:space-between;"><b>${it.n}</b><span>x${g.items[i]}</span></div><div style="font-size:0.6rem; color:#888;">${it.click ? 'Améliore le clic' : '+'+it.p+'€/s'}</div><button class="buy-btn" ${g.m < cost ? 'disabled' : ''} onclick="buy(${i})">${cost.toLocaleString()} €</button></div>`;
             });
             document.getElementById('shop-list').innerHTML = sh;
 
-            let qh = ""; const quests = [{n:"Premier Million", t:1000000, v:g.m}, {n:"Hacker Pro", t:10000, v:g.m}, {n:"Station de Hack", t:20, v:g.items[0]}];
+            let qh = ""; const quests = [
+                {n:"Petit Hacker", t:10000, v:g.m},
+                {n:"Le Million !", t:1000000, v:g.m},
+                {n:"Empire Digital", t:100000000, v:g.m},
+                {n:"Hardware Master", t:50, v:g.items[0]},
+                {n:"Ferme de Minage", t:20, v:g.items[3]}
+            ];
             quests.forEach((q,i)=>{
-                if(q.v >= q.t && !g.q[i]) { g.q[i]=true; g.m += q.t*0.1; playSfx(800); }
-                qh += `<div class="card" style="opacity:${g.q[i]?0.4:1}">${q.n} [${Math.min(Math.floor(q.v),q.t).toLocaleString()}/${q.t.toLocaleString()}] ${g.q[i]?'✅':''}</div>`;
+                if(q.v >= q.t && !g.q[i]) { g.q[i]=true; g.m += q.t*0.2; playSfx(800); }
+                qh += `<div class="card" style="opacity:${g.q[i]?0.4:1}">${q.n}<br><small>${Math.min(Math.floor(q.v),q.t).toLocaleString()} / ${q.t.toLocaleString()}</small> ${g.q[i]?'✅':''}</div>`;
             });
             document.getElementById('quest-list').innerHTML = qh;
 
-            let lbd = [{n:"Satoshi", m:1000000000}, {n:g.n, m:g.m, me:true}, ...(g.friends || [])].sort((a,b)=>b.m-a.m);
+            let lbd = [{n:"Satoshi_N", m:999999999}, {n:"Deep_Blue", m:50000000}, {n:g.n, m:g.m, me:true}, ...(g.friends || [])].sort((a,b)=>b.m-a.m);
             document.getElementById('rank-list').innerHTML = lbd.map((r,i)=>`<div class="card" style="${r.me?'border-color:var(--neon); background:rgba(0,242,255,0.1)':''}">${i+1}. ${r.n} - ${Math.floor(r.m).toLocaleString()}€</div>`).join('');
         }
 
         function buy(i) {
-            let cost = Math.floor(items[i].c * Math.pow(1.6, g.items[i]));
+            let cost = Math.floor(items[i].c * Math.pow(1.5, g.items[i]));
             if(g.m >= cost) { g.m -= cost; g.items[i]++; playSfx(600); render(); save(); }
         }
 
-        function claimDailyReward() { if(Date.now()-g.lastClaim > 86400000) { g.m += 5000; g.lastClaim=Date.now(); alert("Cadeau de 5.000€ !"); render(); save(); checkDates(); } }
+        function claimDailyReward() { if(Date.now()-g.lastClaim > 86400000) { g.m += 10000; g.lastClaim=Date.now(); alert("Cadeau : 10.000€ !"); render(); save(); checkDates(); } }
         function addFriend() { try { let d = atob(document.getElementById('friend-in').value).split('|'); g.friends.push({n:d[0], m:parseInt(d[1])}); render(); save(); alert("Ami ajouté !"); } catch(e){alert("ID Invalide");} }
         function copyId() { document.getElementById('my-id').select(); document.execCommand('copy'); alert("ID Copié !"); }
         function setTh(t) { g.th = t; document.getElementById('b-tag').className = t; save(); }
@@ -201,9 +232,10 @@
             document.getElementById(id).classList.add('active'); 
             e.currentTarget.classList.add('active'); 
         }
-        function save() { localStorage.setItem('CT_V11', JSON.stringify(g)); }
-        function resetGame() { if(confirm("EFFACER TOUT ?")) { localStorage.clear(); location.reload(); } }
-        function doRebirth() { if(g.m >= 1000000) { g.m=0; g.items=[0,0,0,0,0]; g.rb++; save(); location.reload(); } }
+        function save() { localStorage.setItem('CT_V11_3', JSON.stringify(g)); }
+        function resetGame() { if(confirm("TOUT EFFACER ?")) { localStorage.clear(); location.reload(); } }
+        function doRebirth() { if(g.m >= 1000000) { g.m=0; g.items=g.items.map(()=>0); g.rb++; save(); location.reload(); } }
+        
         function startMatrix() {
             const c = document.getElementById('matrix'); const ctx = c.getContext('2d');
             c.width = window.innerWidth; c.height = window.innerHeight;
