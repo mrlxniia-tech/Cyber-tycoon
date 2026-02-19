@@ -3,14 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cyber Tycoon V12.5 - Final Edition</title>
-    
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2991/2991148.png">
-    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2991/2991148.png">
-    <meta name="theme-color" content="#010103">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
+    <title>Cyber Tycoon V13 - Corrective</title>
     <style>
         :root { --neon: #00f2ff; --bg: #010103; --card: rgba(10, 10, 15, 0.98); }
         .theme-green { --neon: #00ff41 !important; } .theme-red { --neon: #ff003c !important; } 
@@ -20,19 +13,20 @@
         .theme-souvenir { --neon: #3366ff !important; }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Courier New', monospace; outline: none; }
-        body { background: var(--bg); color: white; margin: 0; height: 100vh; display: flex; flex-direction: column; overflow: hidden; user-select: none; }
-        #matrix { position: fixed; inset: 0; z-index: -1; opacity: 0.15; }
+        body { background: var(--bg); color: white; margin: 0; height: 100vh; display: flex; flex-direction: column; overflow: hidden; user-select: none; transition: 0.5s; }
+        #matrix { position: fixed; inset: 0; z-index: -1; opacity: 0.2; }
 
         header { height: 120px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; border-bottom: 2px solid var(--neon); background: var(--card); z-index: 10; box-shadow: 0 0 15px var(--neon); }
         #money { font-size: 1.8rem; font-weight: bold; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
         
         #game-area { flex-grow: 1; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; z-index: 5; }
-        #main-btn { width: 100px; height: 100px; border-radius: 50%; border: 4px solid var(--neon); background: rgba(0,0,0,0.6); color: var(--neon); font-size: 2.5rem; transition: 0.1s; pointer-events: none; display: flex; align-items: center; justify-content: center; }
-        .btn-active { transform: scale(0.9); box-shadow: 0 0 30px var(--neon) !important; }
+        #main-btn { width: 100px; height: 100px; border-radius: 50%; border: 4px solid var(--neon); background: rgba(0,0,0,0.6); color: var(--neon); font-size: 2.5rem; transition: 0.1s; pointer-events: none; }
+
+        #event-timer { position: fixed; top: 130px; right: 10px; background: var(--neon); color: black; padding: 5px 10px; border-radius: 20px; font-size: 0.6rem; font-weight: bold; z-index: 100; display: none; box-shadow: 0 0 10px var(--neon); }
 
         nav { display: flex; background: #000; height: 60px; border-top: 1px solid #333; flex-shrink: 0; z-index: 100; }
         .nav-btn { flex: 1; border: none; background: none; color: #555; font-size: 0.6rem; font-weight: bold; }
-        .nav-btn.active { color: var(--neon); border-bottom: 4px solid var(--neon); background: rgba(0,242,255,0.05); }
+        .nav-btn.active { color: var(--neon); border-bottom: 4px solid var(--neon); }
 
         .panel { flex-grow: 1; overflow-y: auto; padding: 15px; display: none; }
         .panel.active { display: block; }
@@ -40,9 +34,10 @@
 
         .card { background: rgba(255,255,255,0.05); border: 1px solid #222; padding: 12px; margin-bottom: 12px; border-radius: 8px; border-left: 4px solid var(--neon); }
         .buy-btn { background: var(--neon); color: black; border: none; padding: 10px; font-weight: bold; border-radius: 4px; width: 100%; margin-top: 5px; cursor: pointer; }
+        .buy-btn:disabled { background: #222 !important; color: #555 !important; cursor: not-allowed; border: none; }
         
         .sys-tabs { display: flex; gap: 5px; margin-bottom: 15px; }
-        .s-tab { flex: 1; background: #111; border: 1px solid #333; color: #777; padding: 8px; font-size: 0.55rem; border-radius: 4px; font-weight: bold; }
+        .s-tab { flex: 1; background: #111; border: 1px solid #333; color: #777; padding: 8px; font-size: 0.55rem; border-radius: 4px; }
         .s-tab.active { border-color: var(--neon); color: var(--neon); }
 
         #hack-ui { position: fixed; inset: 0; background: rgba(150,0,0,0.95); z-index: 20000; display: none; flex-direction: column; align-items: center; justify-content: center; }
@@ -52,11 +47,11 @@
         .floating-text { position: absolute; color: var(--neon); font-weight: bold; pointer-events: none; animation: floatUp 0.6s ease-out forwards; z-index: 1000; }
         @keyframes floatUp { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-80px); opacity: 0; } }
         .color-dot { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; display: inline-block; margin: 5px; cursor: pointer; }
-        .admin-btn { background: #ff00ff !important; color: white !important; font-size: 0.6rem !important; margin-bottom: 5px; }
     </style>
 </head>
 <body id="b-tag">
     <canvas id="matrix"></canvas>
+    <div id="event-timer">TEMPS RESTANT: 00:00</div>
 
     <div id="hack-ui">
         <h1 style="color:white; margin:0; text-align:center;">⚠️ SYSTÈME INFILTRÉ ⚠️</h1>
@@ -102,7 +97,7 @@
         <div class="content-wrapper">
             <div class="sys-tabs">
                 <button class="s-tab active" onclick="subTab('sys-prof', this)">PROFIL</button>
-                <button class="s-tab" onclick="subTab('sys-param', this)">PARAMS</button>
+                <button class="s-tab" onclick="subTab('sys-param', this)">PARAMÈTRES</button>
                 <button class="s-tab" onclick="subTab('sys-stats', this)">STATS</button>
                 <button id="admin-tab-btn" class="s-tab" onclick="subTab('sys-admin', this)" style="display:none; color: #ff00ff;">ADMIN</button>
             </div>
@@ -112,7 +107,7 @@
                     <p style="font-size:0.8rem; margin:0 0 10px 0;">PERSONNALISATION</p>
                     <input type="text" id="name-change" placeholder="Pseudo" maxlength="12" style="width:100%; background:#000; color:white; border:1px solid #333; padding:10px; margin-bottom:10px;">
                     <button class="buy-btn" onclick="changeName()">APPLIQUER</button>
-                    <div style="margin-top:10px; text-align: center;">
+                    <div style="margin-top:10px;">
                         <div class="color-dot" style="background:#00f2ff" onclick="setTh('')"></div>
                         <div class="color-dot" style="background:#00ff41" onclick="setTh('theme-green')"></div>
                         <div class="color-dot" style="background:#ff003c" onclick="setTh('theme-red')"></div>
@@ -123,25 +118,27 @@
                 </div>
                 <div class="card">
                     <p style="font-size:0.8rem; margin:0;">PRESTIGE</p>
-                    <button class="buy-btn" id="rb-btn" onclick="doRebirth()" disabled>PRESTIGE (<span id="rb-cost">1.00</span>M €)</button>
+                    <button class="buy-btn" id="rb-btn" onclick="doRebirth()" disabled>LANCER RB (<span id="rb-cost">1.00</span>M €)</button>
                 </div>
             </div>
 
             <div id="sys-param" class="sub-panel" style="display:none;">
                 <div class="card">
-                    <button class="buy-btn" onclick="toggleSound()" id="sound-btn">SON : ACTIVÉ</button>
-                    <button class="buy-btn" onclick="shareGame()" style="background:#444; color:white; margin-top:10px;">PARTAGER LE JEU</button>
-                    <button class="buy-btn" onclick="window.location.href='mailto:Mrlxniia@gmail.com'" style="background:#222; color:var(--neon); border:1px solid var(--neon); margin-top:10px;">SUPPORT (MRLX)</button>
+                    <p style="font-size:0.7rem; margin-bottom:10px;">AJOUTER UN AMI</p>
+                    <input type="text" id="friend-id-in" placeholder="Coller ID ami" style="width:100%; background:#000; color:white; border:1px solid var(--neon); padding:10px; margin-bottom:10px;">
+                    <button class="buy-btn" onclick="addFriend()">REJOINDRE AMI</button>
+                    <button class="buy-btn" onclick="copyMyId()" style="background:#333; color:white; margin-top:5px;">COPIER MON ID</button>
                 </div>
                 <div class="card">
-                    <button onclick="resetGame()" style="width:100%; background:none; border:1px solid red; color:red; padding:10px; font-size:0.7rem;">RESET TOTAL</button>
+                    <button class="buy-btn" onclick="toggleSound()" id="sound-btn">SON : ACTIVÉ</button>
+                    <button class="buy-btn" onclick="window.location.href='mailto:Mrlxniia@gmail.com'" style="background:#222; color:var(--neon); border:1px solid var(--neon); margin-top:10px;">SUPPORT (MRLX)</button>
                 </div>
+                <button onclick="resetGame()" style="width:100%; background:none; border:1px solid red; color:red; padding:10px; font-size:0.7rem;">RESET TOTAL</button>
             </div>
 
             <div id="sys-stats" class="sub-panel" style="display:none;">
                 <div class="card">
                     <p>Clics : <span id="st-clicks" style="color:var(--neon);">0</span></p>
-                    <p>Rebirths : <span id="st-rb-val" style="color:var(--neon);">0</span></p>
                     <p>Hacks Gagnés : <span id="st-win" style="color:#00ff41;">0</span></p>
                     <p>Hacks Perdus : <span id="st-loss" style="color:#ff003c;">0</span></p>
                     <p>Total Récolté : <span id="st-total" style="color:var(--neon);">0</span> €</p>
@@ -150,44 +147,31 @@
 
             <div id="sys-admin" class="sub-panel" style="display:none;">
                 <div class="card" style="border-left-color: #ff00ff;">
-                    <p style="font-size:0.7rem; color:#ff00ff; margin-bottom:10px;">ADMIN CONSOLE : Mrlx</p>
-                    <button class="buy-btn admin-btn" onclick="startHackFight()">FORCER HACKER</button>
-                    <button class="buy-btn admin-btn" onclick="g.m += 1000000; render();">CHEAT +1M €</button>
-                    <button class="buy-btn admin-btn" onclick="forceEvent('easter')">TEST PÂQUES</button>
-                    <button class="buy-btn admin-btn" onclick="forceEvent('summer')">TEST ÉTÉ</button>
-                    <button class="buy-btn admin-btn" onclick="location.reload()">OFF (RELOAD)</button>
+                    <button class="buy-btn" style="background:#ff00ff; color:white;" onclick="startHackFight()">TEST HACK</button>
+                    <button class="buy-btn" style="background:#ff00ff; color:white;" onclick="g.m += 10000000; render();">+10M €</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        let g = { m: 0, n: "Hacker", items: [0,0,0,0,0,0,0,0], rb: 0, th: "", lastClaim: 0, firstLogin: Date.now(), lastHack: Date.now(), lastSave: Date.now(), s_click: 0, s_win: 0, s_loss: 0, s_total: 0, sound: true };
-        let buyM = 1; let AC; let hackPower = 50; let hackInterval; let dateMult = 1; let forcedEv = null;
-        
-        const items = [
-            {n:"CPU Overclock",c:50,p:2,click:true},
-            {n:"Script Auto",c:30,p:1},
-            {n:"Proxy Serveur",c:250,p:12},
-            {n:"Mining Rig",c:2500,p:85},
-            {n:"Mainframe IA",c:25000,p:650},
-            {n:"Neural Link",c:150000,p:3200},
-            {n:"Cluster Quantum",c:1000000,p:18000},
-            {n:"Satellite Pirate",c:15000000,p:120000}
-        ];
+        let g = { m: 0, n: "Hacker", items: [0,0,0,0,0,0,0,0], rb: 0, th: "", firstLogin: Date.now(), lastHack: Date.now(), lastSave: Date.now(), s_click: 0, s_win: 0, s_loss: 0, s_total: 0, sound: true, friends: [], q: [false,false,false] };
+        let buyM = 1; let AC; let hackPower = 50; let hackInterval; let dateMult = 1;
 
-        function playSfx(f, type='square', vol=0.02) {
-            if(!g.sound) return;
-            try { if(!AC) AC = new AudioContext(); let o=AC.createOscillator(), gn=AC.createGain(); o.type=type; o.frequency.value=f; gn.gain.setValueAtTime(vol, AC.currentTime); gn.gain.exponentialRampToValueAtTime(0.0001, AC.currentTime+0.1); o.connect(gn); gn.connect(AC.destination); o.start(); o.stop(AC.currentTime+0.1); } catch(e){}
-        }
+        const items = [{n:"CPU Overclock",c:50,p:2,click:true},{n:"Script Auto",c:30,p:1},{n:"Proxy Serveur",c:250,p:12},{n:"Mining Rig",c:2500,p:85},{n:"Mainframe IA",c:25000,p:650},{n:"Neural Link",c:150000,p:3200},{n:"Cluster Quantum",c:1000000,p:18000},{n:"Satellite Pirate",c:15000000,p:120000}];
 
-        function checkSystemDates() {
-            if(forcedEv) return;
-            const now = new Date(), m = now.getMonth(), d = now.getDate(), b = document.getElementById('b-tag'), btn = document.getElementById('main-btn');
-            let ev = false; dateMult = 1;
-            
-            // Thèmes Temporels
-            if (Date.now() - g.firstLogin < 900000) { b.className = "theme-welcome"; dateMult = 2; ev = true; } // 15 min welcome
+        function playSfx(f, vol=0.02) { if(!g.sound) return; try { if(!AC) AC = new AudioContext(); let o=AC.createOscillator(), gn=AC.createGain(); o.type='square'; o.frequency.value=f; gn.gain.setValueAtTime(vol, AC.currentTime); gn.gain.exponentialRampToValueAtTime(0.0001, AC.currentTime+0.1); o.connect(gn); gn.connect(AC.destination); o.start(); o.stop(AC.currentTime+0.1); } catch(e){} }
+
+        function checkDates() {
+            const now = new Date(), m = now.getMonth(), d = now.getDate(), b = document.getElementById('b-tag'), btn = document.getElementById('main-btn'), timer = document.getElementById('event-timer');
+            let ev = false; dateMult = 1; timer.style.display = "none";
+
+            // Welcome Bonus (15 min)
+            let timeElapsed = Date.now() - g.firstLogin;
+            if (timeElapsed < 900000) { 
+                b.className = "theme-welcome"; dateMult = 2; ev = true; 
+                timer.style.display = "block"; timer.innerText = "WELCOME BONUS: " + Math.floor((900000-timeElapsed)/1000) + "s";
+            }
             else if (m === 3 && d >= 18 && d <= 20) { b.className = "theme-gold"; btn.innerText = "🥚"; dateMult = 8; ev = true; }
             else if (m >= 5 && m <= 7) { b.className = "theme-summer"; btn.innerText = "☀️"; ev = true; }
             else if (m === 8 && d === 11) { b.className = "theme-memorial"; btn.innerText = "🕊️"; ev = true; }
@@ -197,115 +181,82 @@
             checkAdmin();
         }
 
-        function forceEvent(type) {
-            forcedEv = type; const b = document.getElementById('b-tag'), btn = document.getElementById('main-btn');
-            if(type === 'easter') { b.className = "theme-gold"; btn.innerText = "🥚"; dateMult = 8; }
-            if(type === 'summer') { b.className = "theme-summer"; btn.innerText = "☀️"; dateMult = 1; }
-            render();
-        }
-
-        function checkAdmin() {
-            const isAdmin = (g.n.toLowerCase() === "mrlx");
-            document.getElementById('admin-tab-btn').style.display = isAdmin ? 'block' : 'none';
-        }
-
         window.onload = () => {
-            let s = localStorage.getItem('CT_MASTER_FINAL');
+            let s = localStorage.getItem('CT_V13');
             if(s) {
                 g = JSON.parse(s);
-                // Gains Hors-Ligne
                 let idle = Math.floor((Date.now() - g.lastSave) / 1000);
                 if(idle > 10) {
-                    let ips = 0; g.items.forEach((q,i)=> { if(i>0) ips+=q*items[i].p; });
+                    let ips=0; g.items.forEach((q,i)=>{if(i>0)ips+=q*items[i].p;});
                     let gain = ips * Math.max(1, g.rb*2) * idle;
-                    if(gain > 0) { 
-                        g.m += gain; g.s_total += gain; 
-                        setTimeout(()=>alert(`RAPPORTS BOTS : +${Math.floor(gain).toLocaleString()} € récoltés en ton absence !`), 500); 
-                    }
+                    if(gain > 0) { g.m += gain; g.s_total += gain; alert(`OFFLINE: +${Math.floor(gain).toLocaleString()}€`); }
                 }
             }
-            checkSystemDates(); render(); startMatrix(); setInterval(tick, 1000);
+            render(); startMatrix(); setInterval(tick, 1000);
         };
 
-        function save() { g.lastSave = Date.now(); localStorage.setItem('CT_MASTER_FINAL', JSON.stringify(g)); }
+        function tick() {
+            let ips=0; g.items.forEach((q,i)=>{if(i>0)ips+=q*items[i].p;});
+            let profit = ips * Math.max(1, g.rb*2);
+            g.m += profit; g.s_total += profit;
+            if(Date.now() - g.lastHack > 28800000) startHackFight();
+            checkDates(); save(); render();
+        }
+
+        function save() { g.lastSave = Date.now(); localStorage.setItem('CT_V13', JSON.stringify(g)); }
 
         function tap(e) {
             e.preventDefault();
             let val = (1 + (g.items[0]*3*dateMult)) * (Math.max(1, g.rb*2));
             g.m += val; g.s_total += val; g.s_click++;
-            
-            const btn = document.getElementById('main-btn'); btn.classList.add('btn-active'); setTimeout(()=>btn.classList.remove('btn-active'), 100);
-            
-            let d = document.createElement('div'); d.className='floating-text';
-            let x = e.clientX || (e.touches ? e.touches[0].clientX : window.innerWidth/2);
-            let y = e.clientY || (e.touches ? e.touches[0].clientY : window.innerHeight/2);
-            d.style.left=x+'px'; d.style.top=y+'px'; d.innerText="+"+Math.floor(val)+"€";
-            document.body.appendChild(d); setTimeout(()=>d.remove(), 600);
-            
             playSfx(400); render();
         }
 
-        function tick() {
-            let ips=0; g.items.forEach((q,i)=>{if(i>0)ips+=q*items[i].p;});
-            let totalIps = (ips * Math.max(1, g.rb*2));
-            g.m += totalIps; g.s_total += totalIps;
-            
-            if(Date.now() - g.lastHack > 28800000) startHackFight(); // 8h
-            if(!forcedEv) checkSystemDates(); 
-            save(); render();
-        }
-
         function render() {
-            let multi = Math.max(1, g.rb*2); 
-            let rbCost = 1000000 * Math.pow(5, g.rb); // Augmentation x5 par Rebirth
-            
+            let multi = Math.max(1, g.rb*2); let rbCost = 1000000 * Math.pow(5, g.rb);
             document.getElementById('money').innerText = Math.floor(g.m).toLocaleString() + " €";
             let ips=0; g.items.forEach((q,i)=>{if(i>0)ips+=q*items[i].p;});
             document.getElementById('ips-display').innerText = "+"+Math.floor(ips*multi).toLocaleString()+" €/s";
             document.getElementById('click-val').innerText = "Clic: "+Math.floor((1+(g.items[0]*3*dateMult))*multi)+"€";
-            document.getElementById('h-name').innerText = g.n; 
-            document.getElementById('rb-val').innerText = g.rb;
-            document.getElementById('st-rb-val').innerText = g.rb;
+            document.getElementById('h-name').innerText = g.n; document.getElementById('rb-val').innerText = g.rb;
             document.getElementById('rb-cost').innerText = (rbCost/1000000).toFixed(2);
             document.getElementById('rb-btn').disabled = (g.m < rbCost);
-            
-            document.getElementById('st-clicks').innerText = g.s_click.toLocaleString();
+            document.getElementById('st-clicks').innerText = g.s_click;
             document.getElementById('st-win').innerText = g.s_win;
             document.getElementById('st-loss').innerText = g.s_loss;
             document.getElementById('st-total').innerText = Math.floor(g.s_total).toLocaleString();
-            
-            // Rendu Shop
+
             let sh = ""; items.forEach((it, i) => {
                 let cost = 0; for(let n=0; n<buyM; n++) cost += Math.floor(it.c * Math.pow(1.5, g.items[i]+n));
-                sh += `<div class="card"><div style="display:flex; justify-content:space-between;"><b>${it.n}</b><span>x${g.items[i]}</span></div><button class="buy-btn" ${g.m < cost ? 'disabled' : ''} onclick="buy(${i})">Acheter ${buyM} (${cost.toLocaleString()} €)</button></div>`;
+                sh += `<div class="card"><div style="display:flex; justify-content:space-between;"><b>${it.n}</b><span>x${g.items[i]}</span></div><button class="buy-btn" ${g.m < cost ? 'disabled' : ''} onclick="buy(${i})">${cost.toLocaleString()} €</button></div>`;
             });
             document.getElementById('shop-list').innerHTML = sh;
 
-            // Classement avec Bots & Mrlx
-            let lbd = [{n:"Satoshi", rb:99, m:9e12}, {n:"Bot_X", rb:25, m:1e9}, {n:g.n, rb:g.rb, m:g.m, me:true}].sort((a,b)=>b.rb-a.rb || b.m-a.m);
-            document.getElementById('rank-list').innerHTML = lbd.map((r,i)=>`<div class="card" style="${r.me?'border-color:var(--neon); background:rgba(0,242,255,0.1)':''}">${i+1}. ${r.n} [RB: ${r.rb}]</div>`).join('');
+            let qh = ""; const quests = [{n:"Hacker Junior", t:100000, v:g.m}, {n:"Hacker Pro", t:1000000, v:g.m}, {n:"Collector", t:50, v:g.items[0]}];
+            quests.forEach((q,i)=>{
+                if(q.v >= q.t && !g.q[i]) { g.q[i]=true; g.m += q.t*0.1; playSfx(800); }
+                qh += `<div class="card" style="opacity:${g.q[i]?0.4:1}">${q.n} [${Math.min(Math.floor(q.v),q.t).toLocaleString()}/${q.t.toLocaleString()}] ${g.q[i]?'✅':''}</div>`;
+            });
+            document.getElementById('quest-list').innerHTML = qh;
+
+            let lbd = [{n:"Satoshi", rb:99, m:9999999999}, {n:g.n, rb:g.rb, m:g.m, me:true}, ...g.friends].sort((a,b)=>b.rb-a.rb || b.m-a.m);
+            document.getElementById('rank-list').innerHTML = lbd.map((r,i)=>`<div class="card" style="${r.me?'border-color:var(--neon); background:rgba(0,242,255,0.1)':''}">${i+1}. ${r.n} - RB: ${r.rb} | ${Math.floor(r.m).toLocaleString()}€</div>`).join('');
         }
 
         function startHackFight() {
             hackPower = 50; document.getElementById('hack-ui').style.display='flex';
-            let alarm = setInterval(()=> { if(document.getElementById('hack-ui').style.display==='flex') playSfx(800,'sawtooth',0.05); else clearInterval(alarm); }, 500);
-            let speed = Math.random() * 3.5 + 0.5; // Difficulté aléatoire
+            let speed = Math.random() * 3 + 0.5;
             hackInterval = setInterval(() => {
                 hackPower -= speed; document.getElementById('hack-bar-fill').style.width = hackPower + "%";
                 if(hackPower <= 0) endHack(false);
             }, 100);
         }
-        function hackTap() { hackPower += 5; playSfx(200); if(hackPower >= 100) endHack(true); }
+        function hackTap() { hackPower += 5; if(hackPower >= 100) endHack(true); }
         function endHack(win) {
             clearInterval(hackInterval); document.getElementById('hack-ui').style.display='none';
             g.lastHack = Date.now();
-            if(win) { 
-                let gain = g.m*0.2; g.m+=gain; g.s_win++; 
-                alert("SYSTÈME PROTÉGÉ ! Butin hacker : +"+Math.floor(gain).toLocaleString()+"€"); 
-            } else { 
-                let loss = g.m*0.2; g.m-=loss; g.s_loss++; 
-                alert("SYSTÈME COMPROMIS ! Vol subi : -"+Math.floor(loss).toLocaleString()+"€"); 
-            }
+            if(win) { let gain = g.m*0.2; g.m+=gain; g.s_win++; alert("GAGNÉ ! +"+Math.floor(gain).toLocaleString()+"€"); }
+            else { let loss = g.m*0.2; g.m-=loss; g.s_loss++; alert("PERDU ! -"+Math.floor(loss).toLocaleString()+"€"); }
             save(); render();
         }
 
@@ -313,41 +264,17 @@
             let cost = 0; for(let n=0; n<buyM; n++) cost += Math.floor(items[i].c * Math.pow(1.5, g.items[i]+n));
             if(g.m >= cost) { g.m -= cost; g.items[i] += buyM; playSfx(600); render(); save(); }
         }
-
-        function tab(e, id) { 
-            document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active')); 
-            document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active')); 
-            let target = document.getElementById(id); target.classList.add('active'); target.scrollTop = 0;
-            e.currentTarget.classList.add('active'); 
-        }
-
-        function subTab(id, btn) { 
-            document.querySelectorAll('.sub-panel').forEach(p=>p.style.display='none'); 
-            document.querySelectorAll('.s-tab').forEach(b=>b.classList.remove('active')); 
-            document.getElementById(id).style.display='block'; btn.classList.add('active'); 
-        }
-
-        function changeName() { let n = document.getElementById('name-change').value; if(n.length>1) { g.n=n; checkAdmin(); render(); save(); alert("Nom mis à jour !"); } }
-        function toggleSound() { g.sound = !g.sound; document.getElementById('sound-btn').innerText = "SON : "+(g.sound?"ACTIVÉ":"COUPÉ"); save(); }
-        function setTh(t) { g.th = t; checkSystemDates(); save(); }
-        function setBuyM(m, b) { buyM = m; document.querySelectorAll('.s-tab').forEach(x=>x.classList.remove('active')); b.classList.add('active'); render(); }
+        function tab(e, id) { document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active')); document.getElementById(id).classList.add('active'); e.currentTarget.classList.add('active'); document.getElementById(id).scrollTop = 0; }
+        function subTab(id, btn) { document.querySelectorAll('.sub-panel').forEach(p=>p.style.display='none'); document.querySelectorAll('.s-tab').forEach(b=>b.classList.remove('active')); document.getElementById(id).style.display='block'; btn.classList.add('active'); }
+        function changeName() { let n = document.getElementById('name-change').value; if(n.length>1) { g.n=n; checkAdmin(); render(); save(); } }
+        function setTh(t) { g.th = t; checkDates(); save(); }
+        function copyMyId() { let id = btoa(g.n + "|" + g.rb + "|" + Math.floor(g.m)); navigator.clipboard.writeText(id); alert("ID Copié !"); }
+        function addFriend() { try { let d = atob(document.getElementById('friend-id-in').value).split('|'); g.friends.push({n:d[0], rb:parseInt(d[1]), m:parseInt(d[2])}); render(); save(); alert("Ami ajouté !"); } catch(e){alert("ID Invalide");} }
+        function checkAdmin() { document.getElementById('admin-tab-btn').style.display = (g.n.toLowerCase() === "mrlx") ? 'block' : 'none'; }
+        function toggleSound() { g.sound = !g.sound; document.getElementById('sound-btn').innerText = "SON : " + (g.sound?"ACTIVÉ":"COUPÉ"); }
         function doRebirth() { let c = 1000000*Math.pow(5, g.rb); if(g.m>=c) { g.m=0; g.items=g.items.map(()=>0); g.rb++; save(); location.reload(); } }
-        function resetGame() { if(confirm("TOUT EFFACER DÉFINITIVEMENT ?")) { localStorage.clear(); location.reload(); } }
-        function shareGame() { if(navigator.share) navigator.share({title:'Cyber Tycoon', url:window.location.href}); else alert("Lien : "+window.location.href); }
-        
-        function startMatrix() { 
-            const c = document.getElementById('matrix'); const ctx = c.getContext('2d'); 
-            c.width = window.innerWidth; c.height = window.innerHeight; 
-            const drops = Array(Math.floor(c.width/15)).fill(1); 
-            setInterval(() => { 
-                ctx.fillStyle = "rgba(0,0,0,0.05)"; ctx.fillRect(0,0,c.width,c.height); 
-                ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--neon'); 
-                drops.forEach((y, i) => { 
-                    ctx.fillText(Math.floor(Math.random()*2), i*15, y*15); 
-                    if(y*15 > c.height && Math.random() > 0.98) drops[i] = 0; drops[i]++; 
-                }); 
-            }, 50); 
-        }
+        function resetGame() { if(confirm("RESET TOTAL ?")) { localStorage.clear(); location.reload(); } }
+        function startMatrix() { const c = document.getElementById('matrix'); const ctx = c.getContext('2d'); c.width = window.innerWidth; c.height = window.innerHeight; const drops = Array(Math.floor(c.width/15)).fill(1); setInterval(() => { ctx.fillStyle = "rgba(0,0,0,0.05)"; ctx.fillRect(0,0,c.width,c.height); ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--neon'); drops.forEach((y, i) => { ctx.fillText(Math.floor(Math.random()*2), i*15, y*15); if(y*15 > c.height && Math.random() > 0.98) drops[i] = 0; drops[i]++; }); }, 50); }
     </script>
 </body>
 </html>
