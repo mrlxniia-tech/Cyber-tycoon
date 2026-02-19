@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cyber Tycoon V24 - Correctif Final</title>
+    <title>Cyber Tycoon V27 - Unique ID</title>
     
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2991/2991148.png">
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2991/2991148.png">
@@ -21,16 +21,16 @@
         .theme-red { --neon: #ff003c !important; } 
         .theme-purple { --neon: #bc13fe !important; }
         .theme-white { --neon: #ffffff !important; } 
-        .theme-welcome { --neon: #0077ff !important; --grad: linear-gradient(180deg, #001a33 0%, #000 100%) !important; }
-        .theme-gold { --neon: #ffcc00 !important; --grad: linear-gradient(180deg, #3d2b1f 0%, #1a472a 100%) !important; }
-        .theme-summer { --neon: #ffaa00 !important; --grad: linear-gradient(180deg, #0077be 0%, #00f2ff 100%) !important; }
-        .theme-memorial { --neon: #aaaaaa !important; --grad: linear-gradient(180deg, #222 0%, #444 100%) !important; }
-        .theme-souvenir { --neon: #3366ff !important; --grad: linear-gradient(180deg, #1a1a2e 0%, #000 100%) !important; }
+        .theme-welcome { --neon: #0077ff !important; --grad: linear-gradient(180deg, #00102a 0%, #010103 100%) !important; }
+        .theme-gold { --neon: #ffcc00 !important; --grad: linear-gradient(180deg, #1a1000 0%, #010103 100%) !important; }
+        .theme-summer { --neon: #ffaa00 !important; --grad: linear-gradient(180deg, #0a192f 0%, #010103 100%) !important; }
+        .theme-memorial { --neon: #aaaaaa !important; --grad: linear-gradient(180deg, #1a1a1a 0%, #010103 100%) !important; }
+        .theme-souvenir { --neon: #3366ff !important; --grad: linear-gradient(180deg, #050a15 0%, #010103 100%) !important; }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Courier New', monospace; outline: none; }
         
-        /* FIX SCROLL & OVERFLOW (V24) */
-        body { position: fixed; inset: 0; width: 100vw; height: 100vh; background: var(--grad); color: white; margin: 0; display: flex; flex-direction: column; overflow: hidden; user-select: none; transition: background 0.8s ease; touch-action: none; }
+        html { overscroll-behavior: none; }
+        body { position: fixed; inset: 0; width: 100vw; height: 100vh; background: var(--grad); color: white; margin: 0; display: flex; flex-direction: column; overflow: hidden; user-select: none; transition: background 0.8s ease; touch-action: none; overscroll-behavior: none; }
         
         #matrix { position: absolute; inset: 0; z-index: -1; opacity: 0.25; pointer-events: none; }
 
@@ -46,17 +46,16 @@
         .nav-btn { flex: 1; border: none; background: none; color: #555; font-size: 0.65rem; font-weight: bold; transition: 0.3s; }
         .nav-btn.active { color: var(--neon); border-bottom: 4px solid var(--neon); background: rgba(255,255,255,0.05); }
 
-        /* FIX SCROLL PANEL (V24) */
-        .panel { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 15px; display: none; background: transparent; -webkit-overflow-scrolling: touch; overscroll-behavior-y: contain; touch-action: pan-y; }
+        .panel { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 15px; display: none; background: rgba(0, 0, 0, 0.4); -webkit-overflow-scrolling: touch; overscroll-behavior-y: contain; touch-action: pan-y; }
         .panel.active { display: block; }
         .content-wrapper { padding-bottom: 120px; }
 
-        .card { background: rgba(255,255,255,0.05); border: 1px solid #222; padding: 15px; margin-bottom: 15px; border-radius: 10px; border-left: 4px solid var(--neon); backdrop-filter: blur(5px); }
+        .card { background: rgba(20, 20, 25, 0.85); border: 1px solid #222; padding: 15px; margin-bottom: 15px; border-radius: 10px; border-left: 4px solid var(--neon); backdrop-filter: blur(5px); }
         .buy-btn { background: var(--neon); color: black; border: none; padding: 12px; font-weight: bold; border-radius: 6px; width: 100%; margin-top: 8px; cursor: pointer; transition: 0.2s; text-transform: uppercase; }
         .buy-btn:active { transform: scale(0.97); }
         .buy-btn:disabled { background: #222 !important; color: #555 !important; opacity: 0.5; cursor: not-allowed; transform: none; }
 
-        #custom-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 30000; display: none; align-items: center; justify-content: center; padding: 25px; backdrop-filter: blur(3px); touch-action: none; }
+        #custom-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 30000; display: none; align-items: center; justify-content: center; padding: 25px; backdrop-filter: blur(3px); touch-action: none; overscroll-behavior: none; }
         #modal-box { background: #0a0a0f; border: 2px solid var(--neon); padding: 30px; border-radius: 15px; text-align: center; width: 100%; max-width: 320px; box-shadow: 0 0 30px var(--neon); animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
@@ -64,7 +63,7 @@
         .s-tab { flex: 1; background: #111; border: 1px solid #333; color: #777; padding: 10px; font-size: 0.55rem; border-radius: 6px; font-weight: bold; transition: 0.2s; }
         .s-tab.active { border-color: var(--neon); color: var(--neon); background: rgba(0,242,255,0.1); }
 
-        #hack-ui { position: fixed; inset: 0; background: rgba(160,0,0,0.98); z-index: 20000; display: none; flex-direction: column; align-items: center; justify-content: center; touch-action: none; }
+        #hack-ui { position: fixed; inset: 0; background: rgba(160,0,0,0.98); z-index: 20000; display: none; flex-direction: column; align-items: center; justify-content: center; touch-action: none; overscroll-behavior: none; }
         #hack-bar { width: 85%; height: 35px; background: #000; border: 3px solid #fff; border-radius: 20px; margin: 25px; overflow: hidden; }
         #hack-fill { height: 100%; background: #00f2ff; width: 50%; transition: width 0.1s linear; box-shadow: 0 0 20px #00f2ff; }
 
@@ -165,13 +164,16 @@
 
             <div id="sys-param" class="sub-panel" style="display:none;">
                 <div class="card">
-                    <button class="buy-btn" onclick="forceSync()" style="background:#333; color:white;">FORCER SYNCHRO CLOUD</button>
+                    <p style="font-size:0.8rem; margin-bottom:10px;">SOCIAL_NETWORK</p>
+                    <input type="text" id="friend-id-in" placeholder="Coller ID Base64" style="width:100%; background:#000; color:white; border:1px solid var(--neon); padding:10px; margin-bottom:10px; text-align: center;">
+                    <button class="buy-btn" onclick="addFriend()">REJOINDRE L'AMI</button>
+                    <button class="buy-btn" onclick="copyMyId()" style="background:#333; color:white; margin-top:10px;">MON ID CLOUD</button>
                 </div>
                 <div class="card">
                     <button class="buy-btn" onclick="toggleSound()" id="sound-btn">SOUND : ON</button>
                     <button class="buy-btn" onclick="window.location.href='mailto:Mrlxniia@gmail.com'" style="background:#222; color:var(--neon); border:1px solid var(--neon); margin-top:10px;">CONTACT SUPPORT</button>
                 </div>
-                <button onclick="resetGame()" style="width:100%; background:none; border:1px solid red; color:red; padding:15px; font-size:0.7rem; font-weight:bold; margin-top:20px; border-radius: 8px;">FORMATER LE DISQUE</button>
+                <button onclick="resetGame()" style="width:100%; background:none; border:1px solid red; color:red; padding:15px; font-size:0.7rem; font-weight:bold; margin-top:20px; border-radius: 8px;">FORMATER LE SYSTEME</button>
             </div>
 
             <div id="sys-stats" class="sub-panel" style="display:none;">
@@ -201,7 +203,10 @@
     </div>
 
     <script>
-        // CONFIGURATION FIREBASE PRO (Shadowlink)
+        document.body.addEventListener('touchmove', function(e) {
+            if (!e.target.closest('.panel')) { e.preventDefault(); }
+        }, { passive: false });
+
         const firebaseConfig = {
             apiKey: "AIzaSyDw1J_Vy4aRNuFV6M_SZbADr2TTlz0zots",
             authDomain: "shadowlink-be54d.firebaseapp.com",
@@ -215,7 +220,7 @@
         const db = firebase.database();
         let globalRank = [];
 
-        let g = { uid: null, m: 0, n: "Hacker", items: [0,0,0,0,0,0,0,0], rb: 0, th: "", firstLogin: Date.now(), lastHack: Date.now(), lastSave: Date.now(), s_click: 0, s_win: 0, s_loss: 0, s_total: 0, sound: true, q: [false,false,false,false,false,false] };
+        let g = { uid: null, m: 0, n: "Hacker", items: [0,0,0,0,0,0,0,0], rb: 0, th: "", firstLogin: Date.now(), lastHack: Date.now(), lastSave: Date.now(), s_click: 0, s_win: 0, s_loss: 0, s_total: 0, sound: true, friends: [], q: [false,false,false,false,false,false] };
         let buyM = 1; let AC; let hackPower = 50; let hackInterval; let dateMult = 1; let forcedEv = null; let rAF_ID; let lastTick = Date.now(); let tickCount = 0;
 
         const items = [
@@ -224,12 +229,9 @@
             {n:"Quantum PC",c:1500000,p:25000}, {n:"Satellite Ops",c:25000000,p:150000}
         ];
 
-        /* --- FIREBASE SYNC --- */
         function syncData() {
             if(!g.uid) return;
-            db.ref('leaderboard/' + g.uid).set({
-                n: g.n, rb: g.rb, m: g.m, timestamp: Date.now()
-            });
+            db.ref('leaderboard/' + g.uid).set({ n: g.n, rb: g.rb, m: g.m, timestamp: Date.now() });
         }
 
         db.ref('leaderboard').limitToLast(100).on('value', (snap) => {
@@ -242,7 +244,6 @@
 
         function forceSync() { syncData(); openModal("CLOUD", "Données synchronisées avec succès !"); }
 
-        /* --- FORMATAGE --- */
         function formatNum(num) {
             if (num < 1000) return Math.floor(num);
             let suffixes = ["", "k", "M", "B", "T", "Qa", "Qi"];
@@ -270,15 +271,12 @@
             }, 500);
         }
 
-        /* --- FIX THEME & DATES (V24) --- */
         function checkDates() {
             if(forcedEv) return;
             const now = new Date(), m = now.getMonth(), d = now.getDate(), b = document.getElementById('b-tag'), btn = document.getElementById('main-btn');
             let ev = false; dateMult = 1;
-            
-            let isWelcome = (Date.now() - g.firstLogin < 900000); // 15 min
+            let isWelcome = (Date.now() - g.firstLogin < 900000); 
 
-            // Reset des classes pour éviter les conflits
             b.className = "";
 
             if (m === 3 && d >= 18 && d <= 20) { b.className = "theme-gold"; btn.innerText = "🥚"; dateMult = 8; ev = true; }
@@ -288,17 +286,10 @@
             
             if(!ev) { 
                 btn.innerText = "$";
-                // Priorité au thème custom. Si vide et nouveau joueur -> welcome
-                if (g.th) {
-                    b.className = g.th;
-                } else if (isWelcome) {
-                    b.className = "theme-welcome";
-                }
+                if (g.th) { b.className = g.th; } 
+                else if (isWelcome) { b.className = "theme-welcome"; }
             }
-            
-            // Conserver le bonus x2 même si le joueur a changé de couleur (pendant 15min)
             if (isWelcome && !ev) dateMult = 2; 
-
             checkAdmin();
         }
 
@@ -312,19 +303,13 @@
             render();
         }
 
-        /* --- FIX ADMIN (V24) --- */
         function checkAdmin() { 
             let btn = document.getElementById('admin-tab-btn');
-            // Check insensible à la casse
-            if(g.n.toLowerCase() === "mrlx") {
-                btn.style.display = "block";
-            } else {
-                btn.style.display = "none";
-            }
+            if(g.n.toLowerCase() === "mrlx") { btn.style.display = "block"; } else { btn.style.display = "none"; }
         }
 
         window.onload = () => {
-            let s = localStorage.getItem('CT_V24_PATCH');
+            let s = localStorage.getItem('CT_V27_SECURE');
             if(s) {
                 try { g = JSON.parse(decodeURIComponent(atob(s))); } catch(e) { try { g = JSON.parse(s); } catch(e2) {} }
             }
@@ -344,7 +329,7 @@
 
         function save() { 
             g.lastSave = Date.now(); 
-            localStorage.setItem('CT_V24_PATCH', btoa(encodeURIComponent(JSON.stringify(g)))); 
+            localStorage.setItem('CT_V27_SECURE', btoa(encodeURIComponent(JSON.stringify(g)))); 
         }
 
         function gameLoop() {
@@ -354,7 +339,7 @@
                 let profit = ips * Math.max(1, g.rb*2);
                 g.m += profit; g.s_total += profit;
                 
-                if(Date.now() - g.lastHack > 28800000) startHackFight(); // 8h Hacker
+                if(Date.now() - g.lastHack > 28800000) startHackFight();
                 if(!forcedEv) checkDates(); 
                 
                 tickCount++; if(tickCount % 30 === 0) syncData();
@@ -438,18 +423,54 @@
         function tab(e, id) { document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active')); document.getElementById(id).classList.add('active'); e.currentTarget.classList.add('active'); }
         function subTab(id, btn) { document.querySelectorAll('.sub-panel').forEach(p=>p.style.display='none'); document.querySelectorAll('.s-tab').forEach(b=>b.classList.remove('active')); document.getElementById(id).style.display='block'; btn.classList.add('active'); }
         
+        /* --- SECURITE ANTI-USURPATION (V27) --- */
         function changeName() { 
-            let n = document.getElementById('name-change').value.trim(); 
-            if(n.length >= 1){ 
-                g.n=n; checkAdmin(); syncData(); render(); save(); 
-                openModal("INFO","Pseudo cloud mis à jour !"); 
-                document.getElementById('name-change').value = '';
-            } 
+            let newName = document.getElementById('name-change').value.trim(); 
+            
+            if(newName.length < 2) { 
+                openModal("ERREUR", "Le pseudo doit contenir au moins 2 caractères."); 
+                return; 
+            }
+            
+            // Protection des noms système
+            let reservedNames = ["satoshi", "satoshi [boss]", "mitnick", "anonymous", "skynet"];
+            if(reservedNames.includes(newName.toLowerCase())) {
+                openModal("ACCÈS REFUSÉ", "Ce pseudo est réservé aux serveurs du système.");
+                return;
+            }
+
+            // Vérification sur le serveur Firebase
+            db.ref('leaderboard').once('value').then((snapshot) => {
+                let nameTaken = false;
+                snapshot.forEach((childSnapshot) => {
+                    let player = childSnapshot.val();
+                    // Si le nom existe et appartient à un autre UID
+                    if (player.n && player.n.toLowerCase() === newName.toLowerCase() && childSnapshot.key !== g.uid) {
+                        nameTaken = true;
+                    }
+                });
+
+                if (nameTaken) {
+                    openModal("ERREUR", "Ce pseudo est déjà utilisé par un autre joueur dans le monde.");
+                } else {
+                    g.n = newName; 
+                    checkAdmin(); 
+                    syncData(); 
+                    render(); 
+                    save(); 
+                    openModal("INFO", "Identité cloud mise à jour avec succès !"); 
+                    document.getElementById('name-change').value = '';
+                }
+            }).catch((error) => {
+                openModal("ERREUR RÉSEAU", "Impossible de vérifier le pseudo. Vérifie ta connexion.");
+            });
         }
         
         function setTh(t) { g.th=t; checkDates(); save(); }
         function toggleSound() { g.sound=!g.sound; document.getElementById('sound-btn').innerText="SOUND : "+(g.sound?"ON":"OFF"); }
         function setBuyM(m,b) { buyM=m; document.querySelectorAll('.sys-tabs .s-tab').forEach(x=>x.classList.remove('active')); b.classList.add('active'); render(); }
+        function copyMyId() { navigator.clipboard.writeText(btoa(encodeURIComponent(g.n+"|"+g.rb+"|"+Math.floor(g.m)))); openModal("ID_CLOUD", "Ton ID unique a été copié !"); }
+        function addFriend() { try { let d=decodeURIComponent(atob(document.getElementById('friend-id-in').value)).split('|'); g.friends.push({n:d[0], rb:parseInt(d[1]), m:parseInt(d[2])}); render(); save(); openModal("INFO","Ami ajouté au réseau !"); } catch(e){openModal("ERROR","Format ID Invalide.");} }
         function doRebirth() { let c=1000000*Math.pow(5,g.rb); if(g.m>=c){ g.m=0; g.items=g.items.map(()=>0); g.q=g.q.map(()=>false); g.rb++; syncData(); save(); location.reload(); } }
         function resetGame() { if(confirm("EFFACER COMPTE CLOUD ?")){ localStorage.clear(); db.ref('leaderboard/' + g.uid).remove(); location.reload(); } }
         function startMatrix() { const c=document.getElementById('matrix'), ctx=c.getContext('2d'); c.width=window.innerWidth; c.height=window.innerHeight; const drops=Array(Math.floor(c.width/15)).fill(1); setInterval(()=>{ ctx.fillStyle="rgba(0,0,0,0.05)"; ctx.fillRect(0,0,c.width,c.height); ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--neon'); ctx.font = "15px monospace"; drops.forEach((y,i)=>{ ctx.fillText(Math.floor(Math.random()*2), i*15, y*15); if(y*15>c.height && Math.random()>0.98) drops[i]=0; drops[i]++; }); }, 50); }
