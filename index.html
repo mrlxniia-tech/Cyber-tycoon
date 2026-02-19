@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cyber Tycoon V27 - Unique ID</title>
+    <title>Cyber Tycoon V28 - Blackout</title>
     
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2991/2991148.png">
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2991/2991148.png">
-    <meta name="theme-color" content="#010103">
+    <meta name="theme-color" content="#000000">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
@@ -15,12 +15,13 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
     <style>
-        :root { --neon: #00f2ff; --bg: #010103; --card: rgba(10, 10, 15, 0.98); --grad: linear-gradient(180deg, #010103 0%, #05050a 100%); }
+        :root { --neon: #00f2ff; --card: rgba(10, 10, 15, 0.98); --grad: linear-gradient(180deg, #010103 0%, #05050a 100%); }
         
         .theme-green { --neon: #00ff41 !important; } 
         .theme-red { --neon: #ff003c !important; } 
         .theme-purple { --neon: #bc13fe !important; }
-        .theme-white { --neon: #ffffff !important; } 
+        .theme-pink { --neon: #ff00ff !important; } /* Remplacement du blanc par Rose Néon */
+        
         .theme-welcome { --neon: #0077ff !important; --grad: linear-gradient(180deg, #00102a 0%, #010103 100%) !important; }
         .theme-gold { --neon: #ffcc00 !important; --grad: linear-gradient(180deg, #1a1000 0%, #010103 100%) !important; }
         .theme-summer { --neon: #ffaa00 !important; --grad: linear-gradient(180deg, #0a192f 0%, #010103 100%) !important; }
@@ -29,8 +30,19 @@
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Courier New', monospace; outline: none; }
         
-        html { overscroll-behavior: none; }
-        body { position: fixed; inset: 0; width: 100vw; height: 100vh; background: var(--grad); color: white; margin: 0; display: flex; flex-direction: column; overflow: hidden; user-select: none; transition: background 0.8s ease; touch-action: none; overscroll-behavior: none; }
+        /* CACHER LES SCROLLBARS ANDROID QUI PEUVENT ÊTRE BLANCHES */
+        ::-webkit-scrollbar { display: none; width: 0px; }
+        * { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* ANTI-BLANC ABSOLU (V28) */
+        html { overscroll-behavior: none; background-color: #000000 !important; }
+        body { 
+            position: fixed; inset: 0; width: 100vw; height: 100vh; 
+            background-color: #010103 !important; /* FALLBACK NOIR OBLIGATOIRE */
+            background-image: var(--grad); 
+            color: white; margin: 0; display: flex; flex-direction: column; overflow: hidden; 
+            user-select: none; transition: background-image 0.8s ease; touch-action: none; overscroll-behavior: none; 
+        }
         
         #matrix { position: absolute; inset: 0; z-index: -1; opacity: 0.25; pointer-events: none; }
 
@@ -46,16 +58,16 @@
         .nav-btn { flex: 1; border: none; background: none; color: #555; font-size: 0.65rem; font-weight: bold; transition: 0.3s; }
         .nav-btn.active { color: var(--neon); border-bottom: 4px solid var(--neon); background: rgba(255,255,255,0.05); }
 
-        .panel { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 15px; display: none; background: rgba(0, 0, 0, 0.4); -webkit-overflow-scrolling: touch; overscroll-behavior-y: contain; touch-action: pan-y; }
+        .panel { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 15px; display: none; background: rgba(0, 0, 0, 0.5); -webkit-overflow-scrolling: touch; overscroll-behavior-y: contain; touch-action: pan-y; }
         .panel.active { display: block; }
         .content-wrapper { padding-bottom: 120px; }
 
-        .card { background: rgba(20, 20, 25, 0.85); border: 1px solid #222; padding: 15px; margin-bottom: 15px; border-radius: 10px; border-left: 4px solid var(--neon); backdrop-filter: blur(5px); }
+        .card { background: rgba(20, 20, 25, 0.9); border: 1px solid #222; padding: 15px; margin-bottom: 15px; border-radius: 10px; border-left: 4px solid var(--neon); backdrop-filter: blur(5px); }
         .buy-btn { background: var(--neon); color: black; border: none; padding: 12px; font-weight: bold; border-radius: 6px; width: 100%; margin-top: 8px; cursor: pointer; transition: 0.2s; text-transform: uppercase; }
         .buy-btn:active { transform: scale(0.97); }
         .buy-btn:disabled { background: #222 !important; color: #555 !important; opacity: 0.5; cursor: not-allowed; transform: none; }
 
-        #custom-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 30000; display: none; align-items: center; justify-content: center; padding: 25px; backdrop-filter: blur(3px); touch-action: none; overscroll-behavior: none; }
+        #custom-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 30000; display: none; align-items: center; justify-content: center; padding: 25px; backdrop-filter: blur(3px); touch-action: none; overscroll-behavior: none; }
         #modal-box { background: #0a0a0f; border: 2px solid var(--neon); padding: 30px; border-radius: 15px; text-align: center; width: 100%; max-width: 320px; box-shadow: 0 0 30px var(--neon); animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
@@ -156,7 +168,7 @@
                         <div class="color-dot" style="background:#00ff41" onclick="setTh('theme-green')"></div>
                         <div class="color-dot" style="background:#ff003c" onclick="setTh('theme-red')"></div>
                         <div class="color-dot" style="background:#bc13fe" onclick="setTh('theme-purple')"></div>
-                        <div class="color-dot" style="background:#ffffff" onclick="setTh('theme-white')"></div>
+                        <div class="color-dot" style="background:#ff00ff" onclick="setTh('theme-pink')"></div>
                     </div>
                 </div>
                 <button class="buy-btn" id="rb-btn" onclick="doRebirth()" disabled>PRESTIGE (<span id="rb-cost">1.00</span>M €)</button>
@@ -309,7 +321,7 @@
         }
 
         window.onload = () => {
-            let s = localStorage.getItem('CT_V27_SECURE');
+            let s = localStorage.getItem('CT_V28_BLACKOUT');
             if(s) {
                 try { g = JSON.parse(decodeURIComponent(atob(s))); } catch(e) { try { g = JSON.parse(s); } catch(e2) {} }
             }
@@ -329,7 +341,7 @@
 
         function save() { 
             g.lastSave = Date.now(); 
-            localStorage.setItem('CT_V27_SECURE', btoa(encodeURIComponent(JSON.stringify(g)))); 
+            localStorage.setItem('CT_V28_BLACKOUT', btoa(encodeURIComponent(JSON.stringify(g)))); 
         }
 
         function gameLoop() {
@@ -423,47 +435,20 @@
         function tab(e, id) { document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active')); document.getElementById(id).classList.add('active'); e.currentTarget.classList.add('active'); }
         function subTab(id, btn) { document.querySelectorAll('.sub-panel').forEach(p=>p.style.display='none'); document.querySelectorAll('.s-tab').forEach(b=>b.classList.remove('active')); document.getElementById(id).style.display='block'; btn.classList.add('active'); }
         
-        /* --- SECURITE ANTI-USURPATION (V27) --- */
         function changeName() { 
             let newName = document.getElementById('name-change').value.trim(); 
-            
-            if(newName.length < 2) { 
-                openModal("ERREUR", "Le pseudo doit contenir au moins 2 caractères."); 
-                return; 
-            }
-            
-            // Protection des noms système
+            if(newName.length < 2) { openModal("ERREUR", "Le pseudo doit contenir au moins 2 caractères."); return; }
             let reservedNames = ["satoshi", "satoshi [boss]", "mitnick", "anonymous", "skynet"];
-            if(reservedNames.includes(newName.toLowerCase())) {
-                openModal("ACCÈS REFUSÉ", "Ce pseudo est réservé aux serveurs du système.");
-                return;
-            }
-
-            // Vérification sur le serveur Firebase
+            if(reservedNames.includes(newName.toLowerCase())) { openModal("ACCÈS REFUSÉ", "Ce pseudo est réservé aux serveurs du système."); return; }
             db.ref('leaderboard').once('value').then((snapshot) => {
                 let nameTaken = false;
                 snapshot.forEach((childSnapshot) => {
                     let player = childSnapshot.val();
-                    // Si le nom existe et appartient à un autre UID
-                    if (player.n && player.n.toLowerCase() === newName.toLowerCase() && childSnapshot.key !== g.uid) {
-                        nameTaken = true;
-                    }
+                    if (player.n && player.n.toLowerCase() === newName.toLowerCase() && childSnapshot.key !== g.uid) { nameTaken = true; }
                 });
-
-                if (nameTaken) {
-                    openModal("ERREUR", "Ce pseudo est déjà utilisé par un autre joueur dans le monde.");
-                } else {
-                    g.n = newName; 
-                    checkAdmin(); 
-                    syncData(); 
-                    render(); 
-                    save(); 
-                    openModal("INFO", "Identité cloud mise à jour avec succès !"); 
-                    document.getElementById('name-change').value = '';
-                }
-            }).catch((error) => {
-                openModal("ERREUR RÉSEAU", "Impossible de vérifier le pseudo. Vérifie ta connexion.");
-            });
+                if (nameTaken) { openModal("ERREUR", "Ce pseudo est déjà utilisé par un autre joueur dans le monde.");
+                } else { g.n = newName; checkAdmin(); syncData(); render(); save(); openModal("INFO", "Identité cloud mise à jour avec succès !"); document.getElementById('name-change').value = ''; }
+            }).catch((error) => { openModal("ERREUR RÉSEAU", "Impossible de vérifier le pseudo. Vérifie ta connexion."); });
         }
         
         function setTh(t) { g.th=t; checkDates(); save(); }
