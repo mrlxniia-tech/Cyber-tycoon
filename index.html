@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cyber Tycoon V28 - Blackout</title>
+    <title>Cyber Tycoon V29 - Official Release</title>
     
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2991/2991148.png">
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2991/2991148.png">
@@ -20,7 +20,7 @@
         .theme-green { --neon: #00ff41 !important; } 
         .theme-red { --neon: #ff003c !important; } 
         .theme-purple { --neon: #bc13fe !important; }
-        .theme-pink { --neon: #ff00ff !important; } /* Remplacement du blanc par Rose Néon */
+        .theme-pink { --neon: #ff00ff !important; } 
         
         .theme-welcome { --neon: #0077ff !important; --grad: linear-gradient(180deg, #00102a 0%, #010103 100%) !important; }
         .theme-gold { --neon: #ffcc00 !important; --grad: linear-gradient(180deg, #1a1000 0%, #010103 100%) !important; }
@@ -30,19 +30,11 @@
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Courier New', monospace; outline: none; }
         
-        /* CACHER LES SCROLLBARS ANDROID QUI PEUVENT ÊTRE BLANCHES */
         ::-webkit-scrollbar { display: none; width: 0px; }
         * { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* ANTI-BLANC ABSOLU (V28) */
         html { overscroll-behavior: none; background-color: #000000 !important; }
-        body { 
-            position: fixed; inset: 0; width: 100vw; height: 100vh; 
-            background-color: #010103 !important; /* FALLBACK NOIR OBLIGATOIRE */
-            background-image: var(--grad); 
-            color: white; margin: 0; display: flex; flex-direction: column; overflow: hidden; 
-            user-select: none; transition: background-image 0.8s ease; touch-action: none; overscroll-behavior: none; 
-        }
+        body { position: fixed; inset: 0; width: 100vw; height: 100vh; background-color: #010103 !important; background-image: var(--grad); color: white; margin: 0; display: flex; flex-direction: column; overflow: hidden; user-select: none; transition: background-image 0.8s ease; touch-action: none; overscroll-behavior: none; }
         
         #matrix { position: absolute; inset: 0; z-index: -1; opacity: 0.25; pointer-events: none; }
 
@@ -232,6 +224,7 @@
         const db = firebase.database();
         let globalRank = [];
 
+        // NOUVELLE CLÉ DE SAUVEGARDE (WIPE GLOBAL)
         let g = { uid: null, m: 0, n: "Hacker", items: [0,0,0,0,0,0,0,0], rb: 0, th: "", firstLogin: Date.now(), lastHack: Date.now(), lastSave: Date.now(), s_click: 0, s_win: 0, s_loss: 0, s_total: 0, sound: true, friends: [], q: [false,false,false,false,false,false] };
         let buyM = 1; let AC; let hackPower = 50; let hackInterval; let dateMult = 1; let forcedEv = null; let rAF_ID; let lastTick = Date.now(); let tickCount = 0;
 
@@ -321,7 +314,8 @@
         }
 
         window.onload = () => {
-            let s = localStorage.getItem('CT_V28_BLACKOUT');
+            // NOUVELLE CLÉ POUR LE WIPE
+            let s = localStorage.getItem('CT_V29_OFFICIAL');
             if(s) {
                 try { g = JSON.parse(decodeURIComponent(atob(s))); } catch(e) { try { g = JSON.parse(s); } catch(e2) {} }
             }
@@ -341,7 +335,7 @@
 
         function save() { 
             g.lastSave = Date.now(); 
-            localStorage.setItem('CT_V28_BLACKOUT', btoa(encodeURIComponent(JSON.stringify(g)))); 
+            localStorage.setItem('CT_V29_OFFICIAL', btoa(encodeURIComponent(JSON.stringify(g)))); 
         }
 
         function gameLoop() {
